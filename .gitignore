@@ -1,0 +1,5 @@
+*.gnuplot
+*.table
+*.bcf
+*.xml
+*.gz

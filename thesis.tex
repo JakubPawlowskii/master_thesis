@@ -1,0 +1,685 @@
+% ***************************************************************************************************
+%
+%	Szablon pracy magisterskiej dla Politechniki Wrocławskiej w wersji dwustronnej.
+%	Autor:	Tomasz Strzałka
+%
+% ***************************************************************************************************
+
+% Styl dwustronny z domyślną wielkością czcionki 10pt oraz oddzieloną stroną tytułową (titlepage).
+% Domyślnie rodziały rozpoczynają się na stronie prawej (openright).
+\documentclass[a4paper,11pt,twoside,openright]{book}
+% \RequirePackage{luatex85,shellesc}
+\usepackage{luatex85}
+\usepackage{shellesc}
+
+\renewcommand{\baselinestretch}{1.2} 
+
+% ***************************************************************************************************
+% Ustawienia języka
+% ***************************************************************************************************
+
+% Podstawowe ustawienia języka, według którego formatowany będzie dokument
+\usepackage[english]{babel}
+\usepackage{csquotes}
+% Pakiet babel dla polskiego języka powoduje konflikt z pakietem amssymb.
+% Polecenie '\lll' definiują oba pakiety - porządana jest druga definicja.
+
+% W przypadku wielojęzykowości ustawia główny język dokumentu
+\selectlanguage{english}
+
+% Kodowanie dokumentu
+% \usepackage[utf8]{inputenc}
+
+% Dowolny rozmiar czcionek, kodowanie znaków
+\usepackage{lmodern}
+
+% Polskie wcięcia akapitów
+% \usepackage{indentfirst}
+
+% Polskie łamanie wyrazów
+% \usepackage[plmath]{english}
+
+% Przecinek w wyrażeniach matematycznych zamiast kropki
+% \usepackage{icomma}
+
+% Polskie formatowanie typograficzne
+% \frenchspacing
+
+% Zapewnia liczne usprawnienia wyświetlania i organizacji matematycznych formuł. 
+\usepackage{amsmath}
+
+% Wprowadza rozszerzony zestaw symboli m.in. \leadsto
+\usepackage{amssymb}
+
+% Dodatkowa, ,,kręcona'' czcionka matematyczna
+\usepackage{mathrsfs}
+
+% Dodatkowe wsparcie dla środowiska mathbb, które nie wspiera domyślnie cyfr (\mathbb{})
+\usepackage{bbold}
+
+
+% Fixes/improves amsmath
+\usepackage{mathtools}
+
+
+% ***************************************************************************************************
+% Kolory  
+% ***************************************************************************************************
+
+% Umożliwia kolorowanie poszczególnych komórek tabeli
+\usepackage[table]{xcolor}% http://ctan.org/pkg/
+
+% Umożliwia łatwą zmianę koloru linii w tabeli
+\usepackage{tabu}
+
+% Umożliwia rozszerzoną kontrolę nad kolorami.
+\usepackage{xcolor}
+
+% Definicje kolorów
+\definecolor{lgray}{HTML}{9F9F9F}
+\definecolor{dgray}{HTML}{5F5F5F}
+% lgray				-	nazwa nowo zdefiniowanego koloru
+% HTML				-	model kolorów
+% CCCCCC			-	wartość koloru zgodna z modelem
+
+% ***************************************************************************************************
+% Algorytmy 
+% ***************************************************************************************************
+
+% Udostępnia środowisko do konstruowania pseudokodów
+% \usepackage[ruled,vlined,linesnumbered,longend,algochapter]{algorithm2e}
+% ruled	- poziome kreski na początku i końcu algorytmu, podpis na górze oddzielony również kreską poziomą
+% vlined - pionowe kreski łączące początek polecenia z jego końcem
+% linesnumbered	- numerowanie kolejnych wierszy algorytmu
+% longend - długie końcówki np. ifend, forend itd.
+% algochapter - numeracja z rozdziałami
+
+% Zmiana rozmiaru komentarzy
+% \newcommand\algcomment[1]{
+	% \footnotesize{#1}
+% }
+
+% Ustawienie zadanego stylu dla komentarzy
+% \SetCommentSty{algcomment}
+
+
+% \usepackage{newtxtext}
+% \usepackage{newtxmath}
+
+% Wyśrodkowana tylda
+\usepackage{textcomp}%
+\newcommand{\textapprox}{\raisebox{0.5ex}{\texttildelow}}
+
+% Listowanie kodów źródłowych
+\usepackage{listings} 
+
+% ***************************************************************************************************
+% Marginesy 
+% ***************************************************************************************************
+
+% Ustawienia rozmiarów stron i ich marginesów
+\usepackage[headheight=18pt, top=25mm, bottom=25mm, left=25mm, right=25mm, bindingoffset=5mm]{geometry}
+% headheight		-	wysokość tytułów
+% top				-	margines górny
+% bottom			-	margines dolny
+% left				-	margines lewy
+% right				-	margines prawy
+
+% Usunięcie górnego marginesu dla środowisk
+\makeatletter
+\setlength\@fptop{0\p@}	
+\makeatother
+
+% ***************************************************************************************************
+% Styl 
+% ***************************************************************************************************
+
+% Definiuje środowisko 'titlingpage', które zapewnia pełną kontrolę nad układem strony tytułowej.
+\usepackage{titling}
+
+
+% Umożliwia modyfikowanie stylu spisu treści
+\usepackage{tocloft}	
+
+\tocloftpagestyle{tableOfContentStyle}
+
+% Definiowanie własnych stylów nagłówków i/lub stopek
+\usepackage{fancyhdr}
+
+% Domyślny styl dla pracy 
+\fancypagestyle{custom}{
+	\fancyhf{}									% wyczyść stopki i nagłówki
+	\fancyhead[RO]{								% Prawy, nieparzysty nagłówek
+		\hrulefill \hspace{16pt} \large Chapter \thechapter
+		\put(-455.4, 13.5){%
+			\makebox(0,0)[l]{%
+				\includegraphics[width=0.05\textwidth]{Figures/pwr-logo}
+			}
+		}
+		\put(-426,5.5){%
+			\makebox(0,0)[l]{%
+				\small Wrocław University of Science and Technology
+			}
+		}
+	}
+	\fancyhead[LE]{								% Lewy, parzysty nagłówek
+		\large Chapter \thechapter \hspace{16pt} \hrulefill 
+		\put(-20, 12.1){%
+			\makebox(0,0)[l]{%
+				\includegraphics[width=0.05\textwidth]{Figures/wppt-logo}
+			}
+		}
+		\put(-240,5.5){%
+			\makebox(0,0)[l]{%
+				\small Faculty of Fundamental Problems of Technology
+			}
+		}
+	}
+	\fancyfoot[LE,RO]{							% Stopki
+		\thepage{}
+	}  
+	\renewcommand{\headrulewidth}{0pt}			% Grubość linii w nagłówku
+	\renewcommand{\footrulewidth}{0.2pt}		% Grubość linii w stopce
+}
+
+
+% Domyślny styl dla bibliografii
+\fancypagestyle{bibliographyStyle}{
+	\fancyhf{}									% wyczyść stopki i nagłówki
+	\fancyhead[RO]{								% Prawy, nieparzysty nagłówek
+		\hrulefill \hspace{16pt} \large Bibliography
+		\put(-455.4, 13.5){%
+			\makebox(0,0)[l]{%
+				\includegraphics[width=0.05\textwidth]{Figures/pwr-logo}
+			}
+		}
+		\put(-426,5.5){%
+			\makebox(0,0)[l]{%
+				\small Wrocław University of Science and Technology
+			}
+		}
+	}
+	\fancyhead[LE]{								% Lewy, parzysty nagłówek
+		\large Bibliography \hspace{16pt} \hrulefill 
+		\put(-20, 12.1){%
+			\makebox(0,0)[l]{%
+				\includegraphics[width=0.05\textwidth]{Figures/wppt-logo}
+			}
+		}
+		\put(-240,5.5){%
+			\makebox(0,0)[l]{%
+				\small Faculty of Fundamental Problems of Technology
+			}
+		}
+	}
+	\fancyfoot[LE,RO]{							% Stopki
+		\thepage
+	}
+	\renewcommand{\headrulewidth}{0pt}			% Grubość linii w nagłówku
+	\renewcommand{\footrulewidth}{0.2pt}		% Grubość linii w stopce
+}
+
+% Domyślny styl dla dodatków
+\fancypagestyle{appendixStyle}{
+	\fancyhf{}									% wyczyść stopki i nagłówki
+	\fancyhead[RO]{								% Prawy, nieparzysty nagłówek
+		\hrulefill \hspace{16pt} \large Appendix \thechapter
+		\put(-455.4, 13.5){%
+			\makebox(0,0)[l]{%
+				\includegraphics[width=0.05\textwidth]{Figures/pwr-logo}
+			}
+		}
+		\put(-426,5.5){%
+			\makebox(0,0)[l]{%
+				\small Wrocław University of Science and Technology
+			}
+		}
+	}
+	\fancyhead[LE]{								% Lewy, parzysty nagłówek
+		\large Appendix \thechapter \hspace{16pt} \hrulefill 
+		\put(-20, 12.1){%
+			\makebox(0,0)[l]{%
+				\includegraphics[width=0.05\textwidth]{Figures/wppt-logo}
+			}
+		}
+		\put(-240,5.5){%
+			\makebox(0,0)[l]{%
+				\small Faculty of Fundamental Problems of Technology
+			}
+		}
+	}
+	\fancyfoot[LE,RO]{							% Stopki
+		\thepage{}
+	}
+	\renewcommand{\headrulewidth}{0pt}			% Grubość linii w nagłówku
+	\renewcommand{\footrulewidth}{0.2pt}		% Grubość linii w stopce
+}
+
+% Osobny styl dla stron zaczynających rozdział/spis treści itd. (domyślnie formatowane jako "plain")
+\fancypagestyle{chapterBeginStyle}{
+	\fancyhf{}%
+	\fancyfoot[LE,RO]{
+		\thepage
+	}
+	\renewcommand{\headrulewidth}{0pt}
+	\renewcommand{\footrulewidth}{0.2pt}
+}
+
+% Styl dla pozostałych stron spisu treści
+\fancypagestyle{tableOfContentStyle}{
+	\fancyhf{}%
+	\fancyfoot[LE,RO]{
+		\thepage
+	}
+	\renewcommand{\headrulewidth}{0pt}
+	\renewcommand{\footrulewidth}{0.2pt}
+}
+
+% Formatowanie tytułów rozdziałów i/lub sekcji
+\usepackage{titlesec}
+
+% Formatowanie tytułów rozdziałów
+\titleformat{\chapter}[hang]					% kształt
+{
+	\vspace{-15ex}
+	\Huge
+	\bfseries
+}												% formatowanie tekstu modyfikowanego elementu
+{\thechapter}												% etykieta występująca przed tekstem modyfikowanego elementu, niewidoczna w spisie treści
+{
+	10pt
+}												% odstęp formatowanego tytułu od lewego marginesu/etykiety
+{
+	\Huge
+	\bfseries
+}												% formatowanie elementów przed modyfikowanym tytułem
+[
+\vspace{2ex}
+% \rule{\textwidth}{0.4pt}
+%\vspace{-4ex}
+]												% dodatkowe formatowanie stosowane poniżej modyfikowanego tytułu
+
+
+% Formatowanie tytułów sekcji
+\titleformat{\section}[hang]					% kształt
+{
+	\vspace{2ex}
+%	\titlerule\vspace{1ex}
+	\Large\bfseries
+}												% formatowanie tekstu modyfikowanego elementu
+{
+	\thesection									% etykieta występująca przed tekstem modyfikowanego elementu, niewidoczna w spisie treści
+}
+{
+	0pt
+}												% odstęp formatowanego tytułu od lewego marginesu/etykiety
+{
+	\Large
+	\bfseries
+}												% formatowanie elementów przed modyfikowanym tytułem
+\title{}
+% ***************************************************************************************************
+% Linki
+% ***************************************************************************************************
+
+% Umożliwia wstawianie hiperłączy do dokumentu
+\usepackage{hyperref}							% Aktywuje linki
+
+\hypersetup{
+	colorlinks	=	true,					% Koloruje tekst zamiast tworzyć ramki.
+	linkcolor		=	blue,					% Kolory: referencji,
+    citecolor		=	blue,					% cytowań,
+	urlcolor		=	blue					% hiperlinków.
+}
+
+% Do stworzenia hiperłączy zostanie użyta ta sama (same) czcionka co dla reszty dokumentu
+\urlstyle{same}
+
+
+
+
+% ***************************************************************************************************
+% Linki
+% ***************************************************************************************************
+
+% Umożliwia zdefiniowanie własnego stylu wyliczeniowego
+\usepackage{enumitem}
+
+% Nowa lista numerowana z trzema poziomami
+\newlist{myitemize}{itemize}{3}
+
+% Definicja wyglądu znacznika pierwszego poziomu
+\setlist[myitemize,1]{
+	label		=	\textbullet,
+	leftmargin	=	4mm}
+
+% Definicja wyglądu znacznika drugiego poziomu
+\setlist[myitemize,2]{
+	label		=	$\diamond$,
+	leftmargin	=	8mm}
+
+% Definicja wyglądu znacznika trzeciego poziomu
+\setlist[myitemize,3]{
+	label		=	$\diamond$,
+	leftmargin	=	12mm
+}
+
+
+% ****************************** Biblatex ***********************************************************
+\usepackage[
+    backend=biber,
+    style=numeric,
+	sorting=none
+  ]{biblatex}
+\addbibresource{qliom.bib}
+
+% ***************************************************************************************************
+
+
+% ***************************************************************************************************
+% Inne pakiety
+% ***************************************************************************************************
+
+% Dołączanie rysunków
+\usepackage{graphicx}
+
+% Figury i przypisy
+\usepackage{caption}
+\usepackage{subcaption}
+
+% Umożliwia tworzenie przypisów wewnątrz środowisk
+\usepackage{footnote}
+
+% Umożliwia tworzenie struktur katalogów
+\usepackage{dirtree}
+% Precyzyjne obliczenia szerokości/wysokości dowolnego fragmentu wygenerowanego przez LaTeX
+\usepackage{calc}
+
+% my packages
+\usepackage{physics}
+\usepackage{microtype}
+\usepackage{cancel}
+\usepackage{color}
+\renewcommand{\CancelColor}{\color{red}}
+\usepackage{lipsum}
+
+\usepackage{epigraph}
+\setlength\epigraphwidth{11cm}
+\setlength\epigraphrule{0pt}
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\epigraph}{\@epitext{#1}}{\itshape\@epitext{#1}}{}{}
+\makeatother
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing}
+
+% \usepackage{indentfirst}
+\usepackage{bm}
+\usepackage{quotchap}
+\usepackage{float}
+
+% ***************************************************************************************************
+% Matematyczne skróty
+% ***************************************************************************************************
+
+% Skrócony symbol liczb rzeczywistych
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+
+% Skrócony symbol liczb naturalnych
+\newcommand{\NN}{\mathbb{N}}
+
+% Skrócony symbol liczb wymiernych
+\newcommand{\QQ}{\mathbb{Q}}
+
+% Skrócony symbol liczb całkowitych
+\newcommand{\ZZ}{\mathbb{Z}}
+
+% Skrócony symbol logicznej implikacji
+\newcommand{\IMP}{\rightarrow}
+
+% Skrócony symbol  logicznej równoważności
+\newcommand{\IFF}{\leftrightarrow}
+
+% Symbole operatorów spinowych
+\newcommand{\Id}{\mathbb{1}}
+\newcommand{\Sp}{S^{+}}
+\newcommand{\Sm}{S^{-}}
+\newcommand{\Sz}{S^{z}}
+\newcommand{\Sx}{S^{x}}
+\newcommand{\Sy}{S^{y}}
+
+
+\newcommand{\hs}[2]{\left(#1 \middle| #2\right)}
+\newcommand{\hsSmall}[2]{(#1 | #2)}
+\newcommand{\dimension}{\mathcal{D}}
+\newcommand{\ua}{\uparrow}
+\newcommand{\da}{\downarrow}
+
+\newcommand{\spaa}{\psi_{\textrm{space}}^{(a)}}
+\newcommand{\spas}{\psi_{\textrm{space}}^{(s)}}
+\newcommand{\spia}{\psi_{\textrm{spin}}^{(a)}}
+\newcommand{\spis}{\psi_{\textrm{spin}}^{(s)}}
+\newcommand{\hspi}{\mathcal{H}_{\textrm{spin}}}
+\newcommand{\hspac}{\mathcal{H}_{\textrm{space}}}
+
+
+\DeclarePairedDelimiterX\set[1]\lbrace\rbrace{\def\given{\;\delimsize\vert\;}#1}
+
+\definecolor{wppt}{RGB}{0,156,158}
+\definecolor{pinegreen}{RGB}{0,128,128}
+\definecolor{pwr}{RGB}{154,52,45}
+\renewcommand*{\chapterheadstartvskip}{\vspace*{-1\baselineskip}} 
+\renewcommand*{\sectfont}{\bfseries\fontseries{bx}\selectfont}
+\makeatletter
+\let\size@chapter\huge
+\renewcommand*{\chapnumfont}{
+    %\usefont{T1}{jkpvos}{b}{n}
+    \usefont{T1}{pzc}{b}{n}
+    \fontsize{100}{120}\color{wppt}\selectfont}
+% default number
+% \renewcommand*{\chapnumfont}{%
+%   \usefont{T1}{\@defaultcnfont}{b}{n}\fontsize{120}{150}\selectfont% Default: 100/130
+%   \color{chaptergrey}}
+\makeatother
+
+\newcommand*{\blankpage}{%
+\vspace*{\fill}
+{\centering This page is intentionally left blank.\par}
+\vspace{\fill}}
+% \makeatletter
+% \renewcommand*{\cleardoublepage}{\clearpage\if@twoside \ifodd\c@page\else
+% \blankpage
+% \thispagestyle{empty}
+% \newpage
+% \if@twocolumn\hbox{}\newpage\fi\fi\fi}
+% \makeatother
+
+% \makeatletter
+% \renewcommand*\cleardoublepage{\clearpage\if@twoside
+%   \ifodd\c@page\else\hbox{}\newpage\if@twocolumn\hbox{}%
+%   \newpage\fi\fi\fi}
+% \makeatother
+
+
+% ***************************************************************************************************
+% Środowiska
+% ***************************************************************************************************
+
+% Środowisko do twierdzeń
+\newtheorem{theorem}{Theorem}[chapter]
+
+% Środowisko do lematów
+\newtheorem{lemma}{Lemma}[chapter]
+
+\newtheorem{proposition}{Proposition}[chapter]
+
+% Środowisko do przykładów
+\newtheorem{example}{Example}[chapter]
+
+% Środowisko do wniosków
+\newtheorem{corollary}{Corollary}[chapter]
+
+% Środowisko do definicji
+\newtheorem{definition}{Definition}[chapter]
+
+% Środowisko do dowodów
+\newenvironment{proof}{
+	\par\noindent \textbf{Proof.}
+}{
+\begin{flushright}
+	\vspace*{-6mm}\mbox{$\blacksquare $}
+\end{flushright}
+}
+
+% Środowisko do uwag
+\newenvironment{remark}{
+	\bigskip \par\noindent \small \textbf{Remark.}
+}{
+\begin{small}
+	\vspace*{4mm}
+\end{small}
+}
+
+\newenvironment{abstract}[1]{%
+	\begin{center}
+		\normalfont\textbf{Abstract}
+	\end{center}
+	\begin{quotation} 
+		#1 
+	\end{quotation}
+}{%
+\vspace{1cm}
+}
+
+
+% ***************************************************************************************************
+% Dokument
+% ***************************************************************************************************
+
+\frontmatter
+
+\begin{document}
+\pagenumbering{Roman}
+	\begin{titlingpage}
+		\vspace*{\fill}
+		\begin{center}
+			\begin{picture}(300,510)
+				\put(11,520){\makebox(0,0)[l]{\large \textsc{Faculty of Fundamental Problems of Technology}}}
+				\put(11,500){\makebox(0,0)[l]{\large \textsc{Wrocław University of Science and Technology}}}
+% Tytuł pracy
+				\put(80,320){\Huge \textsc{Eigenmodes in}}
+				\put(80,280){\Huge \textsc{nearly integrable}}
+				\put(80,240){\Huge \textsc{quantum chains}}
+% Autor pracy
+				\put(90,200){\makebox(0,0)[l]{\large \textsc{Jakub Pawłowski}}}
+				\put(90,180){\makebox(0,0)[l]{\large \textsc{Index number: 250193}}}
+
+				\put(200,100){\makebox(0,0)[l]{\large Master thesis}}
+				\put(200,80){\makebox(0,0)[l]{\large under supervision of}}
+% dane promotora
+				\put(200,60){\makebox(0,0)[l]{\large prof.\ dr hab.\ Marcin Mierzejewski}}
+				
+				\put(115,-70){\includegraphics[width=0.15\textwidth]{Figures/pwr_logo_english.pdf}}
+				\put(106,-85){\makebox(0,0)[bl]{\large \textsc{Wrocław 2023}}}
+			\end{picture}
+		\end{center}	
+		\vspace*{\fill}
+	\end{titlingpage}	
+
+	\pagestyle{tableOfContentStyle}
+	\blankpage{}
+	% \cleardoublepage{}
+	\newpage{}
+	\pagestyle{tableOfContentStyle}
+	\vspace*{14cm}
+	\begin{center}
+		\epigraph{\normalsize 
+	I would like to express my sincere gratitude to prof. dr hab.\ Marcin Mierzejewski for being my
+	% guide into the world of quantum many-body physics. Without his immense knowledge and willingness
+	% to help, this work would not have been possible.\\
+	% \vspace*{0.5cm}
+	% I also own my heartfelt appreciation to prof.\ dr hab.\ Katarzyna Sznajd-Weron who
+	% sparked my love for theoretical physics and introduced me to academia.\\
+	% \vspace*{0.5cm}
+	% Last but not least, I would like to thank my parents, for without them I would not be here
+	% where I am today.
+	}{}
+	\end{center}
+	% \cleardoublepage{}
+	\newpage{}
+	\blankpage{}
+	\newpage{}
+
+	\pagestyle{tableOfContentStyle}
+	\vspace*{6cm}
+	\abstract{\noindent
+		Apparent incompatibility of classical irreversible thermodynamics with
+		% unitary quantum dynamics has for a long time been a topic of intensive research.
+		% One possible approach to reconciliation between these two fields in generic nonintegrable
+		% systems is given by \textit{Eigenstate Thermalization Hypothesis}. On the other hand,
+		% in integrable systems thermalization is hindered by the existence of extensive
+		% number of (quasi)local integrals of motions, (Q)LIOMs. In this work we investigate a class
+		% of \textit{noncommuting} (Q)LIOMs originating from symmetries
+		% of spin-\(1/2\) XXZ model present for certain values of anisotropy parameter.
+		% However, it is the boundary between chaotic and integrable systems
+		% that is the most interesting, as it is still largely unknown. To this end, a weak
+		% integrability-breaking perturbation is introduced and the relaxation of aforementioned
+		% noncommuting (Q)LIOMs is studied. We report a novel Gaussian-like decay of autocorrelation functions,
+		% together with a linear, instead of the expected quadratic, scaling of relaxation times with
+		% perturbation strength. This result is a consequence of the origin of these noncommuting
+		% quantities being the macroscopical degeneracy of many-body spectra for high-symmetry anisotropy values.
+	}
+	\begin{quotation}
+		\noindent \textbf{Keywords:} \textit{integrals of motion, ETH, integrability breaking, XXZ model}
+	\end{quotation}
+	\newpage{}
+	\blankpage{}
+	\newpage{}
+
+	\pagestyle{tableOfContentStyle}
+	\tableofcontents
+	\newpage{}
+	\blankpage{}
+	\newpage{}
+	% \cleardoublepage{}
+	% ***************************************************************************************************
+	% Wstęp
+	% ***************************************************************************************************
+	
+	\pagestyle{custom}
+	\mainmatter{}
+
+	% ***************************************************************************************************
+	% Rodziały
+	% ***************************************************************************************************
+
+	\input{Chapters/intro.tex}
+	\cleardoublepage{}
+
+	\input{Chapters/summary.tex}
+	\cleardoublepage{}
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BIBLIOGRAFIA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+	\pagestyle{bibliographyStyle}
+	\printbibliography{}
+	\thispagestyle{chapterBeginStyle}
+        \addcontentsline{toc}{chapter}{Bibliography}
+	\cleardoublepage{}
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DODATKI %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\appendix
+	\pagestyle{appendixStyle}
+	\input{Chapters/appendix.tex}
+	\cleardoublepage{}
+
+\end{document}
+
