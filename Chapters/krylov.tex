@@ -1,10 +1,18 @@
-\chapter{Lanczos algorithm}
+\chapter{Lancz\H{o}s based numerical methods for quantum many-body systems}
 \thispagestyle{chapterBeginStyle}
 
-The main purpose of this thesis is to develop and test a set of numerical tools based on the Lanczos algorithm,
-which is an iterative method for finding extremal eigenvalues of a large matrix. In its simplest form, it is
-useful for efficient calculation of a ground state energy and eigenvector, and subsequently for determining
-the ground state properties of a system of choice. However, in this work we are mainly interested in infinite
-temperature properties, which requires sampling of the whole spectrum of Hamiltonian in question.
+One of the two purposes of this thesis is to develop and test a set of numerical tools based on the Lancz\H{o}s algorithm,
+which is an iterative method for finding extremal eigenvalues of a large, sparse matrices. Therefore, this chapter serves as a
+pedagogical introduction to the core ideas of these methods, however without going too deep into details of algorithm analysis.
+In the exposition we follow the excellent treatments found in~\textcite{Sandvik2010} and PhD thesis by~\textcite{Crivelli2016}.
+The interested and mathematically inclined reader is referred to the classic textbook of numerical linear algebra by~\textcite{Trefethen1997}.
+
+In the first part of this chapter, the Lancz\H{o}s algorithm is developed in its simplest form which in itself is useful for efficient calculation
+of a ground state eigenvalue and eigenvector of sparse Hamiltonians, and thus for determining their ground state properties.
+However, in this work we are mainly interested in infinite temperature correlation functions, which in principle require sampling of the whole spectrum.
+To this end, in subsequent sections we develop a scheme for time evolution of arbitrary state, called the Krylov propagator~\autocite{Park1986},
+ and combine it with the idea of Dynamical Quantum Typicality (DQT), which states that a single pure state can have the same
+ properties as an ensemble density matrix~\autocite{Gemmer2003,Goldstein2006,Popescu2006}.
+We finish this chapter with a proposal of employing this method to the identification of local integrals of motion (\textcolor{red}{cite my bachelors})
 
 \section{Lanczos method for ground state calculation}
