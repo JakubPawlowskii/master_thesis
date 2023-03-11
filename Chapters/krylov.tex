@@ -1,18 +1,51 @@
-\chapter{Lancz\H{o}s based numerical methods for quantum many-body systems}
+\chapter{Lancz{o}s based numerical methods for quantum many-body systems}
 \thispagestyle{chapterBeginStyle}
 
-One of the two purposes of this thesis is to develop and test a set of numerical tools based on the Lancz\H{o}s algorithm,
-which is an iterative method for finding extremal eigenvalues of a large, sparse matrices. Therefore, this chapter serves as a
+One of the two purposes of this thesis is to develop and test a set of numerical tools based on the Lancz{o}s algorithm,
+which is an iterative method for finding extremal eigenvalues of large, sparse matrices. Therefore, this chapter serves as a
 pedagogical introduction to the core ideas of these methods, however without going too deep into details of algorithm analysis.
 In the exposition we follow the excellent treatments found in~\textcite{Sandvik2010} and PhD thesis by~\textcite{Crivelli2016}.
 The interested and mathematically inclined reader is referred to the classic textbook of numerical linear algebra by~\textcite{Trefethen1997}.
 
-In the first part of this chapter, the Lancz\H{o}s algorithm is developed in its simplest form which in itself is useful for efficient calculation
-of a ground state eigenvalue and eigenvector of sparse Hamiltonians, and thus for determining their ground state properties.
-However, in this work we are mainly interested in infinite temperature correlation functions, which in principle require sampling of the whole spectrum.
+The first part of this chapter is devoted to the Lancz{o}s algorithm in its simplest form, that is useful for efficient calculation
+of extremal eigenvalues and eigenvectors of sparse Hamiltonians, in particular (the) ground state, thus for determining their
+ground state properties.
+However, in this work we are mainly interested in infinite temperature calculations, for which in principle sampling of the whole
+spectrum is required.
 To this end, in subsequent sections we develop a scheme for time evolution of arbitrary state, called the Krylov propagator~\autocite{Park1986},
  and combine it with the idea of Dynamical Quantum Typicality (DQT), which states that a single pure state can have the same
  properties as an ensemble density matrix~\autocite{Gemmer2003,Goldstein2006,Popescu2006}.
-We finish this chapter with a proposal of employing this method to the identification of local integrals of motion (\textcolor{red}{cite my bachelors})
+We finish this chapter with a proposal of employing this method to the identification of local integrals of motion in a given
+tight-binding system.
+ (\textcolor{red}{cite my bachelors})
+
+ For the remainder of this chapter, let \(H\) denote arbitrary tight-binding Hamiltonian, \(\mathcal{H}\) the associated Hilbert space,
+ and \(\dimension = \textrm{dim}\left(\mathcal{H}\right)\) its dimension.
+
 
 \section{Lanczos method for ground state calculation}
+
+\subsection{Problems with Exact Diagonalization}
+
+The most straightforward numerical method for studying discrete quantum many-body systems is without a doubt
+Exact Diagonalization (ED)~\autocite{Weisse2008}.
+It allows one to obtain numerically exact set of eigenvalues and eigenvectors and subsequently compute any desired properties
+of the system, be it thermal expectation values, time evolution, Green's functions etc. Unfortunately, the starting point of any
+ED calculation is the expression of the Hamiltonian as a dense matrix, in the Hilbert space basis of choice. Taking into account
+the fact that the dimension many-body Hilbert space grows exponentially with the size of the system, the memory cost quickly becomes
+prohibitive, even when exploiting conservation laws and related symmetries. For example, in the case of a spin chain of length L, with 
+on-site basis dimension being 2, the full dimension of the Hilbert space would be \(2^{L}\). Taking a modest length of 25 sites, that gives
+\(2^{25} = 33554432\approx 3.36 \cdot 10^7\) basis states and a memory footprint of Hamiltonian matrix of around 9PB (using double-precision
+floating point numbers), which is 9000 times more than the typical consumer hard drive capacity of 1TB. Even assuming some kind of distributed
+memory platform allowing for handling such large matrices, the computational complexity of ED, requiring \(O(\dimension^3)\) operations,
+is the next major hurdle. Therefore, it is exceedingly
+difficult to probe the thermodynamic limit physics and ED calculations suffer from finite size effects.
+
+Closer investigation of the Hamiltonian matrix, expressed in computational basis (cf. eq ...) quickly reveals the inefficiency of dense
+storage. Looking at Figure~(\textcolor{red}{Here figure with Hamiltonian, basis ordered by magnetization}), we see that most of
+the matrix elements are zero. In fact only about \(\dimension_0\propto \dimension \) out of \(\dimension^2\) matrix elements
+are non-zero. Hence, a numerical scheme leveraging this sparsity is highly desirable. This is exactly what the Lanczos
+algorithm does.
+
+\subsection{Implementation of Lanczos algorithm}
+
