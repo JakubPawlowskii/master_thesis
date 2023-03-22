@@ -1,10 +1,10 @@
-\chapter{Lancz{o}s based numerical methods for quantum many-body systems}
+\chapter{Krylov subspace  methods for quantum many-body systems}
 \thispagestyle{chapterBeginStyle}
 
 One of the two purposes of this thesis is to develop and test a set of numerical tools based on the Lancz{o}s algorithm,
 which is an iterative method for finding extremal eigenvalues of large, sparse matrices. Therefore, this chapter serves as a
 pedagogical introduction to the core ideas of these methods, however without going too deep into details of algorithm analysis.
-In the exposition we follow the excellent treatments found in~\textcite{Sandvik2010} and PhD thesis by~\textcite{Crivelli2016}.
+For the better part of this exposition we follow the excellent treatments found in~\textcite{Sandvik2010} and PhD thesis by~\textcite{Crivelli2016}.
 The interested and mathematically inclined reader is referred to the classic textbook of numerical linear algebra by~\textcite{Trefethen1997}.
 
 The first part of this chapter is devoted to the Lancz{o}s algorithm in its simplest form, that is useful for efficient calculation
@@ -20,7 +20,7 @@ tight-binding system.
  (\textcolor{red}{cite my bachelors})
 
  For the remainder of this chapter, let \(H\) denote arbitrary tight-binding Hamiltonian, \(\mathcal{H}\) the associated Hilbert space,
- and \(\dimension = \textrm{dim}\left(\mathcal{H}\right)\) its dimension.
+ and \(\dimension = \textrm{dim}\left(\mathcal{H}\right) < \infty\) its dimension.
 
 
 \section{Lanczos method for ground state calculation}
@@ -46,6 +46,29 @@ storage. Looking at Figure~(\textcolor{red}{Here figure with Hamiltonian, basis 
 the matrix elements are zero. In fact only about \(\dimension_0\propto \dimension \) out of \(\dimension^2\) matrix elements
 are non-zero. Hence, a numerical scheme leveraging this sparsity is highly desirable. This is exactly what the Lanczos
 algorithm does.
+Summarized in mathematical terms, the Lanczos algorithm is equivalent to choosing a special subspace \(\mathcal{K}\) of the
+Hilbert space \(\mathcal{H}\), which represents well the extremal eigenvectors, then constructing a projection operator
+onto that subspace, and finally diagonalizing the projected Hamiltonian.  
+In computer science terms, it could be described as a lossy compression algorithm, prioritizing faithful representation of extremal eigenvalues.
 
-\subsection{Implementation of Lanczos algorithm}
+\subsection{Arnoldi iteration}
+The Lanczos method is special case of a more general algorithm, called Arnoldi iteration, designed to transform
+a general, nonhermitian matrix \(A\) via a orthogonal similarity transformation to a Hessenberg form \(A = QHQ^{\dagger}\).
 
+\begin{definition}
+    A square, \(m \cross m\) matrix \(H\) is said to be in upper \textbf{Hessenberg} form if
+    \(\forall i,j\in \{1,\ldots,n\}: i > j+1 \implies (A)_{i,j}=0 \).
+    It is said to be in \textbf{lower Hessenberg form}, if its transpose is in upper Hessenberg form.
+\end{definition}
+A Hessenberg matrix differs from a triangular one by one additional super- or subdiagonal.
+Such form is desirable, because many numerical algorithms in linear algebra experience considerable speedup
+from leveraging triangular structure of a matrix, and sometimes those benefits carry over to this almost-triangular
+case. A particularly important strength of the Arnoldi iteration is that it can be interrupted before completion,
+thus producing only an approximation of the full Hessenberg form in situation where \(m\) is so large, that
+full computations are infeasible (eg. in quantum many-body physics).
+
+Assume now that we are able to only compute the first \(n < m\) columns of the equation \(AQ=QH\).
+Let \(Q_n\) be the restriction of \(Q\) to \(n\) columns and let them be denoted by \(q_1, q_2, \ldots q_n\).
+
+% TODO :: add example
+\subsection{Restriction to hermitian case: Lanczos iteration}
