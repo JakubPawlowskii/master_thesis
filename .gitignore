@@ -4,3 +4,14 @@
 *.xml
 *.gz
 *(busy)
+*-blx.bib
+*.bbl
+*.blg
+*.dvi
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
+
