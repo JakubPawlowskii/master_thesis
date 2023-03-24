@@ -1,59 +1,65 @@
-\chapter{Krylov subspace  methods for quantum many-body systems}
+\chapter{Krylov subspace methods for quantum many-body systems}
 \thispagestyle{chapterBeginStyle}
 
-One of the two purposes of this thesis is to develop and test a set of numerical tools based on the Lancz{o}s algorithm,
-which is an iterative method for finding extremal eigenvalues of large, sparse matrices. Therefore, this chapter serves as a
-pedagogical introduction to the core ideas of these methods, however without going too deep into details of algorithm analysis.
-For the better part of this exposition we follow the excellent treatments found in~\textcite{Sandvik2010} and PhD thesis by~\textcite{Crivelli2016}.
-The interested and mathematically inclined reader is referred to the classic textbook of numerical linear algebra by~\textcite{Trefethen1997}.
+One of the two purposes of this thesis is to develop and test a set of numerical tools based on the Krylov subspace methods,
+which is a family of iterative methods concerned with projecting high dimensional problems into smaller dimension subspaces
+and solving them therein. Therefore, this chapter serves as a
+pedagogical introduction to the core ideas of these methods, including some of the usually omitted mathematical details.
+For the initial part of this exposition we follow the excellent textbook of numerical linear algebra by~\textcite{Trefethen1997},
+whereas for further applications to quantum many-body physics we rely on the excellent treatments of the topic
+found in~\textcite{Sandvik2010} and PhD thesis by~\textcite{Crivelli2016}.
 
-The first part of this chapter is devoted to the Lancz{o}s algorithm in its simplest form, that is useful for efficient calculation
-of extremal eigenvalues and eigenvectors of sparse Hamiltonians, in particular (the) ground state, thus for determining their
-ground state properties.
-However, in this work we are mainly interested in infinite temperature calculations, for which in principle sampling of the whole
-spectrum is required.
-To this end, in subsequent sections we develop a scheme for time evolution of arbitrary state, called the Krylov propagator~\autocite{Park1986},
- and combine it with the idea of Dynamical Quantum Typicality (DQT), which states that a single pure state can have the same
- properties as an ensemble density matrix~\autocite{Gemmer2003,Goldstein2006,Popescu2006}.
+
+\textcolor{red}{Reproduce Figure 32.1 about the difference between direct and iterative algorithms}
+
+We start this chapter by quickly sketching the problems with "direct" algorithms such as Exact Diagonalization, and quickly
+follow with the fundamental iterative algorithm for sparse nonhermitian matrices, the Arnoldi iteration. Its outputs admits several
+possible interpretations, however we shall focus on the problem of locating extremal eigenvalues.
+Afterwards, we restrict our attention to the class of hermitian matrices, to which of course all typical tigh-binding Hamiltonians
+belong to, and describe the Lanczos algorithm, which allows for efficient calculation of the ground state eigenvalue and eigenvector,
+and thus the ground state properties of a system.
+Yet in this work we are mainly interested in infinite temperature calculations, for which in principle sampling of the whole
+spectrum is required. To this end, in subsequent sections we develop a scheme for time evolution of arbitrary state,
+called the Krylov propagator~\autocite{Park1986}, and combine it with the idea of Dynamical Quantum Typicality (DQT),
+which states that a single pure state can have the same properties as an ensemble density matrix~\autocite{Gemmer2003,Goldstein2006,Popescu2006}.
 We finish this chapter with a proposal of employing this method to the identification of local integrals of motion in a given
 tight-binding system.
  (\textcolor{red}{cite my bachelors})
 
- For the remainder of this chapter, let \(H\) denote arbitrary tight-binding Hamiltonian, \(\mathcal{H}\) the associated Hilbert space,
- and \(\dimension = \textrm{dim}\left(\mathcal{H}\right) < \infty\) its dimension.
+%  For the remainder of this chapter, let \(H\) denote arbitrary tight-binding Hamiltonian, \(\mathcal{H}\) the associated Hilbert space,
+%  and \(\dimension = \textrm{dim}\left(\mathcal{H}\right) < \infty\) its dimension.
 
+ \section{Problems with Exact Diagonalization}
+ 
+ The most straightforward numerical method for studying discrete quantum many-body systems is without a doubt
+ Exact Diagonalization (ED)~\autocite{Weisse2008}. It belongs to the family of the so-called direct algorithms and
+allows one to obtain numerically exact set of eigenvalues and eigenvectors and subsequently compute any desired properties
+ of the system, be it thermal expectation values, time evolution, Green's functions etc. Unfortunately, the starting point of any
+ ED calculation is the expression of the Hamiltonian as a dense matrix, in the Hilbert space basis of choice. Taking into account
+ the fact that the dimension many-body Hilbert space grows exponentially with the size of the system, the memory cost quickly becomes
+ prohibitive, even when exploiting conservation laws and related symmetries. For example, in the case of a spin chain of length L, with 
+ on-site basis dimension being 2, the full dimension of the Hilbert space would be \(\dimension = 2^{L}\). Taking a modest length of 25 sites, that gives
+ \(2^{25} = 33554432\approx 3.36 \cdot 10^7\) basis states and a memory footprint of Hamiltonian matrix of around 9PB (using double-precision
+ floating point numbers), which is 9000 times more than the typical consumer hard drive capacity of 1TB. Even assuming some kind of distributed
+ memory platform allowing for handling such large matrices, the computational complexity of ED, requiring \(O(\dimension^3)\) operations,
+ is the next major hurdle. Therefore, it is exceedingly
+ difficult to probe the thermodynamic limit physics and ED calculations suffer from finite size effects.
+ 
+ Closer investigation of the Hamiltonian matrix, expressed in computational basis\footnote{For spin systems, it is the eigenbasis of \(\Sz\) operator.}
+ quickly reveals the inefficiency of dense storage. Looking at Figure~(\textcolor{red}{Here figure with Hamiltonian, basis ordered by magnetization}), we see that most of
+ the matrix elements are zero. In fact only about \(\mu \propto \dimension \) out of \(\dimension^2\) matrix elements
+ are non-zero. Hence, a numerical scheme leveraging this sparsity is highly desirable. This is exactly what the Krylov subspace algorithms
+ do, by the virtue of requiring only a "black box" computation of matrix-vector product, which can be fairly easily implemented in a way
+ requiring only \(O(\mu \dimension)\) operations.
 
-\section{Lanczos method for ground state calculation}
-
-\subsection{Problems with Exact Diagonalization}
-
-The most straightforward numerical method for studying discrete quantum many-body systems is without a doubt
-Exact Diagonalization (ED)~\autocite{Weisse2008}.
-It allows one to obtain numerically exact set of eigenvalues and eigenvectors and subsequently compute any desired properties
-of the system, be it thermal expectation values, time evolution, Green's functions etc. Unfortunately, the starting point of any
-ED calculation is the expression of the Hamiltonian as a dense matrix, in the Hilbert space basis of choice. Taking into account
-the fact that the dimension many-body Hilbert space grows exponentially with the size of the system, the memory cost quickly becomes
-prohibitive, even when exploiting conservation laws and related symmetries. For example, in the case of a spin chain of length L, with 
-on-site basis dimension being 2, the full dimension of the Hilbert space would be \(2^{L}\). Taking a modest length of 25 sites, that gives
-\(2^{25} = 33554432\approx 3.36 \cdot 10^7\) basis states and a memory footprint of Hamiltonian matrix of around 9PB (using double-precision
-floating point numbers), which is 9000 times more than the typical consumer hard drive capacity of 1TB. Even assuming some kind of distributed
-memory platform allowing for handling such large matrices, the computational complexity of ED, requiring \(O(\dimension^3)\) operations,
-is the next major hurdle. Therefore, it is exceedingly
-difficult to probe the thermodynamic limit physics and ED calculations suffer from finite size effects.
-
-Closer investigation of the Hamiltonian matrix, expressed in computational basis (cf. eq ...) quickly reveals the inefficiency of dense
-storage. Looking at Figure~(\textcolor{red}{Here figure with Hamiltonian, basis ordered by magnetization}), we see that most of
-the matrix elements are zero. In fact only about \(\dimension_0\propto \dimension \) out of \(\dimension^2\) matrix elements
-are non-zero. Hence, a numerical scheme leveraging this sparsity is highly desirable. This is exactly what the Lanczos
-algorithm does.
-Summarized in mathematical terms, the Lanczos algorithm is equivalent to choosing a special subspace \(\mathcal{K}\) of the
-Hilbert space \(\mathcal{H}\), which represents well the extremal eigenvectors, then constructing a projection operator
-onto that subspace, and finally diagonalizing the projected Hamiltonian.  
-In computer science terms, it could be described as a lossy compression algorithm, prioritizing faithful representation of extremal eigenvalues.
+\section{Calculation of extremal eigenvalues}
+Our goal in this section is to develop the Lanczos algorithm for ground state search of hermitian matrices, and along
+the way understand how and why it works.
 
 \subsection{Arnoldi iteration}
-The Lanczos method is special case of a more general algorithm, called Arnoldi iteration, designed to transform
-a general, nonhermitian matrix \(A\) via a orthogonal similarity transformation to a Hessenberg form \(A = QHQ^{\dagger}\).
+The Lanczos algorithm is special case of a more general algorithm, called Arnoldi iteration, designed to transform
+a general, nonhermitian matrix \(A\in \CC^{m\cross m} \) via a orthogonal
+\footnote{Orthogonal in this context means that \(Q^{\dagger}Q = I_{m \cross m}\)} similarity transformation to a Hessenberg form \(A = QHQ^{\dagger}\).
 
 \begin{definition}
     A square, \(m \cross m\) matrix \(H\) is said to be in upper \textbf{Hessenberg} form if
@@ -63,8 +69,8 @@ a general, nonhermitian matrix \(A\) via a orthogonal similarity transformation 
 A Hessenberg matrix differs from a triangular one by one additional super- or subdiagonal.
 Such form is desirable, because many numerical algorithms in linear algebra experience considerable speedup
 from leveraging triangular structure of a matrix, and sometimes those benefits carry over to this almost-triangular
-case. A particularly important strength of the Arnoldi iteration is that it can be interrupted before completion,
-thus producing only an approximation of the full Hessenberg form in situation where \(m\) is so large, that
+case. A particularly important strength of the Arnoldi iteration is that it can be interrupted before completion (cf. fig 32.1),
+thus producing only an approximation of the Hessenberg form in situation where \(m\) is so large, that
 full computations are infeasible (eg. in quantum many-body physics).
 
 Assume now that we are able to only compute the first \(n < m\) columns of the equation \(AQ=QH\).
@@ -72,3 +78,13 @@ Let \(Q_n\) be the restriction of \(Q\) to \(n\) columns and let them be denoted
 
 % TODO :: add example
 \subsection{Restriction to hermitian case: Lanczos iteration}
+
+
+
+\section{Time evolution via the Krylov propagator}
+
+\section{Physical interlude: Quantum Typicality}
+
+\section{Correlation functions and the search for integrals of motion}
+
+
