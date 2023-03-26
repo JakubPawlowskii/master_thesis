@@ -1,14 +1,25 @@
+% !TeX root = /home/jakubp/Storage/OneDrive/Documents/Studies/masters/master_thesis/thesis.tex
+
 \chapter{Krylov subspace methods for quantum many-body systems}
 \thispagestyle{chapterBeginStyle}
 
 One of the two purposes of this thesis is to develop and test a set of numerical tools based on the Krylov subspace methods,
 which is a family of iterative methods concerned with projecting high dimensional problems into smaller dimension subspaces
-and solving them therein. Therefore, this chapter serves as a
+and solving them therein. The titular Krylov subspace is introduced via
+\begin{definition}
+	Let \(\vectorbold{v} \in \CC^{m}\) be a vector and \(A\in \CC^{m\cross m}\) be a matrix. A \(k\)-th 
+	\textbf{Krylov subspace} is defined as
+	\begin{equation*}
+		\mathcal{K}_k = \mathrm{span}\{v, Av, A^2v,\ldots,A^{k-1}v \}
+	\end{equation*}
+\end{definition}
+Maximal dimension of a Krylov subspace is bounded from above by \(\mathrm{rank}(A) + 1\)~\autocite{Simoncini2015}.
+
+This chapter serves as a
 pedagogical introduction to the core ideas of these methods, including some of the usually omitted mathematical details.
 For the initial part of this exposition we follow the excellent textbook of numerical linear algebra by~\textcite{Trefethen1997},
 whereas for further applications to quantum many-body physics we rely on the excellent treatments of the topic
 found in~\textcite{Sandvik2010} and PhD thesis by~\textcite{Crivelli2016}.
-
 
 \textcolor{red}{Reproduce Figure 32.1 about the difference between direct and iterative algorithms}
 
@@ -23,15 +34,13 @@ spectrum is required. To this end, in subsequent sections we develop a scheme fo
 called the Krylov propagator~\autocite{Park1986}, and combine it with the idea of Dynamical Quantum Typicality (DQT),
 which states that a single pure state can have the same properties as an ensemble density matrix~\autocite{Gemmer2003,Goldstein2006,Popescu2006}.
 We finish this chapter with a proposal of employing this method to the identification of local integrals of motion in a given
-tight-binding system.
- (\textcolor{red}{cite my bachelors})
-
+tight-binding system\autocite{Mierzejewski2015a}.
 %  For the remainder of this chapter, let \(H\) denote arbitrary tight-binding Hamiltonian, \(\mathcal{H}\) the associated Hilbert space,
 %  and \(\dimension = \textrm{dim}\left(\mathcal{H}\right) < \infty\) its dimension.
 
+
  \section{Problems with Exact Diagonalization}
- 
- The most straightforward numerical method for studying discrete quantum many-body systems is without a doubt
+  The most straightforward numerical method for studying discrete quantum many-body systems is without a doubt
  Exact Diagonalization (ED)~\autocite{Weisse2008}. It belongs to the family of the so-called direct algorithms and
 allows one to obtain numerically exact set of eigenvalues and eigenvectors and subsequently compute any desired properties
  of the system, be it thermal expectation values, time evolution, Green's functions etc. Unfortunately, the starting point of any
@@ -60,6 +69,8 @@ the way understand how and why it works.
 The Lanczos algorithm is special case of a more general algorithm, called Arnoldi iteration, designed to transform
 a general, nonhermitian matrix \(A\in \CC^{m\cross m} \) via a orthogonal
 \footnote{Orthogonal in this context means that \(Q^{\dagger}Q = I_{m \cross m}\)} similarity transformation to a Hessenberg form \(A = QHQ^{\dagger}\).
+Such transformation always exist~\autocite{Garcia2017}.
+
 
 \begin{definition}
     A square, \(m \cross m\) matrix \(H\) is said to be in upper \textbf{Hessenberg} form if
@@ -74,39 +85,126 @@ thus producing only an approximation of the Hessenberg form in situation where \
 full computations are infeasible (eg. in quantum many-body physics).
 
 Assume now that we are able to only compute the first \(n < m\) columns of the equation \(AQ=QH\).
-Let \(Q_n\) be the restriction of \(Q\) to \(n\) columns and let them be denoted by \(\mathbf{q_1},\mathbf{q_2}, \ldots 
-\mathbf{ q_n}\).
-Denoting by \(H_n\) the \((n+1)\cross n\) upper left section of H, which is also a Hessenberg matrix, we can 
+Let \(Q_n\) be the restriction of \(Q\) to \(n\) columns and let them be denoted by \(\vectorbold{q_1},\vectorbold{q_2}, \ldots 
+\vectorbold{ q_n}\).
+Denoting by \(\tilde{H}_n\) the \((n+1)\cross n\) upper left section of H, which is also a Hessenberg matrix, we can 
 write down the following \(n\)-step approximation to the full decomposition
 \begin{equation}
-	AQ_{n+1}=Q_{n+1}H_{n}
+	AQ_{n}=Q_{n+1}\tilde{H}_{n}
 	\label{eq:krylov_n_approx}
 \end{equation}
-From this equation we can deduce an \(n+1\) term recurrence relation for the column \(q_{n+1}\), however
+From this equation we can deduce an \(n+1\) term recurrence relation for the column \(\vectorbold{q_{n+1}}\), however
 it is perhaps best illustrated with a simple example in the first place.
 
 \begin{example}
-	Let \(A\in \CC^3\), \(AQ=QH\) be the Hessenberg decomposition and corresponding matrix elements
-	be denoted by lower case letters. 
+	Let \(A\in \CC^{3\cross 3}\), \(AQ=QH\) be the Hessenberg decomposition and corresponding matrix elements
+	be denoted by lowercase letters. We consider the approximation for \(n = 2\), i.e. \(AQ_2 = Q_3 \tilde{H}_2\).
 	On the right hand side
-	\begin{equation}
+	\begin{align*}
 		AQ_2 = 
-	\end{equation}
+		\begin{bmatrix}
+			a_{11} & a_{12} & a_{13} \\
+			a_{21} & a_{22} & a_{23} \\
+			a_{31} & a_{32} & a_{33}
+			\end{bmatrix}
+			\begin{bmatrix}
+			q_{11} & q_{12} \\
+			q_{21} & q_{22} \\
+			q_{31} & q_{32}
+			\end{bmatrix}
+			=&
+			\begin{bmatrix}
+			a_{11}q_{11} + a_{12}q_{21} + a_{13}q_{31} & a_{11}q_{12} + a_{12}q_{22} + a_{13}q_{32} \\
+			a_{21}q_{11} + a_{22}q_{21} + a_{23}q_{31} & a_{21}q_{12} + a_{22}q_{22} + a_{23}q_{32} \\
+			a_{31}q_{11} + a_{32}q_{21} + a_{33}q_{31} & a_{31}q_{12} + a_{32}q_{22} + a_{33}q_{32}
+			\end{bmatrix} \\
+			=&
+			\begin{bmatrix}
+				(A\vectorbold{q_1})_1 & (A\vectorbold{q_2})_1 \\
+				(A\vectorbold{q_1})_2 & (A\vectorbold{q_2})_2 \\
+				(A\vectorbold{q_1})_3 & (A\vectorbold{q_2})_3
+			\end{bmatrix}
+	\end{align*}
 	On the left hand side
-	\begin{equation}
+	\begin{align*}
 		Q_3 H_2 = 
-	\end{equation}
+		\begin{bmatrix}
+			q_{11} & q_{12} & q_{13} \\
+			q_{21} & q_{22} & q_{23} \\
+			q_{31} & q_{32} & q_{33}
+			\end{bmatrix}
+			\begin{bmatrix}
+			h_{11} & h_{12} \\
+			h_{21} & h_{22} \\
+			0 & h_{32}
+			\end{bmatrix}
+			=&
+			\begin{bmatrix}
+				q_{11}h_{11} + q_{12}h_{21} & q_{11}h_{12} + q_{12}h_{22} + q_{13}h_{32} \\
+				q_{21}h_{11} + q_{22}h_{21} & q_{21}h_{12} + q_{22}h_{22} + q_{23}h_{32}\\
+				q_{31}h_{11} + q_{32}h_{21} & q_{31}h_{12} + q_{32}h_{22}+ q_{33}h_{32}
+			\end{bmatrix}\\		
+			=&
+			\begin{bmatrix}
+				h_{11}(\vectorbold{q_1})_1 + h_{21}(\vectorbold{q_2})_1 & h_{12}(\vectorbold{q_1})_1 + h_{22}(\vectorbold{q_2})_1 + h_{32}(\vectorbold{q_3})_1 \\
+				h_{11}(\vectorbold{q_1})_2 + h_{21}(\vectorbold{q_2})_2 & h_{12}(\vectorbold{q_1})_2 + h_{22}(\vectorbold{q_2})_2 + h_{32}(\vectorbold{q_3})_2 \\
+				h_{11}(\vectorbold{q_1})_3 + h_{21}(\vectorbold{q_2})_3 & h_{12}(\vectorbold{q_1})_3 + h_{22}(\vectorbold{q_2})_3 + h_{32}(\vectorbold{q_3})_3
+			\end{bmatrix}
+	\end{align*}
 	From the above calculation and~\ref{eq:krylov_n_approx} we can read off two identities
-	\begin{align}
-		A\mathbf{q_1} &= h_{11}\mathbf{q_1}+h_{21}\mathbf{q_2}\\
-		A\mathbf{q_2} &= h_{21}\mathbf{q_1}+h_{22}\mathbf{q_2} + h_{32}\mathbf{q_3}
-	\end{align}
-
+	\begin{align*}
+		A\vectorbold{q_1} &= h_{11}\vectorbold{q_1}+h_{21}\vectorbold{q_2}\\
+		A\vectorbold{q_2} &= h_{21}\vectorbold{q_1}+h_{22}\vectorbold{q_2} + h_{32}\vectorbold{q_3}
+	\end{align*}
+	Therefore we get, assuming \(\vectorbold{q_1}\) is known,
+	\begin{align*}
+		\vectorbold{q_2} =& \frac{A \vectorbold{q_1} - h_{11} \vectorbold{q_1}}{h_{21}}\\
+		\vectorbold{q_3} =& \frac{A \vectorbold{q_2} - h_{21} \vectorbold{q_1} - h_{22}\vectorbold{q_2}}{h_{32}}
+	\end{align*}
 \end{example}
 
+Generalizing the above example, we arrive at the desired \(n+1\) term recurrence relation for \(\vectorbold{q_{n+1}}\)
+\begin{equation}
+	\vectorbold{q_{n+1}} = \frac{A \vectorbold{q_n} - \sum_{m=1}^{n} h_{mn}\vectorbold{q_m}}{h_{n+1,n}}
+	\label{eq:arnoldi_recurrence}
+\end{equation}
+We can now easily cast the above recurrence into a pseducode algorithm:
+\begin{algorithm}
+	\algrenewcommand\algorithmicrequire{\textbf{Input: }}
+	\algrenewcommand\algorithmicensure{\textbf{Output: }}
+	\caption{Arnoldi iteration}
+	\label{alg:arnoldi}
+	\begin{algorithmic}[1]
+		\Require \(v \in \CC^m\), \(A \in \CC^{m\cross m}\), number of steps \(n\)
+		\Ensure columns of \(Q_n\)
+		\State \(\vectorbold{q_1} = \vectorbold{v}/\norm*{\vectorbold{v}}\)
+		\For{\(i = 1:n-1\)}
+			\State \(\vectorbold{q} = A\vectorbold{q_i}\)
+			\For{\(j = 1:i\)}
+				\State \(h_{ji} = \mathrm{cdot}(\vectorbold{q_j},\vectorbold{q})\) \Comment{\(\mathrm{cdot}\) is the complex dot product on \(\CC^m\).}
+				\State \(\vectorbold{q} = \vectorbold{q} - h_{ji}\vectorbold{q_j}\) \Comment{In exact arithmetic, this enusres orthogonality.}
+			\EndFor
+			\State \(h_{i+1,i} = \norm{\vectorbold{q}} \) 
+			\State \(\vectorbold{q_{i+1}} = \vectorbold{q}/h_{i+1,i} \)
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
+Step 9 of the Algorithm~\ref{alg:arnoldi} may be questionable, as we are dividing by a norm of a vector, which
+after all can be equal to zero. However, in practical applications of Arnoldi iteration it usually means
+that our calculations have converged and the iterations may be stopped.
 
 
-% TODO :: add example
+Examining closely the Arnoldi iteration algorithm, we notice that it is essentially the Gram-Schmidt
+procedure applied to the  and hence the vectors \(\vectorbold{q_1},\ldots,\vectorbold{q_n}\) form an orthonormal basis
+of the Krylov subspace \(\mathcal{K}_n\). The orthonormality condition is concisely expressed by 
+the fact that \(Q^{\dagger}_n Q_{n+1} \) is the \(n\cross (n+1)\) identity matrix.
+
+% quote theorem 33.1
+
+% write about how Arnoldi localizes eigenvalues
+% maybe plot my own Arnoldi lemniscates
+
+
 \subsection{Restriction to hermitian case: Lanczos iteration}
 
 
