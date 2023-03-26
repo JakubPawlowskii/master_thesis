@@ -74,7 +74,37 @@ thus producing only an approximation of the Hessenberg form in situation where \
 full computations are infeasible (eg. in quantum many-body physics).
 
 Assume now that we are able to only compute the first \(n < m\) columns of the equation \(AQ=QH\).
-Let \(Q_n\) be the restriction of \(Q\) to \(n\) columns and let them be denoted by \(q_1, q_2, \ldots q_n\).
+Let \(Q_n\) be the restriction of \(Q\) to \(n\) columns and let them be denoted by \(\mathbf{q_1},\mathbf{q_2}, \ldots 
+\mathbf{ q_n}\).
+Denoting by \(H_n\) the \((n+1)\cross n\) upper left section of H, which is also a Hessenberg matrix, we can 
+write down the following \(n\)-step approximation to the full decomposition
+\begin{equation}
+	AQ_{n+1}=Q_{n+1}H_{n}
+	\label{eq:krylov_n_approx}
+\end{equation}
+From this equation we can deduce an \(n+1\) term recurrence relation for the column \(q_{n+1}\), however
+it is perhaps best illustrated with a simple example in the first place.
+
+\begin{example}
+	Let \(A\in \CC^3\), \(AQ=QH\) be the Hessenberg decomposition and corresponding matrix elements
+	be denoted by lower case letters. 
+	On the right hand side
+	\begin{equation}
+		AQ_2 = 
+	\end{equation}
+	On the left hand side
+	\begin{equation}
+		Q_3 H_2 = 
+	\end{equation}
+	From the above calculation and~\ref{eq:krylov_n_approx} we can read off two identities
+	\begin{align}
+		A\mathbf{q_1} &= h_{11}\mathbf{q_1}+h_{21}\mathbf{q_2}\\
+		A\mathbf{q_2} &= h_{21}\mathbf{q_1}+h_{22}\mathbf{q_2} + h_{32}\mathbf{q_3}
+	\end{align}
+
+\end{example}
+
+
 
 % TODO :: add example
 \subsection{Restriction to hermitian case: Lanczos iteration}
