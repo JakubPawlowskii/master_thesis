@@ -162,7 +162,6 @@ it is perhaps best illustrated with a simple example in the first place.
 		\vectorbold{q_3} =& \frac{A \vectorbold{q_2} - h_{21} \vectorbold{q_1} - h_{22}\vectorbold{q_2}}{h_{32}}
 	\end{align*}
 \end{example}
-
 Generalizing the above example, we arrive at the desired \(n+1\) term recurrence relation for \(\vectorbold{q_{n+1}}\)
 \begin{equation}
 	\vectorbold{q_{n+1}} = \frac{A \vectorbold{q_n} - \sum_{m=1}^{n} h_{mn}\vectorbold{q_m}}{h_{n+1,n}}
@@ -195,11 +194,45 @@ that our calculations have converged and the iterations may be stopped.
 
 
 Examining closely the Arnoldi iteration algorithm, we notice that it is essentially the Gram-Schmidt
-procedure applied to the  and hence the vectors \(\vectorbold{q_1},\ldots,\vectorbold{q_n}\) form an orthonormal basis
+procedure applied to the vectors \(\{\vectorbold{v}, A\vectorbold{v},\ldots, A^{n-1}\vectorbold{v}\}\) and hence the 
+vectors \(\{\vectorbold{q_1}, \vectorbold{q_2},\ldots,\vectorbold{q_n}\}\) form an orthonormal basis
 of the Krylov subspace \(\mathcal{K}_n\). The orthonormality condition is concisely expressed by 
-the fact that \(Q^{\dagger}_n Q_{n+1} \) is the \(n\cross (n+1)\) identity matrix.
+the fact that \(Q^{\dagger}_n Q_{n+1} \) is the \(n\cross (n+1)\) identity matrix. Multiplying the left-hand side of
+equation~\eqref{eq:krylov_n_approx} by \(Q^{\dagger}_n\) we get
+\begin{equation}
+	Q^{\dagger}_n A Q_n = \underbrace{Q^{\dagger}_n Q_{n+1}}_{\mathrm{Id}_{n\cross(n+1)}}\tilde{H}_n = H_n \in \CC^{n\cross n}
+\end{equation}
+where \(H_n\) is the Hessenberg matrix \(\tilde{H}_n\) with its last row removed. 
 
-% quote theorem 33.1
+To understand the meaning
+of matrix \(H_n\) from the point of view of linear algebra, consider the following reasoning. Imagine we are
+given an endormophism of the space \(\CC^m\), represented in the standard basis by a matrix \(A\).
+We would like to restrict it to a endormophism of the Krylov subspace \(\mathcal{K}_n,\; n < m\). Of course,
+as \(\vectorbold{v} \in \mathcal{K}_n \implies \vectorbold{v} \in \CC^m\), we can calculate the action of \(A\) on a vector
+from Krylov subspace in a straightforward way. However, the resulting vector \(A\vectorbold{v}\) in not guaranteed
+to be an element of \(\mathcal{K}_n\). We need to orthogonally project it back to the subspace. Such projection
+is realized by \(Q_n Q^{\dagger}_n \in \CC^{m\cross m}\) and hence, with respect to the standard basis on \(\CC^m\),
+the desired restriction can be written as \(Q_n Q^{\dagger}_n A\). Transforming it to the basis given by columns of
+\(Q_n\) we get \( Q_n^{-1}\left(Q_n Q^{\dagger}_n A\right)Q_n = Q^{\dagger}_n A Q_n\). Thus, matrix \(H_n\)
+is the orthogonal projection of \(A\) to the subspace \(\mathcal{K}_n\), represented in the basis
+\(\{\vectorbold{q_1},\vectorbold{q_2},\ldots,\vectorbold{q_n}\}\).
+
+\(H_n\) is once again a square matrix, so we can talk about its eigenvalues %\(\{\lambda_i\}_{i = 1}^n\)
+in the usual fashion. These numbers are called the \textit{Arnoldi eigenvalues estimates at step \(n\)}, or
+the \textit{Ritz values with respect to \(\mathcal{K}_n\)}.
+Given the interpretation above, we may suspect that they would be related to the eigenvalues of the original matrix \(A\).
+Indeed, as we shall see in a moment, some of the Ritz values are extremally good approximations of some of the
+original eigenvalues.
+
+
+\subsection{How Arnoldi iteration locates extremal eigenvalues}
+
+By carrying out the Arnoldi iterations for succesive steps, and at each step \(n\) (or at just some of the steps)
+calculating the eigenvalues of the Hessenberg matrix \(H_n\), we are left with sequences of Ritz values. Some
+of them often converge rapidly to, what we reasonably assume, eigenvalues of the original matrix \(A\).
+However in practive, the maximal accessible \(n\) is much smaller than \(m\), so we cannot expect to find
+all eigenvalues.
+
 
 % write about how Arnoldi localizes eigenvalues
 % maybe plot my own Arnoldi lemniscates
