@@ -69,7 +69,7 @@
 % ***************************************************************************************************
 
 % Umożliwia kolorowanie poszczególnych komórek tabeli
-\usepackage[table]{xcolor}% http://ctan.org/pkg/
+\usepackage[table,dvipsnames]{xcolor}% http://ctan.org/pkg/
 
 % Umożliwia łatwą zmianę koloru linii w tabeli
 \usepackage{tabu}
@@ -424,6 +424,9 @@
 
 \usepackage{algorithm,algorithmicx,algpseudocode}
 
+\usepackage{framed}
+\definecolor{TFFrameColor}{RGB}{154,52,45}
+\definecolor{TFTitleColor}{RGB}{255,255,255}
 
 % ***************************************************************************************************
 % Matematyczne skróty
@@ -455,6 +458,8 @@
 \newcommand{\Sz}{S^{z}}
 \newcommand{\Sx}{S^{x}}
 \newcommand{\Sy}{S^{y}}
+
+\newcommand{\K}[1]{\mathcal{K}_{#1}}
 
 
 \newcommand{\hs}[2]{\left(#1 \middle| #2\right)}

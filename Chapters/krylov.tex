@@ -10,8 +10,9 @@ and solving them therein. The titular Krylov subspace is introduced via
 	Let \(\vectorbold{v} \in \CC^{m}\) be a vector and \(A\in \CC^{m\cross m}\) be a matrix. A \(k\)-th 
 	\textbf{Krylov subspace} is defined as
 	\begin{equation*}
-		\mathcal{K}_k = \mathrm{span}\{v, Av, A^2v,\ldots,A^{k-1}v \}
+		\K{k} := \mathrm{span}\{\,\vectorbold{v}, A\vectorbold{v}, A^2\vectorbold{v},\ldots,A^{k-1}\vectorbold{v} \,\}
 	\end{equation*}
+	\label{def:krylov}
 \end{definition}
 Maximal dimension of a Krylov subspace is bounded from above by \(\mathrm{rank}(A) + 1\)~\autocite{Simoncini2015}.
 
@@ -74,7 +75,7 @@ Such transformation always exist~\autocite{Garcia2017}.
 
 \begin{definition}
     A square, \(m \cross m\) matrix \(H\) is said to be in upper \textbf{Hessenberg} form if
-    \(\forall i,j\in \{1,\ldots,n\}: i > j+1 \implies (A)_{i,j}=0 \).
+    \(\forall i,j\in \{\,1,\ldots,n\,\}: i > j+1 \implies (A)_{i,j}=0 \).
     It is said to be in \textbf{lower Hessenberg form}, if its transpose is in upper Hessenberg form.
 \end{definition}
 A Hessenberg matrix differs from a triangular one by one additional super- or subdiagonal.
@@ -86,7 +87,7 @@ full computations are infeasible (eg. in quantum many-body physics).
 
 Assume now that we are able to only compute the first \(n < m\) columns of the equation \(AQ=QH\).
 Let \(Q_n\) be the restriction of \(Q\) to \(n\) columns and let them be denoted by \(\vectorbold{q_1},\vectorbold{q_2}, \ldots 
-\vectorbold{ q_n}\).
+\vectorbold{ q_n}\in \CC^m\).
 Denoting by \(\tilde{H}_n\) the \((n+1)\cross n\) upper left section of H, which is also a Hessenberg matrix, we can 
 write down the following \(n\)-step approximation to the full decomposition
 \begin{equation}
@@ -194,52 +195,88 @@ that our calculations have converged and the iterations may be stopped.
 
 
 Examining closely the Arnoldi iteration algorithm, we notice that it is essentially the Gram-Schmidt
-procedure applied to the vectors \(\{\vectorbold{v}, A\vectorbold{v},\ldots, A^{n-1}\vectorbold{v}\}\) and hence the 
-vectors \(\{\vectorbold{q_1}, \vectorbold{q_2},\ldots,\vectorbold{q_n}\}\) form an orthonormal basis
-of the Krylov subspace \(\mathcal{K}_n\). The orthonormality condition is concisely expressed by 
+procedure applied to the vectors \(\{\,\vectorbold{v}, A\vectorbold{v},\ldots, A^{n-1}\vectorbold{v}\,\}\) and hence the 
+vectors \(\{\,\vectorbold{q_1}, \vectorbold{q_2},\ldots,\vectorbold{q_n}\,\}\) form an orthonormal basis
+of the Krylov subspace \(\K{n}\). The orthonormality condition is concisely expressed by 
 the fact that \(Q^{\dagger}_n Q_{n+1} \) is the \(n\cross (n+1)\) identity matrix. Multiplying the left-hand side of
 equation~\eqref{eq:krylov_n_approx} by \(Q^{\dagger}_n\) we get
 \begin{equation}
 	Q^{\dagger}_n A Q_n = \underbrace{Q^{\dagger}_n Q_{n+1}}_{\mathrm{Id}_{n\cross(n+1)}}\tilde{H}_n = H_n \in \CC^{n\cross n}
+	\label{eq:hessenberg}
 \end{equation}
 where \(H_n\) is the Hessenberg matrix \(\tilde{H}_n\) with its last row removed. 
 
 To understand the meaning
 of matrix \(H_n\) from the point of view of linear algebra, consider the following reasoning. Imagine we are
 given an endormophism of the space \(\CC^m\), represented in the standard basis by a matrix \(A\).
-We would like to restrict it to a endormophism of the Krylov subspace \(\mathcal{K}_n,\; n < m\). Of course,
-as \(\vectorbold{v} \in \mathcal{K}_n \implies \vectorbold{v} \in \CC^m\), we can calculate the action of \(A\) on a vector
-from Krylov subspace in a straightforward way. However, the resulting vector \(A\vectorbold{v}\) in not guaranteed
-to be an element of \(\mathcal{K}_n\). We need to orthogonally project it back to the subspace. Such projection
+We would like to restrict it to a endormophism of the Krylov subspace \(\K{n},\; n < m\). Of course,
+as \(\vectorbold{q} \in \K{n} \implies \vectorbold{q} \in \CC^m\), we can calculate the action of \(A\) on a vector
+from Krylov subspace in a straightforward way. However, the resulting vector \(A\vectorbold{q}\) in not guaranteed
+to be an element of \(\K{n}\). We need to orthogonally project it back to the subspace. Such projection
 is realized by \(Q_n Q^{\dagger}_n \in \CC^{m\cross m}\) and hence, with respect to the standard basis on \(\CC^m\),
 the desired restriction can be written as \(Q_n Q^{\dagger}_n A\). Transforming it to the basis given by columns of
 \(Q_n\) we get \( Q_n^{-1}\left(Q_n Q^{\dagger}_n A\right)Q_n = Q^{\dagger}_n A Q_n\). Thus, matrix \(H_n\)
-is the orthogonal projection of \(A\) to the subspace \(\mathcal{K}_n\), represented in the basis
-\(\{\vectorbold{q_1},\vectorbold{q_2},\ldots,\vectorbold{q_n}\}\).
+is the orthogonal projection of \(A\) to the subspace \(\K{n}\), represented in the basis
+\(\{\,\vectorbold{q_1},\vectorbold{q_2},\ldots,\vectorbold{q_n}\,\}\).
 
 \(H_n\) is once again a square matrix, so we can talk about its eigenvalues %\(\{\lambda_i\}_{i = 1}^n\)
 in the usual fashion. These numbers are called the \textit{Arnoldi eigenvalues estimates at step \(n\)}, or
-the \textit{Ritz values with respect to \(\mathcal{K}_n\)}.
+the \textit{Ritz values with respect to \(\K{n}\)}.
 Given the interpretation above, we may suspect that they would be related to the eigenvalues of the original matrix \(A\).
 Indeed, as we shall see in a moment, some of the Ritz values are extremally good approximations of some of the
 original eigenvalues.
 
 
-\subsection{How Arnoldi iteration locates extremal eigenvalues}
+\subsection{Polynomial approximation and extremal eigenvalues}
 
 By carrying out the Arnoldi iterations for succesive steps, and at each step \(n\) (or at just some of the steps)
 calculating the eigenvalues of the Hessenberg matrix \(H_n\), we are left with sequences of Ritz values. Some
 of them often converge rapidly to, what we reasonably assume, eigenvalues of the original matrix \(A\).
 However in practive, the maximal accessible \(n\) is much smaller than \(m\), so we cannot expect to find
-all eigenvalues.
+all eigenvalues. As it turns out, Arnoldi iteration typically finds extremal eigenvalues, which fortunately
+are those that we are interested in.
 
+Before we will understand the details, let us introduce different, seemingly unrelated problem of 
+\textit{polynomial approximation}. We can take any \(\vectorbold{q} \in \K{n}\) and using the 
+defining basis of Krylov subspace \(\K{n}\)(Definition~\ref{def:krylov}), expand is as
+\begin{align*}
+	\vectorbold{q} =& a_0 \vectorbold{v} + a_1 A \vectorbold{v} + a_2 A^2 \vectorbold{v} + \ldots + a_{n-1} A^{n-1} \vectorbold{v} \nonumber \\
+				   =& \left(a_0 + a_1 A + a_2 A^2 + \ldots + a_{n-1} A^{n-1}\right) \vectorbold{v}
+\end{align*}
+Utilizing the special structure of vectors from \(\K{n}\), we can define a polynomial \(p(z) = a_0
++ a_1 z + a_2 z^2 + \ldots + a_{n-1}z^{n-1}\), and concisely write our vector as \(\vectorbold{q} = p(A)\vectorbold{v}\).
+As the vector \(\vectorbold{q}\) was arbitrary, we have estabilished an isomorphism between the \(n\)-th Krylov
+subspace and the space of complex polynomials of maximal degree \(n-1\). We are now ready to state the problem:
+\vspace{-0.3cm}
+\begin{titled-frame}{Arnoldi Approximation Problem}
+	\centering
+Given a matrix \(A\in\CC^{m\cross m}\) and a vector \(\vectorbold{v}\in \CC^m\), find  
+	\( p \in P^n := \{\, a_0 + a_1 z + \ldots + a_{n-1} z^{n-1} + z^n \mid a_0,a_1,\ldots a_{n-1}\in \CC \,\} \)\\
+	such that \(\norm{p(A)\vectorbold{v}}_2\) is minimized.
+\end{titled-frame}
+
+Remarkably, the Arnoldi approximation is the exact solution to this problem. This fact is interesting enough that
+we state it here as a theorem and, following~\textcite{Trefethen1997}, provide a complete proof.
+
+\begin{theorem}
+	If \(\textrm{dim}\left(\K{n}\right) = n\), i.e. matrix having columns \(\vectorbold{v},A\vectorbold{v},\ldots, A^{n-1}
+	\vectorbold{v}\) is of rank \(n\), then the Arnoldi Approximation Problem has a unique solution \(p^n\in P^n\),
+	given by the characteristic polynomial of the matrix \(H_n\), defined by~\eqref{eq:hessenberg}.
+\end{theorem}
+
+\begin{proof}
+	We start with an observation, that given a polynomial \(p\in P^n\), the vector \(p(A)\vectorbold{v}\)
+	can be written as \(p(A)\vectorbold{v} = A^n \vectorbold{v} - Q_n \vectorbold{r}\) for some \(\vectorbold{r}\in \CC^n\).
+	
+\end{proof}
 
 % write about how Arnoldi localizes eigenvalues
 % maybe plot my own Arnoldi lemniscates
 
 
 \subsection{Restriction to hermitian case: Lanczos iteration}
-
+From this point onwards, let us switch to the bracket notation favored by physicsts,
+ namely \(\ket{v} \equiv \vectorbold{v}\).
 
 
 \section{Time evolution via the Krylov propagator}
