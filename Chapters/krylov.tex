@@ -113,13 +113,13 @@ it is perhaps best illustrated with a simple example in the first place.
 			q_{21} & q_{22} \\
 			q_{31} & q_{32}
 			\end{bmatrix}
-			=&
+			&=
 			\begin{bmatrix}
 			a_{11}q_{11} + a_{12}q_{21} + a_{13}q_{31} & a_{11}q_{12} + a_{12}q_{22} + a_{13}q_{32} \\
 			a_{21}q_{11} + a_{22}q_{21} + a_{23}q_{31} & a_{21}q_{12} + a_{22}q_{22} + a_{23}q_{32} \\
 			a_{31}q_{11} + a_{32}q_{21} + a_{33}q_{31} & a_{31}q_{12} + a_{32}q_{22} + a_{33}q_{32}
 			\end{bmatrix} \\
-			=&
+			&=
 			\begin{bmatrix}
 				(A\vectorbold{q_1})_1 & (A\vectorbold{q_2})_1 \\
 				(A\vectorbold{q_1})_2 & (A\vectorbold{q_2})_2 \\
@@ -139,13 +139,13 @@ it is perhaps best illustrated with a simple example in the first place.
 			h_{21} & h_{22} \\
 			0 & h_{32}
 			\end{bmatrix}
-			=&
+			&=
 			\begin{bmatrix}
 				q_{11}h_{11} + q_{12}h_{21} & q_{11}h_{12} + q_{12}h_{22} + q_{13}h_{32} \\
 				q_{21}h_{11} + q_{22}h_{21} & q_{21}h_{12} + q_{22}h_{22} + q_{23}h_{32}\\
 				q_{31}h_{11} + q_{32}h_{21} & q_{31}h_{12} + q_{32}h_{22}+ q_{33}h_{32}
 			\end{bmatrix}\\		
-			=&
+			&=
 			\begin{bmatrix}
 				h_{11}(\vectorbold{q_1})_1 + h_{21}(\vectorbold{q_2})_1 & h_{12}(\vectorbold{q_1})_1 + h_{22}(\vectorbold{q_2})_1 + h_{32}(\vectorbold{q_3})_1 \\
 				h_{11}(\vectorbold{q_1})_2 + h_{21}(\vectorbold{q_2})_2 & h_{12}(\vectorbold{q_1})_2 + h_{22}(\vectorbold{q_2})_2 + h_{32}(\vectorbold{q_3})_2 \\
@@ -159,8 +159,8 @@ it is perhaps best illustrated with a simple example in the first place.
 	\end{align*}
 	Therefore we get, assuming \(\vectorbold{q_1}\) is known,
 	\begin{align*}
-		\vectorbold{q_2} =& \frac{A \vectorbold{q_1} - h_{11} \vectorbold{q_1}}{h_{21}}\\
-		\vectorbold{q_3} =& \frac{A \vectorbold{q_2} - h_{21} \vectorbold{q_1} - h_{22}\vectorbold{q_2}}{h_{32}}
+		\vectorbold{q_2} &= \frac{A \vectorbold{q_1} - h_{11} \vectorbold{q_1}}{h_{21}}\\
+		\vectorbold{q_3} &= \frac{A \vectorbold{q_2} - h_{21} \vectorbold{q_1} - h_{22}\vectorbold{q_2}}{h_{32}}
 	\end{align*}
 \end{example}
 Generalizing the above example, we arrive at the desired \(n+1\) term recurrence relation for \(\vectorbold{q_{n+1}}\)
@@ -219,7 +219,7 @@ the desired restriction can be written as \(Q_n Q^{\dagger}_n A\). Transforming 
 is the orthogonal projection of \(A\) to the subspace \(\K{n}\), represented in the basis
 \(\{\,\vectorbold{q_1},\vectorbold{q_2},\ldots,\vectorbold{q_n}\,\}\).
 
-\(H_n\) is once again a square matrix, so we can talk about its eigenvalues %\(\{\lambda_i\}_{i = 1}^n\)
+\(H_n\) is once again a square matrix, so we can talk about its eigenvalues \(\{\theta_i\}_{i = 1}^n\)
 in the usual fashion. These numbers are called the \textit{Arnoldi eigenvalues estimates at step \(n\)}, or
 the \textit{Ritz values with respect to \(\K{n}\)}.
 Given the interpretation above, we may suspect that they would be related to the eigenvalues of the original matrix \(A\).
@@ -227,7 +227,7 @@ Indeed, as we shall see in a moment, some of the Ritz values are extremally good
 original eigenvalues.
 
 
-\subsection{Polynomial approximation and extremal eigenvalues}
+\subsection{Polynomial approximation and eigenvalues}
 
 By carrying out the Arnoldi iterations for succesive steps, and at each step \(n\) (or at just some of the steps)
 calculating the eigenvalues of the Hessenberg matrix \(H_n\), we are left with sequences of Ritz values. Some
@@ -240,8 +240,8 @@ Before we will understand the details, let us introduce different, seemingly unr
 \textit{polynomial approximation}. We can take any \(\vectorbold{q} \in \K{n}\) and using the 
 defining basis of Krylov subspace \(\K{n}\)(Definition~\ref{def:krylov}), expand is as
 \begin{align*}
-	\vectorbold{q} =& a_0 \vectorbold{v} + a_1 A \vectorbold{v} + a_2 A^2 \vectorbold{v} + \ldots + a_{n-1} A^{n-1} \vectorbold{v} \nonumber \\
-				   =& \left(a_0 + a_1 A + a_2 A^2 + \ldots + a_{n-1} A^{n-1}\right) \vectorbold{v}
+	\vectorbold{q} &= a_0 \vectorbold{v} + a_1 A \vectorbold{v} + a_2 A^2 \vectorbold{v} + \ldots + a_{n-1} A^{n-1} \vectorbold{v} \nonumber \\
+				   &= \left(a_0\Id + a_1 A + a_2 A^2 + \ldots + a_{n-1} A^{n-1}\right) \vectorbold{v}
 \end{align*}
 Utilizing the special structure of vectors from \(\K{n}\), we can define a polynomial \(p(z) = a_0
 + a_1 z + a_2 z^2 + \ldots + a_{n-1}z^{n-1}\), and concisely write our vector as \(\vectorbold{q} = p(A)\vectorbold{v}\).
@@ -262,19 +262,155 @@ we state it here as a theorem and, following~\textcite{Trefethen1997}, provide a
 	If \(\textrm{dim}\left(\K{n}\right) = n\), i.e. matrix having columns \(\vectorbold{v},A\vectorbold{v},\ldots, A^{n-1}
 	\vectorbold{v}\) is of rank \(n\), then the Arnoldi Approximation Problem has a unique solution \(p^n\in P^n\),
 	given by the characteristic polynomial of the matrix \(H_n\), defined by~\eqref{eq:hessenberg}.
+	\label{theorem:arnoldi_approximation}
 \end{theorem}
 
 \begin{proof}
 	We start with an observation, that given a polynomial \(p\in P^n\), the vector \(p(A)\vectorbold{v}\)
 	can be written as \(p(A)\vectorbold{v} = A^n \vectorbold{v} - Q_n \vectorbold{r}\) for some \(\vectorbold{r}\in \CC^n\).
-	
+	To see that, note that \(\left(A^n \vectorbold{v} - p(A)\vectorbold{v}\right) \in \K{n}\) and columns of \(Q_n\) form an
+	orthonormal basis of \(\K{n}\). Now, we can recast our problem into a slighlty different language, namely finding a vector
+	in \(\K{n}\) that is the closest in the sense of \(L_2\) norm to \(A^n \vectorbold{v}\). In short:
+	\begin{equation*}
+		\vectorbold{r}^{\ast} = \min_{\vectorbold{r}\in\CC^n}\norm*{A^n \vectorbold{v} - Q_n \vectorbold{r}}
+	\end{equation*}
+	To achieve that, we need to have \(p(A)\vectorbold{v}\perp \K{n}\), that is \(p(A)\vectorbold{v}\) must
+	be orthogonal to all basis vectors spanning \(\K{n}\). This is consisely expressed as 
+	\(Q^{\dagger}_{n} p(A)\vectorbold{v} = \vectorbold{0}\in \CC^n\).
+
+	Now, we know that the Hessenberg factorization \(A = QHQ^{\dagger}\) exists, and is approximated by \(n\) steps
+	of the Arnoldi iteration. Thus, the matrices \(Q\) and \(H\) can have the following block structure:
+	\begin{equation}
+		Q=\left[\begin{array}{ll}
+			Q_n & V
+			\end{array}\right],
+			\quad H=\left[\begin{array}{cc}
+			H_n & 0_{n\cross(m-n)} \\
+			Y & 0_{(m-n)\cross(m-n)}
+			\end{array}\right]
+			\label{eq:block_matrices}
+	\end{equation}
+	where \(V \in \CC^{m\cross(m-n)}\) is a matrix with orthonormal columns, which are also orthogonal to columns of
+	\(Q_n\), and matrix \(Y\in\CC^{(m-n)\cross n}\) has only the upper-right entry different from zero
+	(the one from the last row of \(\tilde{H}_n\)). Using the Hessenberg factorization we can write our condition
+	as \(Q_n^{\dagger} Q p(H) Q^{\dagger}\vectorbold{v} = \vectorbold{0}\), and because equation~\eqref{eq:block_matrices}
+	introduces partitions into \textit{conformable} blocks, we can use the rules of block-matrix algebra to simiplify
+	it further~\autocite{Eves1980}.
+
+	First, let us investigare closely the structure of \(p(H)\). We observe that
+	\begin{align*}
+		H^2 &= \left[\begin{array}{cc}
+			H_n & 0_{n\cross(m-n)} \\
+			Y & 0_{(m-n)\cross(m-n)}
+			\end{array}\right]^2 = 
+			\left[\begin{array}{cc}
+				H_n^2 & 0_{n\cross(m-n)} \\
+				Y H_n & 0_{(m-n)\cross(m-n)}
+			\end{array}\right]\\
+		H^3 &=
+			\left[\begin{array}{cc}
+				H_n & 0_{n\cross(m-n)} \\
+				Y & 0_{(m-n)\cross(m-n)}
+			\end{array}\right]^3 = 
+			\left[\begin{array}{cc}
+				H_n^3 & 0_{n\cross(m-n)} \\
+				Y H_n^2 & 0_{(m-n)\cross(m-n)}
+			\end{array}\right]\\
+			\ldots\\
+		H^n &= 			\left[\begin{array}{cc}
+			H_n & 0_{n\cross(m-n)} \\
+			Y & 0_{(m-n)\cross(m-n)}
+		\end{array}\right]^n = 
+		\left[\begin{array}{cc}
+			H_n^n & 	  0_{n\cross(m-n)} \\
+			Y H_n^{n-1} & 0_{(m-n)\cross(m-n)}
+		\end{array}\right]\\
+	\end{align*}
+Thus \(p(H)\) can be written as
+\begin{align*}
+	p(H) &= a_0 \Id + a_1 H + a_2 H^2 + \ldots + a_{n-1} H^{n-1} + H^n \\
+		&= \left[\begin{array}{cc}
+			a_0 \Id + a_1 H_n + a_2 H_n^2 + \ldots + a_{n-1} H_n^{n-1} + H_n^n & 0_{n\cross(m-n)}\\
+			a_0 \Id + a_1 Y + a_2 Y H_n + \ldots + a_{n-1} Y H_n^{n-2} + Y H_n^{n-1} & 0_{(m-n)\cross(m-n)}
+		\end{array}\right]\\
+		&= \left[\begin{array}{cc}
+			p(H_n) & 0\\
+			\tilde{Y} & 0
+		\end{array}\right]
+\end{align*}
+We have now all the pieces to simplify the orthogonality condition:
+\begin{align*}
+	\vectorbold{0} &= Q_n^{\dagger} Q p(H) Q^{\dagger}\vectorbold{v}\\
+	&= \left[Q_n^{\dagger}\right] 
+	\left[\begin{array}{cc}
+		Q_n & V
+	\end{array}\right]
+	\left[\begin{array}{cc}
+		p(H_n) & 0_{n\cross(m-n)}\\
+		\tilde{Y} & 0_{(m-n)\cross(m-n)}
+	\end{array}\right]
+	\left[\begin{array}{cc}
+		Q_n^{\dagger}\\
+		U^{\dagger}
+	\end{array}\right] \vectorbold{v}\\
+	&= \left[\begin{array}{cc}
+		\Id_{n\cross n} & 0_{n\cross(m-n)}
+	\end{array}\right] 
+	\left[\begin{array}{cc}
+		p(H_n) & 0_{n\cross(m-n)}\\
+		\tilde{Y} & 0_{(m-n)\cross(m-n)}
+	\end{array}\right]
+	\left[\begin{array}{cc}
+		Q_n^{\dagger}\\
+		U^{\dagger}
+	\end{array}\right] \vectorbold{v}\\
+	&= \left[\begin{array}{cc}
+		p(H_n) & 0_{n\cross (m-n)} 
+	\end{array}\right]
+	\left[\begin{array}{cc}
+		Q_n^{\dagger}\\
+		U^{\dagger}
+	\end{array}\right] \vectorbold{v}\\
+	&= p(H_n)Q_n^{\dagger} \vectorbold{v}
+\end{align*}
+As a final step, notice that by construction the first row of \(Q_n^{\dagger}\) is
+\(\vectorbold{v}/\norm{\vectorbold{v}}\), and all the remaining rows are orthogonal to \(\vectorbold{v}\),
+therefore only the first column of \(H_n\), or the first \(n\) elements of the first column of \(H\) are required
+to be \(0\). By Caylel-Hamilton theorem, this is guaranteed if we take \(p = p^n\), where \(p^n\) is the characteristic
+polynomial of \(H_n\). For the uniqueness part, suppose that there exists another polynomial, say \(q^n\) such
+that \(q^n \perp \K{n}\). But then \(p^n - q^n\) is a nonzero polynomial of degree \(n-1\) (because \(p^n,\;q^n\) are
+monic) such that \((p^n-q^n)(A)\vectorbold{v}=\vectorbold{0}\), and hence vectors \(\vectorbold{v},A\vectorbold{v},\ldots, A^{n-1}
+\vectorbold{v}\) are linearly dependent, which violates assumption that \(\textrm{dim}\left(\K{n}\right) = n\).
 \end{proof}
+This theorem allows us to interpret the Arnoldi eigenvalues estimates \(\{\theta_i\}\) as the roots of the optimal
+polynomial. Following the above proof, it is relatively easy to see that they are scale invariant, i.e.
+if \(A\to\alpha A\) for some \(\alpha\in\CC\), then \(\{\theta_i\}_{i=1}^n \to \{\alpha\theta_i\}_{i=1}^n\)
+and invariant under unitary transformations, i.e. if \(A\to UAU^{\dagger}\) and \(\vectorbold{v}\to U\vectorbold{v}\) for
+some unitary \(U\), then the Arnoldi estimates are unchanged. Furthermore, owing to the properties of monic polynomials,
+they are also translationally invariant, namely if \(A\to A + \alpha \Id\) for some \(\alpha\in\CC\), then
+\(\{\theta_i\}_{i=1}^n \to \{\theta_i + \alpha\}_{i=1}^n\).
 
-% write about how Arnoldi localizes eigenvalues
-% maybe plot my own Arnoldi lemniscates
+In the end we see that the direct purpose of Arnoldi iteration is to solve a polynomial approximation problem
+and not to find eigenvalues. However, those two problems have enough in common, that the Arnoldi iteration
+produces some correct eigenvalues as a `by-product'. We can reason along the following lines. If our task
+is to find a polynomial \(p\in P^n\) minimizing \(\norm{p(A)}\), it may be a good idea to select a polynomial
+that has roots close to the eigenvalues of \(A\).  In an extreme situation, when there exists a diagonalization
+of \(A\) and it posses only \(n\ll m\) distinct eigenvalues, the minimal polynomial\footnote{A minimal polynomial
+of matrix \(A\) is a polynomial \(p\) of the smallest degree such that \(p(A) = 0\). It always divides the
+characteristic polynomial.} will coincide with the characteristic polynomial computed via Arnoldi iteration
+after \(n\) steps and the Arnoldi eigenvalue approximations will be exact,
+provided we start from \(\vectorbold{v}\) having nonzero overlap with all eigenvectors of \(A\).
+In most practical situations however, the agreement is only approximate, namely Arnoldi eigenvalues are close to real
+eigenvalues, and computed polynomial is such that \(\norm{p(A)}\) is small.
 
+There is more to this story than we have told here, particularly a nice geometric interpreation
+of Algorithm~\ref{alg:arnoldi} via \textit{Arnoldi lemniscates}, which illustrates why extremal eigenvalues
+are found first, however we shall not concern ourselves with those
+matters any further. Interested readers are once again referred to~\textcite{Trefethen1997},
+whereas we turn our attention to the case of utmost interest in quantum mechanics, namely Arnoldi iteration
+for hermitian matrices.
 
-\subsection{Restriction to hermitian case: Lanczos iteration}
+\subsection{Restriction to hermitian matrices: Lanczos iteration}
 From this point onwards, let us switch to the bracket notation favored by physicsts,
  namely \(\ket{v} \equiv \vectorbold{v}\).
 
