@@ -62,7 +62,7 @@ allows one to obtain numerically exact set of eigenvalues and eigenvectors and s
  do, by the virtue of requiring only a "black box" computation of matrix-vector product, which can be fairly easily implemented in a way
  requiring only \(O(\mu \dimension)\) operations.
 
-\section{Calculation of extremal eigenvalues}
+\section{Calculation of extremal eigenstates}
 Our goal in this section is to develop the Lanczos algorithm for ground state search of hermitian matrices, and along
 the way understand how and why it works.
 
@@ -175,9 +175,9 @@ We can now easily cast the above recurrence into a pseducode algorithm:
 	\caption{Arnoldi iteration}
 	\label{alg:arnoldi}
 	\begin{algorithmic}[1]
-		\Require \(v \in \CC^m\), \(A \in \CC^{m\cross m}\), number of steps \(n\)
-		\Ensure columns of \(Q_n\)
-		\State \(\vectorbold{q_1} = \vectorbold{v}/\norm*{\vectorbold{v}}\)
+		\Require \(\vectorbold{v} \in \CC^m\), \(A \in \CC^{m\cross m}\), number of steps \(n\)
+		\Ensure columns of \(Q_n\), matrix elements of \(H_n\)
+		\State \(\vectorbold{q_1} = \vectorbold{v}/\norm*{\vectorbold{v}}\) \Comment{components of \(\vectorbold{v}\) are usually drawn from uniform distribution }
 		\For{\(i = 1:n-1\)}
 			\State \(\vectorbold{q} = A\vectorbold{q_i}\)
 			\For{\(j = 1:i\)}
@@ -189,6 +189,7 @@ We can now easily cast the above recurrence into a pseducode algorithm:
 		\EndFor
 	\end{algorithmic}
 \end{algorithm}
+
 Step 9 of the Algorithm~\ref{alg:arnoldi} may be questionable, as we are dividing by a norm of a vector, which
 after all can be equal to zero. However, in practical applications of Arnoldi iteration it usually means
 that our calculations have converged and the iterations may be stopped.
@@ -411,9 +412,120 @@ whereas we turn our attention to the case of utmost interest in quantum mechanic
 for hermitian matrices.
 
 \subsection{Restriction to hermitian matrices: Lanczos iteration}
-From this point onwards, let us switch to the bracket notation favored by physicsts,
- namely \(\ket{v} \equiv \vectorbold{v}\).
 
+After the mathematical detour of previous section, armed with deeper understanding of Krylov subspace and
+Arnoldi iteration, we are now going to investigate the algorithms that are of direct relevance to condensed
+matter physics, starting with Lanczos iteration. From this point onwards, we shall switch to the favored by physicsts
+Dirac bra-ket notation, namely \(\ket{v} \equiv \vectorbold{v}\) and \(\bra{v} = \vectorbold{v}^{\dagger}\).
+Moreover, we assume the matrix \(A\) to be hermitian,
+as in most use cases it will be the Hamiltonian of our system. 
+
+It immediately follows from~\eqref{eq:hessenberg} that, given \(A\) is hermitian, the Hessenberg matrix 
+\(H_n\) will also be hermitian. But a matrix that is both Hessenberg and hermitian, must of course be tridiagonal!
+Indeed, to see this directly, let us write the equation for matrix elements \((H_n)_{ij}\) of \(H_n\):
+\begin{equation}
+	(H_n)_{ij} = \sum_{r,s}(Q_n^{\dagger})_{ir}(A)_{rs}(Q_n)_{sj} = \matrixel{q_i}{A}{q_j}
+	\label{eq:hess_mat_el}
+\end{equation}
+where \(\ket{q_i},\ket{q_j}\) are respectively \(i\)-th and \(j\)-th columns of matrix \(Q_n\). From 
+the recurrence relation~\eqref{eq:arnoldi_recurrence} we know that 
+\(A\ket{q_j} \in \mathrm{span}\{\ket{q_1},\ldots,\ket{q_{j+1}}\}\), and that it is orthogonal to all
+\(\ket{q_i}\) with \(i > j+1\). Therefore \((H_n)_{ij} = 0\) for \(i>j+1\). Simiarly, by taking the hermitian conjugate
+of equation~\eqref{eq:hess_mat_el}, we get
+\begin{equation}
+	(H_n)_{ij} = \matrixel{q_j}{A^{\dagger}}{q_i} \triangleq  \matrixel{q_j}{A}{q_i}	
+\end{equation}
+where \(\triangleq\) follows from assumed hermiticity of \(A\). Repeating the above reasoning we
+quickly obtain that \((H_n)_{ij} = 0\) also for \(j > i+1\) and hence the matrix is tridiagonal.
+In literature the diagonal is usually denoted by \(\alpha_i \equiv (H_n)_{ii}\), whereas the sub- and superdiagonal
+are denoted by \(\beta_i \equiv (H_n)_{i,i+1} = (H_n)_{i+1,i}\). The relation for \(\ket{q_{n+1}}\) becomes
+a \(3\)-step recurrence:
+\begin{equation}
+	\ket{q_{n+1}} = \frac{A \ket{q_n} - \beta_{n-1}\ket{q_{n-1}} - \alpha_n \ket{q_n}}{\beta_n}
+	\label{eq:lanczos_recurrence}
+\end{equation}
+This has a tremendous impact on the practical applications of the algorithm, as both
+computational and memory costs decrease significantly. We are now ready to state the simplified version of
+the Algorithm~\ref{alg:arnoldi}.
+\begin{algorithm}
+	\algrenewcommand\algorithmicrequire{\textbf{Input: }}
+	\algrenewcommand\algorithmicensure{\textbf{Output: }}
+	\caption{Lanczos iteration}
+	\label{alg:lanczos}
+	\begin{algorithmic}[1]
+		\Require \(\beta_0 = 0\), \(\ket{q_0} = \vectorbold{0} \in \CC^m\), \(\ket{v} \in \CC^m\), \(A \in \CC^{m\cross m}\) such that \(A^{\dagger} = A\), number of steps \(n\)
+		\Ensure columns of \(Q_n\), tridiagonal matrix \(H_n\)
+		\State \(\ket{q_1} = \ket{v}/\norm*{\ket{v}}\)
+		\For{\(i = 1:n-1\)}
+			\State \(\ket{q} = A\ket{q_i}\)
+			\State \(\alpha_i = \braket{q_i}{q}\)
+			\State \(\ket{q} = \ket{q} - \beta_{i-1}\ket{q_{i-1}} - \alpha_i \ket{q_i}\)
+			\State \(\beta_i = \norm{\ket{q}} \) 
+			\State \(\ket{q_{i+1}} = \ket{q}/\beta_i \)
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
+Another important observation is that \(\alpha_n\)'s are diagonal elements of a hermitian matrix, and \(\beta_n\)'s are
+norms of vector \(\ket{q}\) in subsequent interations, both of which are real. Therefore, even if our Hamiltonian is
+complex, the numbers \(\alpha_n\) and \(\beta_n\) can be stored as vectors of real floating point numbers, decreasing
+memory requirements even further. This is the first algorithm implemented for the purpose of this thesis, using
+the Armadillo linear algebra library~\autocite{Sanderson2016} and Intel MKL.
+
+Matrix \(Q_n\) is of dimension \(m \cross n\), so keeping it in full in the memory can still be costly. Fortunately,
+at each step of the Lanczos iteration no more than three vectors are necessary (\(\ket{q},\ket{q_i},\ket{q_{i-1}}\))
+so the storage of full matrix \(Q_n\) is reduntant. Extremal eigenvalues are then obtained by explicit diagonalization
+of the constructed matrix \(H_n = V_n D_n (V_n)^{\dagger}\), which can be done efficiently using specialized routines
+for tridiagonal matrices. However, this approach has it drawbacks when we are interested also in the ground state
+eigenvector, which will be the case in further applications. 
+
+It turns out that the Lanczos iteration can approximate not only eigenvalues,
+but also corresponding eigenvectors. They are the eigenvectors of the tridiagonal matrix \(H_n\), transformed back
+to the original Hilbert space. Given the full Hessenberg decomposition we would have
+\begin{equation}
+	A = Q H Q^{\dagger} = Q (VDV^{\dagger}) Q^{\dagger} = (QV)D(QV)^{\dagger}
+\end{equation}
+Restriction to \(n\)-step iteration produces an approximation \(A\approx (Q_n V_n)D_n(Q_n V_n)^{\dagger}\).
+The simplest form of Lanczos iteration presented in Algorithm~\ref{alg:lanczos} is sufficient to obtain
+only the ground state eigenvector with machine precision, because eigenvectors of excited states are plagued
+by loss of orthogonality stemming from the nature of floating point numbers. We shall have a brief look at this problem
+at the end of this section.
+
+The ground state vector \(\ket{\psi_0}\) can be then read of as the first column \(Q_n V_n\). However, there is a problem.
+To conserve memory, we have not constructred the whole matrix \(Q_n\) explicitly, but only three of its columns 
+at a given time and hence do not have access to the matrix product \(Q_n V_n\). We need a second pass of the Lanczos
+iteration, with a single line added for iteretive calculation of the first columns. It can be summarized by the
+following piece of pseducode:
+
+\begin{algorithm}
+	\algrenewcommand\algorithmicrequire{\textbf{Input: }}
+	\algrenewcommand\algorithmicensure{\textbf{Output: }}
+	\caption{Second pass of Lanczos iteration, for calculating ground state eigenvector}
+	\label{alg:lanczos_second_pass}
+	\begin{algorithmic}[1]
+	\Require \(\ket{\psi_0} = \vectorbold{0} \in \CC^m\), matrix \(V_n\) from Alg.~\ref{alg:lanczos}, rest of input data from Alg.~\ref{alg:lanczos}
+		\Ensure columns of \(Q_n\), tridiagonal matrix \(H_n\)
+		\State \(\ket{q_1} = \ket{v}/\norm*{\ket{v}}\)
+		\For{\(i = 1:n-1\)}
+			\State \(\ket{\psi_0} = \ket{\psi_0} + (V_n)_{i,1}\ket{q_i}\) \Comment{this is the only difference from Alg.~\ref{alg:lanczos}}
+			\State \(\ket{q} = A\ket{q_i}\)
+			\State \(\alpha_i = \braket{q_i}{q}\)
+			\State \(\ket{q} = \ket{q} - \beta_{i-1}\ket{q_{i-1}} - \alpha_i \ket{q_i}\)
+			\State \(\beta_i = \norm{\ket{q}} \) 
+			\State \(\ket{q_{i+1}} = \ket{q}/\beta_i \)
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
+
+To finish this section, let us discuss quickly the convergence properties of Lanczos iteration. We have one free parameter,
+namely the number of iterations \(n\). If we had carried out the full Arnoldi iteration, as described in~\ref{alg:arnoldi},
+the orthogonality of subsequent columns of matrix \(Q_n\) would be guaranteed by the explicit Gram-Schmidt procedure
+and we in principle could continue it up to \(n = m\) obtaining the full Hessenberg decomposition. However, 
+restricting ourselves to a three step recurrence in Lanczos iteration we rely on mathematical identities to
+force the orthogonality of \(\ket{q_i}\) with all previous vectors. Those are valid in exact arithmetic, but can
+quickly break down when using floating point numebers, as it is done in practice.
+
+
+\textcolor{red}{plot with Lanczos ghosts}
 
 \section{Time evolution via the Krylov propagator}
 
