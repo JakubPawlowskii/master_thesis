@@ -522,10 +522,24 @@ the orthogonality of subsequent columns of matrix \(Q_n\) would be guaranteed by
 and we in principle could continue it up to \(n = m\) obtaining the full Hessenberg decomposition. However, 
 restricting ourselves to a three step recurrence in Lanczos iteration we rely on mathematical identities to
 force the orthogonality of \(\ket{q_i}\) with all previous vectors. Those are valid in exact arithmetic, but can
-quickly break down when using floating point numebers, as it is done in practice.
+quickly break down when using floating point numebers, as it is done in practice. Therefore, the iteration is unstable and
+should be stopped as soon as desired accuracy is reached. Taking \(E_n^1\) to be the lowest eigenvalues of
+\(H_n\), the convergence criterion can be defined as \(\abs{E_{n+1}^1 - E_{n}^1}/\abs{E_n^1} < \varepsilon\) for some
+small \(\varepsilon\), e.g. \(10^{-14}\). As long as it is nondegenerate, the convergence usually happens quite quickly for
+both lowest eigenvalue and corresponding eigenvector. To reliably obtain higher eigenstates one needs to perform
+reorthogonalization, but it requires keeping the matrix \(Q_n\) in memory which can be very costly.
 
-
+This instability can manifest itself in an interesting way, namely in form of additional eigenvalues, called Lanczos `ghosts'.
+They are spurious copies of already found eigenvalues, which start apperating after too many iteration steps (cf. fig. ...)
 \textcolor{red}{plot with Lanczos ghosts}
+They are difficult to understand rigorously, however~\textcite{Trefethen1997} offer a nice heuristic explanatation.
+Reaching convergence of some Arnoldi approximated eigenvalue to the true eigenvalue of A causes annihilation
+of corresponding eigenvector component in the vector \(\ket{q}\). However, rounding errors originating from
+floating point arithmetic cause \(\ket{q}\) to again develop component in the direction of the eigenvector
+and thus, after certain number of iterations, appearance of another Arnoldi approximated eigenvalue is necessary
+to annihilate it. This can go on and on producing more and more Lanczos 'ghosts'.
+Fortunately, for all further applications in this thesis we will only require the lowest eigenstate, so we can
+avoid most of the instability problems by stopping the iteration sufficiently quick.
 
 \section{Time evolution via the Krylov propagator}
 
