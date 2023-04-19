@@ -483,6 +483,7 @@ but also corresponding eigenvectors. They are the eigenvectors of the tridiagona
 to the original Hilbert space. Given the full Hessenberg decomposition we would have
 \begin{equation}
 	A = Q H Q^{\dagger} = Q (VDV^{\dagger}) Q^{\dagger} = (QV)D(QV)^{\dagger}
+	\label{eq:factorization}
 \end{equation}
 Restriction to \(n\)-step iteration produces an approximation \(A\approx (Q_n V_n)D_n(Q_n V_n)^{\dagger}\).
 The simplest form of Lanczos iteration presented in Algorithm~\ref{alg:lanczos} is sufficient to obtain
@@ -493,7 +494,7 @@ at the end of this section.
 The ground state vector \(\ket{\psi_0}\) can be then read of as the first column \(Q_n V_n\). However, there is a problem.
 To conserve memory, we have not constructred the whole matrix \(Q_n\) explicitly, but only three of its columns 
 at a given time and hence do not have access to the matrix product \(Q_n V_n\). We need a second pass of the Lanczos
-iteration, with a single line added for iteretive calculation of the first columns. It can be summarized by the
+iteration, with a single line added for iteretive calculation of the first column. It can be summarized by the
 following piece of pseducode:
 
 \begin{algorithm}
@@ -542,6 +543,88 @@ Fortunately, for all further applications in this thesis we will only require th
 avoid most of the instability problems by stopping the iteration sufficiently quick.
 
 \section{Time evolution via the Krylov propagator}
+
+Even though the original puprose of Lanczos iteration was to approximate boundaries of the spectrum of matrices and
+solve systems of linear equation~\autocite{Simoncini2016,Shewchuk1994a}, it can also be employed to evaluate functions
+of hermitian matrices. Given any unitary (or orthogonal) decomposition of matrix \(A = QHQ^{\dagger}\), and an analytic
+function \(f\)\footnote{A function \(f\) is real (complex) analytic if and only if its Taylor series about \(x_0\) 
+converges in some neighborhood of \(x_0\) pointwise to the function, for every \(x_0\) in the domain.}, we have
+\(f(A) = Qf(H)Q^{\dagger}\). And indeed, Lanczos iteration gives us such decomposition, albeit an approximate one
+\(A \approx Q_n H_n Q_n^{\dagger}\). Because of this approximate character and convergence probles discussed at
+the end of previous section, global approximation of \(f(A)\) via Lanczos iteration is a hopeless endevour.
+However, the goal of this section is to calculate time evolution, which boils down to evaluation how the time-evolution
+operator \(\exp\left(-i \hat{H} t\right) \) acts on some state \(\ket{v}\) in the Hilbert space for a given
+Hamiltonian \(\hat{H}\). It is thus enough to restrict our attention the problem of calculating \(f(A){\ket{v}}\), for
+which the Lanczos iteration turns out to be an excellent tool.
+
+Let us now assume that the matrix \(A\) is our Hamiltonian \(\hat{H}\), acting on Hilbert space \(\mathcal{H}\cong \CC^m\)
+and \(\ket{v}\in \mathcal{H}\) is some fixed state.
+Using the approximate factorization derived from~\eqref{eq:factorization}, we get
+\begin{equation}
+	f(\hat{H})\ket{v} \approx (Q_n V_n) f(D_n) (Q_n V_n)^{\dagger} \ket{v} 
+	\label{eq:fun_eval}
+\end{equation}
+where \(D_n\) is a real diagonal matrix, so \(f(D_n)\) is easy to compute.
+Previously, we have started the construction of Krylov subspace basis from some random vector. Now, let us
+change this slighlty and start from the vector \(\ket{v}\) instead, which we assume to be normalized. Then,
+the first column of \(Q_n\) will be \(\ket{v}\), whereas all subsequent columns will be orthogonal (up to some
+numerical errors), yielding \(Q_n^{\dagger}\ket{v} = \ket{e_1}\), which is the first vector in canonical basis
+of \( \CC^n \), i.e. \( \ket{e_1} = \left[1,0,0,\ldots,0\right] \). Equation~\eqref{eq:fun_eval} then
+simplifies to
+\begin{equation}
+	f(\hat{H}) \ket{v} \approx Q_n (V_n f(D) V_n^{\dagger}) Q_n^{\dagger} \ket{v} = Q_n (V_n f(D) V_n^{\dagger}) \ket{e_1}
+	= Q_n f(H_n) \ket{e_1} 
+	\label{eq:lanczos_function}
+\end{equation}
+Moreover, \(f(H_n) \ket{e_1}\) is just the first column of \(f(H_n)\), because \( \left(f(H_n) \ket{e_1}\right)_i =
+\sum_j \left(f(H_n)\right)_{i,j} \delta_{1,j} = \left(f(H_n)\right)_{i,1}\). So we do not need to compute the full
+matrix, but only a single vector of the form
+\begin{equation}
+	\left(f(H_n)\right)_{i,1} = \sum_j \left(V_n\right)_{i,j} f(D_n)_j \left(V_n^{\dagger}\right)_{j,1}
+	=  \sum_j \left(V_n\right)_{i,j} \left(V_n^{\ast}\right)_{1,j} f(D_n)_j 
+\end{equation}
+where the diagonal matrix \(f(D_n)\) is treated as a vector. Assuming that \(f(D_n)\) is already computed, it boils
+down to a single dot product for each element of the column.
+
+We are now ready to apply this procedure to the problem of interest, namely the time-evolution of a pure
+state \(\ket{\psi(t)}\) in the interval \(\left(t, \Delta t\right)\). It is described by the Schr{\"o}dineger equation
+\(i\partial_t \ket{\psi(t)} = \bar{H} \ket{\psi(t)}\), having a formal solution
+\begin{equation}
+	\ket{\psi(t+\Delta t)} = \exp\left(-i \bar{H} \Delta T\right) \ket{\psi(t)},	
+\end{equation}
+under the assuption that \(\bar{H}\) does not depend explicitly on time. Exact exponentiation of matrix amounts to exact
+diagonalization which, as mentioned at the beginning of this chapter, is a difficult task. However, by letting \(f(\bar{H}) = 
+\exp\left(-i \bar{H} \Delta t\right)\) and \(\ket{v} = \ket{\psi(t)}\) in equation~\eqref{eq:lanczos_function} we
+get an approximation of the action of the time
+evolution operator on a state, called the \textbf{Krylov based propagator}~\autocite{Moler2003}, which was 
+originally proposed in the 1980's by~\textcite{Park1986} and has been since used with great success to 
+investigate many different systems ~\autocite{Schmitteckert2004,Stanek2013,Zaletel2015,Dargel2012}. The final equation
+reads
+\begin{align}
+	\ket{\psi(t+\Delta t)} &= \exp\left(-i \bar{H} \Delta T\right) \ket{\psi(t)} \approx
+	Q_n \exp\left(-i H_n \Delta t\right) Q_n^{\dagger}\ket{\psi(t)}\\
+	 &= Q_n \exp\left(-i H_n \Delta t\right) \ket{e_1} = \sum_{j=1}^{n} \left(f(H_n)\right)_{j,1} \ket{q_j}
+\end{align} 
+where \(\ket{q_j}\) are columns of the unitary (orthogonal) matrix \(Q_n\). Because of this orthogonality,
+the approximation error is bouned from above by the last coefficient \(\left(f(H_n)\right)_{n,1}\), i.e.
+\begin{equation}
+	\norm{\ket{\psi(t+\Delta t)}_{\textrm{exact}} - \ket{\psi(t+\Delta t)}_{\textrm{Krylov}}} \leq \abs{\left(f(H_n)\right)_{n,1}}
+\end{equation}
+assuming that \(\norm{\ket{\psi(t)}} = 1\). There also exists an estimate of the sufficient dimension of Krylov
+subspace~\autocite{Mohankumar2006}
+\begin{equation}
+	n \lessapprox 1.5 \rho_{\bar{H}} \Delta t > 10
+\end{equation}
+where \(\rho_{\bar{H}}\) is the spectral radius of Hamiltonian, which can be calculated as the difference between highest and lowest eigenvalue.
+
+It is now very simple to cast expressions into pseducode
+
+
+
+
+
+% mention that not only time propagator is possible
+
 
 \section{Physical interlude: Quantum Typicality}
 
