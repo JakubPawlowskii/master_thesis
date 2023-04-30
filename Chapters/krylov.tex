@@ -5,15 +5,12 @@
 
 One of the two purposes of this thesis is to develop and test a set of numerical tools based on the Krylov subspace methods,
 which is a family of iterative methods concerned with projecting high dimensional problems into smaller dimension subspaces
-and solving them therein. The titular Krylov subspace is introduced via
-\begin{definition}
-	Let \(\vectorbold{v} \in \CC^{m}\) be a vector and \(A\in \CC^{m\cross m}\) be a matrix. A \(k\)-th 
-	\textbf{Krylov subspace} is defined as
-	\begin{equation*}
-		\K{k} := \mathrm{span}\{\,\vectorbold{v}, A\vectorbold{v}, A^2\vectorbold{v},\ldots,A^{k-1}\vectorbold{v} \,\}
-	\end{equation*}
+and solving them therein. Given a finite dimensional vector space \(V \cong \CC^m \), a vector \(\vectorbold{v}\in \CC^m\) and
+a linear operator \(A\in\CC^{m\cross m}\), represented as a matrix, the \textbf{k-th Krylov subspace} \(\K{k}\) is defined as 
+\begin{equation}
+		\K{k} := \mathrm{span}\{\,\vectorbold{v}, A\vectorbold{v}, A^2\vectorbold{v},\ldots,A^{k-1}\vectorbold{v} \,\} \subseteq \CC^m
 	\label{def:krylov}
-\end{definition}
+\end{equation}
 Maximal dimension of a Krylov subspace is bounded from above by \(\mathrm{rank}(A) + 1\)~\autocite{Simoncini2015}.
 
 This chapter serves as a
@@ -70,14 +67,9 @@ the way understand how and why it works.
 The Lanczos algorithm is special case of a more general algorithm, called Arnoldi iteration, designed to transform
 a general, nonhermitian matrix \(A\in \CC^{m\cross m} \) via a orthogonal
 \footnote{Orthogonal in this context means that \(Q^{\dagger}Q = I_{m \cross m}\)} similarity transformation to a Hessenberg form \(A = QHQ^{\dagger}\).
-Such transformation always exist~\autocite{Garcia2017}.
-
-
-\begin{definition}
-    A square, \(m \cross m\) matrix \(H\) is said to be in upper \textbf{Hessenberg} form if
-    \(\forall i,j\in \{\,1,\ldots,n\,\}: i > j+1 \implies (A)_{i,j}=0 \).
-    It is said to be in \textbf{lower Hessenberg form}, if its transpose is in upper Hessenberg form.
-\end{definition}
+Such transformation always exist~\autocite{Garcia2017}. A square, \(m \cross m\) matrix \(H\) is said to be 
+in \textbf{upper Hessenberg form} if \(\forall i,j\in \{\,1,\ldots,n\,\}: i > j+1 \implies (A)_{i,j}=0 \).
+It is said to be in \textbf{lower Hessenberg form}, if its transpose is in upper Hessenberg form.
 A Hessenberg matrix differs from a triangular one by one additional super- or subdiagonal.
 Such form is desirable, because many numerical algorithms in linear algebra experience considerable speedup
 from leveraging triangular structure of a matrix, and sometimes those benefits carry over to this almost-triangular
@@ -453,8 +445,10 @@ the Algorithm~\ref{alg:arnoldi}.
 	\caption{Lanczos iteration}
 	\label{alg:lanczos}
 	\begin{algorithmic}[1]
-		\Require \(\beta_0 = 0\), \(\ket{q_0} = \vectorbold{0} \in \CC^m\), \(\ket{v} \in \CC^m\), \(A \in \CC^{m\cross m}\) such that \(A^{\dagger} = A\), number of steps \(n\)
+		\Require  \(\ket{v} \in \CC^m\), \(A \in \CC^{m\cross m}\) such that \(A^{\dagger} = A\), number of steps \(n\)
 		\Ensure columns of \(Q_n\), tridiagonal matrix \(H_n\)
+		\State \(\beta_0 = 0\)
+		\State \(\ket{q_0} = \vectorbold{0} \in \CC^m\)
 		\State \(\ket{q_1} = \ket{v}/\norm*{\ket{v}}\)
 		\For{\(i = 1:n-1\)}
 			\State \(\ket{q} = A\ket{q_i}\)
@@ -505,6 +499,8 @@ following piece of pseducode:
 	\begin{algorithmic}[1]
 	\Require \(\ket{\psi_0} = \vectorbold{0} \in \CC^m\), matrix \(V_n\) from Alg.~\ref{alg:lanczos}, rest of input data from Alg.~\ref{alg:lanczos}
 		\Ensure columns of \(Q_n\), tridiagonal matrix \(H_n\)
+		\State \(\beta_0 = 0\)
+		\State \(\ket{q_0} = \vectorbold{0} \in \CC^m\)
 		\State \(\ket{q_1} = \ket{v}/\norm*{\ket{v}}\)
 		\For{\(i = 1:n-1\)}
 			\State \(\ket{\psi_0} = \ket{\psi_0} + (V_n)_{i,1}\ket{q_i}\) \Comment{this is the only difference from Alg.~\ref{alg:lanczos}}
@@ -581,27 +577,28 @@ Moreover, \(f(H_n) \ket{e_1}\) is just the first column of \(f(H_n)\), because \
 matrix, but only a single vector of the form
 \begin{equation}
 	\left(f(H_n)\right)_{i,1} = \sum_j \left(V_n\right)_{i,j} f(D_n)_j \left(V_n^{\dagger}\right)_{j,1}
-	=  \sum_j \left(V_n\right)_{i,j} \left(V_n^{\ast}\right)_{1,j} f(D_n)_j 
+	=  \sum_j \left(V_n\right)_{i,j} \left(V_n^{\ast}\right)_{1,j} f(D_n)_j
+	\label{eq:c_vector}
 \end{equation}
 where the diagonal matrix \(f(D_n)\) is treated as a vector. Assuming that \(f(D_n)\) is already computed, it boils
 down to a single dot product for each element of the column.
 
 We are now ready to apply this procedure to the problem of interest, namely the time-evolution of a pure
 state \(\ket{\psi(t)}\) in the interval \(\left(t, \Delta t\right)\). It is described by the Schr{\"o}dineger equation
-\(i\partial_t \ket{\psi(t)} = \bar{H} \ket{\psi(t)}\), having a formal solution
+\(i\partial_t \ket{\psi(t)} = \hat{H} \ket{\psi(t)}\), having a formal solution
 \begin{equation}
-	\ket{\psi(t+\Delta t)} = \exp\left(-i \bar{H} \Delta T\right) \ket{\psi(t)},	
+	\ket{\psi(t+\Delta t)} = \exp\left(-i \hat{H} \Delta T\right) \ket{\psi(t)},	
 \end{equation}
-under the assuption that \(\bar{H}\) does not depend explicitly on time. Exact exponentiation of matrix amounts to exact
-diagonalization which, as mentioned at the beginning of this chapter, is a difficult task. However, by letting \(f(\bar{H}) = 
-\exp\left(-i \bar{H} \Delta t\right)\) and \(\ket{v} = \ket{\psi(t)}\) in equation~\eqref{eq:lanczos_function} we
+under the assuption that \(\hat{H}\) does not depend explicitly on time. Exact exponentiation of matrix amounts to exact
+diagonalization which, as mentioned at the beginning of this chapter, is a difficult task. However, by letting \(f(\hat{H}) = 
+\exp\left(-i \hat{H} \Delta t\right)\) and \(\ket{v} = \ket{\psi(t)}\) in equation~\eqref{eq:lanczos_function} we
 get an approximation of the action of the time
 evolution operator on a state, called the \textbf{Krylov based propagator}~\autocite{Moler2003}, which was 
 originally proposed in the 1980's by~\textcite{Park1986} and has been since used with great success to 
 investigate many different systems ~\autocite{Schmitteckert2004,Stanek2013,Zaletel2015,Dargel2012}. The final equation
 reads
 \begin{align}
-	\ket{\psi(t+\Delta t)} &= \exp\left(-i \bar{H} \Delta T\right) \ket{\psi(t)} \approx
+	\ket{\psi(t+\Delta t)} &= \exp\left(-i \hat{H} \Delta T\right) \ket{\psi(t)} \approx
 	Q_n \exp\left(-i H_n \Delta t\right) Q_n^{\dagger}\ket{\psi(t)}\\
 	 &= Q_n \exp\left(-i H_n \Delta t\right) \ket{e_1} = \sum_{j=1}^{n} \left(f(H_n)\right)_{j,1} \ket{q_j}
 \end{align} 
@@ -613,21 +610,67 @@ the approximation error is bouned from above by the last coefficient \(\left(f(H
 assuming that \(\norm{\ket{\psi(t)}} = 1\). There also exists an estimate of the sufficient dimension of Krylov
 subspace~\autocite{Mohankumar2006}
 \begin{equation}
-	n \lessapprox 1.5 \rho_{\bar{H}} \Delta t > 10
+	n \lessapprox 1.5 \rho_{\hat{H}} \Delta t > 10
 \end{equation}
-where \(\rho_{\bar{H}}\) is the spectral radius of Hamiltonian, which can be calculated as the difference between highest and lowest eigenvalue.
+where \(\rho_{\hat{H}}\) is the spectral radius of Hamiltonian and can be calculated as the difference between highest and lowest eigenvalue.
+It is now very simple to cast these expressions into a concrete algorithm
 
-It is now very simple to cast expressions into pseducode
+\begin{algorithm}
+	\algrenewcommand\algorithmicrequire{\textbf{Input: }}
+	\algrenewcommand\algorithmicensure{\textbf{Output: }}
+	\caption{Krylov propagator}
+	\label{alg:krylov_propagator}
+	\begin{algorithmic}[1]
+	\Require input data from Algorithm~\ref{alg:lanczos}, with \(\ket{v} = \ket{\psi(t)}\), time step \(\Delta t\)
+	\Ensure propagated state \(\ket{\psi(t+\Delta t)}\)
+		\State Run Alg.~\ref{alg:lanczos}, obtaining eigenvalues \(D_i\)
+		\State Calculate \(\left(f(H_n)\right)_{i,1}\) using eq.~\eqref{eq:c_vector}
+		\State Run modified Alg.~\ref{alg:lanczos_second_pass}, with \(\left(f(H_n)\right)_{i,1}\) instead of \(\left(V_n\right)_{i,1}\)
+	\end{algorithmic}
+\end{algorithm}
+
+We finish this section with a remark, that real-time propagator is not the only function of the Hamiltonian which can
+be calculated using Lanczos techniques. Fairly often encounterd are also the imaginary-time propagator \(\exp\left(-\beta H\right)\)
+and pure state Green's function of some obervable \(Q\): \(\bra{\psi_{\epsilon_0}} Q \left(\omega + i\eta +\epsilon_0  
++ H \right)^{-1} Q \ket{\psi_{\epsilon_0}}\)~\autocite{Dagotto1994}. However, we will not need them for the purpose of this thesis.
 
 
+\section{Correlation functions and Quantum Typicality}
+
+We are now ready to introduce \textbf{time dependent correlation functions} and a method of calculating them using already
+developed Krylov subspace machinery. This function is defined for a pair of operators \(A,B\) as
+\begin{equation}
+	\langle A(t) B \rangle =  \Tr\left(\hat{\rho}A(t)B\right)
+\end{equation}
+where \(\hat{\rho} = e^{-\beta H}/\Tr\left(e^{-\beta H}\right)\) is the canonical ensemble at temperature \(T = 1/\beta\),
+and \(A(t) = e^{i \hat{H} t} A e^{-i \hat{H} t}\) is understood via the Heisenberg picture. In this thesis we are
+interested only in the infinite temperature properties, so \(\hat{\rho} \to \frac{1}{\dimension} \mathbb{1}\), where \(\dimension\) is 
+the dimension of Hilbert space. Correlation functions allow us to probe the complex dynamics of interacting many-body
+systems and within Linear Response Theory are directly related to the transport properties~\autocite{Mahan2000}, so
+they have been an object of intense study
+~\autocite{Steinigeweg2014,Sirker2009,Steinigeweg2009,Karrasch2013a,Karrasch2012,Steinigeweg2015,Richter2019}.
+We can use a complete set of eigensetates \(\ket{n}\) of the Hamiltonian \(\hat{H}\) in order to transform
+the correlation function into the so called spectral representation
+\begin{align}
+	\langle A(t) B \rangle &=  \frac{1}{\dimension}\Tr\left(A(t)B\right) = \frac{1}{\dimension}\Tr\left(e^{i \hat{H} t} A e^{-i \hat{H} t}B\right)\nonumber\\
+	&= \sum_k \sum_{m,n} \bra{k} \ketbra{n}{n} e^{i \hat{H} t} A e^{-i \hat{H} t} \ketbra{m}{m} B \ket{k}  \nonumber \\
+	&= \sum_k \sum_{m,n} \delta_{k,n} e^{i (\varepsilon_n  - \varepsilon_m) t} \matrixel{n}{A}{m} \matrixel{m}{B}{k} \nonumber \\
+	&= \sum_{m,n} e^{i (\varepsilon_n  - \varepsilon_m) t} \matrixel{m}{A}{n}^{\ast} \matrixel{m}{B}{n}
+\end{align}
+which is useful for the calculations using Exact Diagonalization. Unfortunately, we have already estabilished that ED calculations
+suffer greatly from the exponential growth of the Hilbert space.
+
+We would like to have a more efficient method for calculating \(\langle A(t)B\rangle\), capable of accessing larger systems
+sizes, far beyond the reach of ED. The question is, how the Krylov subspace methods developed so far can help us?
+After all, we only know how to find the ground state and calculate time evolution of any state, whereas
+calculating a correlation function requires taking the trace over full grand canonical ensemble. This were the concept 
+of \textbf{Dynamical Quantum Typicality} (DQT) comes into play~\autocite{Popescu2006}. For the pedagogical purposes, we shall
+now briefly review its contents.
 
 
+% Start with \textcite{Richter2019} to introduce corr fun and ED expression. Then \textcite{Bertini2021,Popescu2006}, about details.
+% And about typicality and unitary invariant Haar measure \textcite{Bartsch2009,Goldstein2006}.
 
-% mention that not only time propagator is possible
-
-
-\section{Physical interlude: Quantum Typicality}
-
-\section{Correlation functions and the search for integrals of motion}
+\section{Application to the search for integrals of motion}
 
 
