@@ -36,7 +36,6 @@ tight-binding system\autocite{Mierzejewski2015a}.
 %  For the remainder of this chapter, let \(H\) denote arbitrary tight-binding Hamiltonian, \(\mathcal{H}\) the associated Hilbert space,
 %  and \(\dimension = \textrm{dim}\left(\mathcal{H}\right) < \infty\) its dimension.
 
-
  \section{Problems with Exact Diagonalization}
   The most straightforward numerical method for studying discrete quantum many-body systems is without a doubt
  Exact Diagonalization (ED)~\autocite{Weisse2008}. It belongs to the family of the so-called direct algorithms and
@@ -59,7 +58,7 @@ allows one to obtain numerically exact set of eigenvalues and eigenvectors and s
  do, by the virtue of requiring only a "black box" computation of matrix-vector product, which can be fairly easily implemented in a way
  requiring only \(O(\mu \dimension)\) operations.
 
-\section{Calculation of extremal eigenstates}
+\section{Calculation of ground state}
 Our goal in this section is to develop the Lanczos algorithm for ground state search of hermitian matrices, and along
 the way understand how and why it works.
 
@@ -640,33 +639,165 @@ and pure state Green's function of some obervable \(Q\): \(\bra{\psi_{\epsilon_0
 We are now ready to introduce \textbf{time dependent correlation functions} and a method of calculating them using already
 developed Krylov subspace machinery. This function is defined for a pair of operators \(A,B\) as
 \begin{equation}
-	\langle A(t) B \rangle =  \Tr\left(\hat{\rho}A(t)B\right)
+C_{AB}(t) = \Re\langle A(t) B \rangle =  \Re\Tr\left(\hat{\rho}A(t)B\right)
 \end{equation}
-where \(\hat{\rho} = e^{-\beta H}/\Tr\left(e^{-\beta H}\right)\) is the canonical ensemble at temperature \(T = 1/\beta\),
+where \(\hat{\rho} = e^{-\beta H}/\mathcal{Z},\; \mathcal{Z} = \Tr\left(e^{-\beta H}\right)\) is the canonical ensemble at temperature \(T = 1/\beta\),
 and \(A(t) = e^{i \hat{H} t} A e^{-i \hat{H} t}\) is understood via the Heisenberg picture. In this thesis we are
 interested only in the infinite temperature properties, so \(\hat{\rho} \to \frac{1}{\dimension} \mathbb{1}\), where \(\dimension\) is 
-the dimension of Hilbert space. Correlation functions allow us to probe the complex dynamics of interacting many-body
+the dimension of Hilbert space, however let us keep the temperature finite for a while, so we are able to see the results of subsequent
+developments in full. Correlation functions allow us to probe the complex dynamics of interacting many-body
 systems and within Linear Response Theory are directly related to the transport properties~\autocite{Mahan2000}, so
 they have been an object of intense study
 ~\autocite{Steinigeweg2014,Sirker2009,Steinigeweg2009,Karrasch2013a,Karrasch2012,Steinigeweg2015,Richter2019}.
 We can use a complete set of eigensetates \(\ket{n}\) of the Hamiltonian \(\hat{H}\) in order to transform
 the correlation function into the so called spectral representation
 \begin{align}
-	\langle A(t) B \rangle &=  \frac{1}{\dimension}\Tr\left(A(t)B\right) = \frac{1}{\dimension}\Tr\left(e^{i \hat{H} t} A e^{-i \hat{H} t}B\right)\nonumber\\
-	&= \sum_k \sum_{m,n} \bra{k} \ketbra{n}{n} e^{i \hat{H} t} A e^{-i \hat{H} t} \ketbra{m}{m} B \ket{k}  \nonumber \\
-	&= \sum_k \sum_{m,n} \delta_{k,n} e^{i (\varepsilon_n  - \varepsilon_m) t} \matrixel{n}{A}{m} \matrixel{m}{B}{k} \nonumber \\
-	&= \sum_{m,n} e^{i (\varepsilon_n  - \varepsilon_m) t} \matrixel{m}{A}{n}^{\ast} \matrixel{m}{B}{n}
+	\langle A(t) B \rangle &=  \frac{1}{\mathcal{Z}}\Tr\left(A(t)B e^{-\beta H}\right) = \frac{1}{\mathcal{Z}}\Tr\left(e^{i \hat{H} t} A e^{-i \hat{H} t}B e^{-\beta H}\right)\nonumber\\
+	&= \frac{1}{\mathcal{Z}} \sum_k \sum_{m,n} \bra{k} \ketbra{n}{n} e^{i \hat{H} t} A e^{-i \hat{H} t} \ketbra{m}{m} B e^{-\beta H} \ket{k}  \nonumber \\
+	&= \frac{1}{\mathcal{Z}} \sum_k \sum_{m,n} \delta_{k,n} e^{i (\varepsilon_n  - \varepsilon_m) t} e^{-\beta \varepsilon_k} \matrixel{n}{A}{m} \matrixel{m}{B}{k} \nonumber \\
+	&= \frac{1}{\mathcal{Z}} \sum_{m,n} e^{i (\varepsilon_n  - \varepsilon_m) t} e^{-\beta \varepsilon_n}\matrixel{m}{A}{n}^{\ast} \matrixel{m}{B}{n}
 \end{align}
 which is useful for the calculations using Exact Diagonalization. Unfortunately, we have already estabilished that ED calculations
 suffer greatly from the exponential growth of the Hilbert space.
-
-We would like to have a more efficient method for calculating \(\langle A(t)B\rangle\), capable of accessing larger systems
+We would like to have a more efficient method for calculating \(C_{AB}(t)\), capable of accessing larger systems
 sizes, far beyond the reach of ED. The question is, how the Krylov subspace methods developed so far can help us?
 After all, we only know how to find the ground state and calculate time evolution of any state, whereas
-calculating a correlation function requires taking the trace over full grand canonical ensemble. This were the concept 
-of \textbf{Dynamical Quantum Typicality} (DQT) comes into play~\autocite{Popescu2006}. For the pedagogical purposes, we shall
-now briefly review its contents.
+calculating a correlation function requires taking the trace over full ensemble of states. This were the concept 
+of \textbf{(Dynamical) Quantum Typicality} ((D)QT) comes into play, which broadly speaking states that
+a set of states with a common feature e.g. the same energy, should give a narrow distribution of some
+other feature e.g. expected value of some observable~\autocite{Bartsch2009a}. For the pedagogical purposes, we shall
+now briefly review two approaches to (D)QT, first in Sec.~\ref{sec:gcp} following the article by~\textcite{Popescu2006} focusing
+on a conceptual point of view, and second in Sec.~\ref{sec:DQT} following~\textcite{Bartsch2009a,Steinigeweg2014a}, giving us
+a concrete numerical tool for evaluating correlation functions, complete with rigorous error analysis.
 
+\subsection{\label{sec:gcp} General canonical principle}
+Roughly speaking, Quantum Typicality is an attempt to replace the fundamental postulate of statistical mechanics~\autocite{huang1987statistical},
+the equal \textit{a priori} probability postulate, by a principle that is fundamentally different, referring not to
+statistical ensembles or time averages, but to individual states. Another key characteristic of
+this new postulate, dubbed \textbf{general canonical principle}~\autocite{Popescu2006} or \textbf{canonical typicality}
+~\autocite{Goldstein2006} is the existence of a rigorous mathematical proof, unlike in the case of equal
+ \textit{a prior} probability postulate. Let us now consider an isolated quantum system, called the universe \(U\), partitioned
+ into two components, the system \(S\) and the much larger environment \(E\). In language of Hilbert spaces, this decomposition is
+ \(\mathcal{H}_U = \mathcal{H}_S \otimes \mathcal{H}_E\) such that \(\dimension_s = \mathrm{dim}\left(\mathcal{H}_S\right)
+ \ll d_E = \mathrm{dim}\left(\mathcal{H}_E\right)\). We can also impose some global constraint \(R\) for the universe, represented
+ as restriction of the allowed states to some subspace \(\mathcal{H}_R \subseteq  \mathcal{H}_S \otimes \mathcal{H}_E \).
+ We take the restricted universe to be in a maximally entangled state
+ \begin{equation}
+	\rho_R = \frac{1}{\dimension_R} \mathbb{1}_R
+ \end{equation}
+capturing our lack of knowledge about the system and being consistent with our intuition from statistical mechanics, about assigning
+\textit{a priori} equal probability to each pure state. Now, we define a canonical state of our system \(S\), as the density
+matrix obtaiend from \(\rho_R\) by tracing out the degrees of freedom of the environment \(E\)
+\begin{equation}
+	\rho_S^{\mathrm{C}} = \Tr_E\left(\rho_R\right)
+\end{equation}
+The crucial insight of canonical typicality is that we can take the universe to be in some pure state \(\rho_R = \ketbra{\psi}{\psi}\)
+and the state of the system 
+\begin{equation}
+	\rho_S(\psi) = \Tr_R \left(\ketbra{\psi}{\psi}\right)
+\end{equation}
+ will be very close to the canonical state
+\(\rho_S^{\mathrm{C}}\). Moreover, this `closeness' can be quanitfied very precisely, using a mathematical result from the
+asymptotic theory of finite dimensional normed spaces, called the Levy's lemma~\autocite{VitaliD.Milman1986}, which
+tells us about properties of typical points on on high-dimensional hypherspheres. Because of normalization, pure quantum states
+can be represented as point of a hyphersphere, hence the lemma is applicable.
+Let us now
+introduce some concepts necessary for the precise statement of the result. A precise notion of distance between two objects requires a metric and in
+our case a suitable metric will be induced by a norm on the vetor space of operators. There are two norms relevant
+for this problem, the \textbf{trace norm}
+\begin{equation}
+	\norm*{\rho}_1 = \Tr\abs{\rho} = \Tr\left(\sqrt{\rho^{\dagger}\rho}\right)
+\end{equation}
+and the \textbf{Hilbert-Schmidt norm}
+\begin{equation}
+	\norm*{\rho}_2 = \sqrt{\Tr\left(\rho^{\dagger}\rho\right)}\;.
+\end{equation}
+The trace norm is used directly in the preciste statements of the general canonical principle, because
+\(\norm*{\rho_1 - \rho_2}_1\) quantifies how hard is to tell apart \(\rho_1\) and \(\rho_2\) using measurements.
+Indeed, it can be shown that \(\norm*{\rho}_1 = \mathrm{sup}_{\norm{A}\leq 1} \Tr(\rho A)\), where \(\norm{\cdot}\) is the operator norm.
+The Hilbert-Schmidt norm is used during the proof, as it is a bit easier to manipulate and can be easily related to the
+trace norm using Jensen's inequality~\autocite{Jensen1906} for convex functions applied to \(\phi(x) = x^2\). Taking \(\{\lambda_i\}_{i=1}^{\dimension}\) to be
+the eigenvalues of \(\rho\) we have
+\begin{align}
+	\norm*{\rho}_1^2 &= \left(\sum_{i=1}^{\dimension}\abs{\lambda_i}\right)^2 = \dimension^2  \left(\sum_{i=1}^{\dimension}\frac{1}{\dimension}\abs{\lambda_i}\right)^2 
+	= \dimension^2 \phi\left(\sum_{i=1}^{\dimension}\frac{1}{\dimension}\abs{\lambda_i}\right) \nonumber \\
+	&\leq  {\dimension}^2 \sum_{i=1}^{\dimension}\frac{1}{\dimension} \phi\left(\lambda_i\right) 
+	= \dimension \sum_{i=1}^{\dimension} \abs{\lambda_i}^2 = \dimension \norm*{\rho}_2^2
+\end{align}
+Hence, \(\norm*{\rho}_1 \leq \sqrt{\dimension}\norm*{\rho}_2\). We shall meet the Hilbert-Schmidt norm again in the next section,
+when discussing the algorihm searching for local integrals of motion. 
+The precise theorem estabilishing the typicality is as follows
+\begin{theorem}
+	Let \(V\) be a function assigning to each subset of \(\mathcal{H}_U\) its volume (in the sense of a suitable Haar measure~\autocite{VitaliD.Milman1986}).
+	Then, the following inequality holds
+	\begin{equation}
+		\frac{V\left[\{\ket{\psi}\in\mathcal{H}_R \mid \frac{1}{2}\norm*{\rho_S(\psi) - \rho_S^{\mathrm{C}}}_1\geq \eta\}\right]}
+		{V\left[\{\ket{\psi}\in \mathrm{H}_R\}\right]} \leq \eta^{\prime}
+	\end{equation}
+	where 
+	\begin{align*}
+		\eta &= \epsilon + \frac{1}{2}\sqrt{\frac{\dimension_S}{\dimension_E^{\mathrm{eff}}}}\\
+		\eta^{\prime} &= 4 e^{-\frac{2}{9\pi^3} \dimension_R \epsilon^2 }
+	\end{align*}
+	and the effective dimension of environment subspace is \(\dimension_E^{\mathrm{eff}} = 
+	\frac{1}{\Tr\left(\rho_E^2\right)}\geq \frac{\dimension_R}{\dimension_S}\), where \(\rho_E = \Tr_S\left(\rho_R\right)\).
+\end{theorem}
+Mathematically inclined readers are
+referred to~\textcite{Popescu2006a} for the full proof of this theorem, but for us it is important
+what this theorem means, namely that all but exponentially rare pure states of the universe are on the level of the system
+indistinguishable from the canonical state \(\rho_S^{\mathrm{C}}\). 
+For our purposes in this thesis, we are interested in the case were the constraint \(R\) is that the total energy
+in the universe is close to some fixed value \(E\). Assuming that the systems is weakly coupled with the environment, it
+becomes a standard exercise in statistical mechanics to show that the canonical state is the Gibbs canonical ensemble
+\begin{equation}
+	\rho_S^{\mathrm{C}} \propto \exp\left(-\frac{H_S}{k_B T}\right)
+\end{equation}
+where \(H_s\) is the Hamiltonian of the system and \(T\) is the temperature set by the energy \(E\).
+
+
+\subsection{\label{sec:DQT} Dynamical Quantum Typicality}
+
+Another approach to Quantum Typicality is concerned with expectation values of quantum observables.
+It was shown that for states drawn from a particular distribution in Hilber space, the expectation
+value of a generic observables \(D\) are very close~\autocite{Reimann2007}. This result was further extended
+in the case of a unitarly invariant probability distribution, that is normalized states of the form
+\begin{equation}
+	\psi = \sum_{i = 1}^{\dimension} c_i \ket{i}
+\end{equation} 
+where \(\Re c_i\) and \(\Im c_i\) are drawn from multidimensional Gaussian distribuion with zero mean,
+and \(\{\ket{i}\}_{i=1}^{\dimension}\) is an arbitrary basis. Technicaly, because \(\sum_{i=1}^{\dimension}\abs{c_i}^2 = 1\),
+the coefficients are not indepentent, thus the full distribution is not necessarily Gaussian. However,
+Central Limit Theorem ensures that for \(\dimension\) suitably large the distribution is indeed close Gaussian,
+with the standard deviation equal \(1/\sqrt{2\dimension}\)~\autocite{Gemmer2004}.
+Using the \textbf{Hilbert space average method}, analytical expressions
+for both the average \(\mathrm{HA}\) and variance \(\mathrm{HV}\) of \(\matrixel{\psi}{D}{\psi}\)
+were derived~\autocite{Gemmer2004,Bartsch2009a}. They are as follows
+\begin{align}
+	\mathrm{HA}\left[\matrixel{\psi}{D}{\psi}\right] &= \frac{\Tr\left(D\right)}{\dimension} \label{eq:HA} \\
+	\mathrm{HV}\left[\matrixel{\psi}{D}{\psi}\right] &= \frac{1}{\dimension + 1}\left(
+		\frac{\Tr\left(D^2\right)}{\dimension} - \left(\frac{\Tr\left(D\right)}{\dimension}\right)^2
+	\right)\label{eq:HV}
+\end{align}
+\textcolor{red}{If time permits, derivation in the appendix.} Let us now take \(D(t) = \hat{\rho}A(t)B\)
+and and define a quanitity
+\begin{equation}
+	\alpha = \dimension \matrixel{\psi}{\sqrt{\hat{\rho}}A(t)B\sqrt{\hat{\rho}}}{\psi}
+\end{equation}
+Note that because density matrix \(\hat{\rho}\) is positive semi-definite and Hermitian, the
+square root \(\sqrt{\hat{\rho}}\) exists and is well defined. The next step is to plug in \(\alpha\)
+into equations~\eqref{eq:HA} and~\eqref{eq:HV}
+\begin{align}
+	\mathrm{HA}\left[\alpha\right] &= \Tr\left(\sqrt{\hat{\rho}}A(t)B\sqrt{\hat{\rho}}\right) = \Tr\left(\hat{\rho}A(t)B\right) \label{eq:HAalpha}\\
+	\mathrm{HV}\left[\alpha\right] &= \frac{\dimension^2}{\dimension + 1}\left(
+		\frac{\Tr\left(\left(\sqrt{\hat{\rho}}A(t)B\sqrt{\hat{\rho}}\right)^2\right)}{\dimension} - \left(\frac{\Tr\left(\sqrt{\hat{\rho}}A(t)B\sqrt{\hat{\rho}}\right)}{\dimension}\right)^2
+	\right) \nonumber\\
+	&\leq \frac{\dimension}{\dimension+1} \Tr\left(\hat{\rho}A(t)B \hat{\rho}A(t)B\right) < \Tr\left(\hat{\rho}A(t)B \hat{\rho}A(t)B\right)
+	\label{eq:HValpha}
+\end{align}
+Looking at eq.~\eqref{eq:HAalpha} we immediately see the desired way of calculating out correlation function
+\begin{equation}
+	C_{AB}(t) = 
+\end{equation}
 
 % Start with \textcite{Richter2019} to introduce corr fun and ED expression. Then \textcite{Bertini2021,Popescu2006}, about details.
 % And about typicality and unitary invariant Haar measure \textcite{Bartsch2009,Goldstein2006}.
