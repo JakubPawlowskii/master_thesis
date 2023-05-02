@@ -639,7 +639,7 @@ and pure state Green's function of some obervable \(Q\): \(\bra{\psi_{\epsilon_0
 We are now ready to introduce \textbf{time dependent correlation functions} and a method of calculating them using already
 developed Krylov subspace machinery. This function is defined for a pair of operators \(A,B\) as
 \begin{equation}
-C_{AB}(t) = \Re\langle A(t) B \rangle =  \Re\Tr\left(\hat{\rho}A(t)B\right)
+C_{AB}(t) \equiv \langle A(t) B \rangle =  \Tr\left(\hat{\rho}A(t)B\right)
 \end{equation}
 where \(\hat{\rho} = e^{-\beta H}/\mathcal{Z},\; \mathcal{Z} = \Tr\left(e^{-\beta H}\right)\) is the canonical ensemble at temperature \(T = 1/\beta\),
 and \(A(t) = e^{i \hat{H} t} A e^{-i \hat{H} t}\) is understood via the Heisenberg picture. In this thesis we are
@@ -663,7 +663,7 @@ We would like to have a more efficient method for calculating \(C_{AB}(t)\), cap
 sizes, far beyond the reach of ED. The question is, how the Krylov subspace methods developed so far can help us?
 After all, we only know how to find the ground state and calculate time evolution of any state, whereas
 calculating a correlation function requires taking the trace over full ensemble of states. This were the concept 
-of \textbf{(Dynamical) Quantum Typicality} ((D)QT) comes into play, which broadly speaking states that
+of \textbf{(Dynamical) Quantum Typicality} ((D)QT) comes into play, which broadly speaking postulates that
 a set of states with a common feature e.g. the same energy, should give a narrow distribution of some
 other feature e.g. expected value of some observable~\autocite{Bartsch2009a}. For the pedagogical purposes, we shall
 now briefly review two approaches to (D)QT, first in Sec.~\ref{sec:gcp} following the article by~\textcite{Popescu2006} focusing
@@ -757,28 +757,32 @@ where \(H_s\) is the Hamiltonian of the system and \(T\) is the temperature set 
 
 \subsection{\label{sec:DQT} Dynamical Quantum Typicality}
 
-Another approach to Quantum Typicality is concerned with expectation values of quantum observables.
-It was shown that for states drawn from a particular distribution in Hilber space, the expectation
-value of a generic observables \(D\) are very close~\autocite{Reimann2007}. This result was further extended
+Another approach to Quantum Typicality is not concern directly with quantum states, but with 
+expectation values of quantum observables instead.
+It was shown that for states drawn from a particular distribution in Hilbert space, the expectation
+values of a generic observable \(Q\) are very similar~\autocite{Reimann2007}. This result was further extended
 in the case of a unitarly invariant probability distribution, that is normalized states of the form
 \begin{equation}
-	\psi = \sum_{i = 1}^{\dimension} c_i \ket{i}
+	\ket{\psi} = \sum_{i = 1}^{\dimension} c_i \ket{i}
 \end{equation} 
 where \(\Re c_i\) and \(\Im c_i\) are drawn from multidimensional Gaussian distribuion with zero mean,
 and \(\{\ket{i}\}_{i=1}^{\dimension}\) is an arbitrary basis. Technicaly, because \(\sum_{i=1}^{\dimension}\abs{c_i}^2 = 1\),
 the coefficients are not indepentent, thus the full distribution is not necessarily Gaussian. However,
 Central Limit Theorem ensures that for \(\dimension\) suitably large the distribution is indeed close Gaussian,
-with the standard deviation equal \(1/\sqrt{2\dimension}\)~\autocite{Gemmer2004}.
+with the standard deviation equal \(1/\sqrt{2\dimension}\)~\autocite{Gemmer2009}.
 Using the \textbf{Hilbert space average method}, analytical expressions
-for both the average \(\mathrm{HA}\) and variance \(\mathrm{HV}\) of \(\matrixel{\psi}{D}{\psi}\)
-were derived~\autocite{Gemmer2004,Bartsch2009a}. They are as follows
+for both the average \(\mathrm{HA}\) and variance \(\mathrm{HV}\) of \(\matrixel{\psi}{Q}{\psi}\)
+were derived~\autocite{Bartsch2009a}. They are as follows
 \begin{align}
-	\mathrm{HA}\left[\matrixel{\psi}{D}{\psi}\right] &= \frac{\Tr\left(D\right)}{\dimension} \label{eq:HA} \\
-	\mathrm{HV}\left[\matrixel{\psi}{D}{\psi}\right] &= \frac{1}{\dimension + 1}\left(
-		\frac{\Tr\left(D^2\right)}{\dimension} - \left(\frac{\Tr\left(D\right)}{\dimension}\right)^2
+	\mathrm{HA}\left[\matrixel{\psi}{Q}{\psi}\right] &= \frac{\Tr\left(Q\right)}{\dimension} \label{eq:HA} \\
+	\mathrm{HV}\left[\matrixel{\psi}{Q}{\psi}\right] &= \frac{1}{\dimension + 1}\left(
+		\frac{\Tr\left(Q^2\right)}{\dimension} - \left(\frac{\Tr\left(Q\right)}{\dimension}\right)^2
 	\right)\label{eq:HV}
 \end{align}
-\textcolor{red}{If time permits, derivation in the appendix.} Let us now take \(D(t) = \hat{\rho}A(t)B\)
+Proof of the above equations is not difficult conceputally, however requires evaluation of rather
+cumbersome integrals over high-dimensional hyphersphers so we shall refrain from spelling it out in full.
+Interested reader can find all the details in a book by~\textcite{Gemmer2009}.
+Let us now take \(Q(t) = \hat{\rho}A(t)B\)
 and and define a quanitity
 \begin{equation}
 	\alpha = \dimension \matrixel{\psi}{\sqrt{\hat{\rho}}A(t)B\sqrt{\hat{\rho}}}{\psi}
@@ -787,18 +791,29 @@ Note that because density matrix \(\hat{\rho}\) is positive semi-definite and He
 square root \(\sqrt{\hat{\rho}}\) exists and is well defined. The next step is to plug in \(\alpha\)
 into equations~\eqref{eq:HA} and~\eqref{eq:HV}
 \begin{align}
-	\mathrm{HA}\left[\alpha\right] &= \Tr\left(\sqrt{\hat{\rho}}A(t)B\sqrt{\hat{\rho}}\right) = \Tr\left(\hat{\rho}A(t)B\right) \label{eq:HAalpha}\\
+	\mathrm{HA}\left[\alpha\right] &= \Tr\left(\sqrt{\hat{\rho}}A(t)B\sqrt{\hat{\rho}}\right) = \Tr\left(\hat{\rho}A(t)B\right) = \frac{\Tr\left(e^{-\beta H}A(t)B\right)}{\mathcal{Z}} \label{eq:HAalpha}\\
 	\mathrm{HV}\left[\alpha\right] &= \frac{\dimension^2}{\dimension + 1}\left(
 		\frac{\Tr\left(\left(\sqrt{\hat{\rho}}A(t)B\sqrt{\hat{\rho}}\right)^2\right)}{\dimension} - \left(\frac{\Tr\left(\sqrt{\hat{\rho}}A(t)B\sqrt{\hat{\rho}}\right)}{\dimension}\right)^2
 	\right) \nonumber\\
 	&\leq \frac{\dimension}{\dimension+1} \Tr\left(\hat{\rho}A(t)B \hat{\rho}A(t)B\right) < \Tr\left(\hat{\rho}A(t)B \hat{\rho}A(t)B\right)
 	\label{eq:HValpha}
 \end{align}
-Looking at eq.~\eqref{eq:HAalpha} we immediately see the desired way of calculating out correlation function
+Looking at eq.~\eqref{eq:HAalpha} we immediately see the desired way of calculating out correlation function.
 \begin{equation}
-	C_{AB}(t) = 
+	C_{AB}(t) = \Re \frac{\Tr\left(e^{-\beta H}A(t)B\right)}{\mathcal{Z}} = \Re \frac{\dimension}{\mathcal{Z}} 
+	\matrixel{\psi}{e^{-\frac{\beta H}{2}} e^{i H t}A e^{-i H t} Be^{\frac{-\beta H}{2}}}{\psi} + \epsilon
 \end{equation}
-
+where \(\epsilon\) is the error we made by using just one random state \(\ket{\psi}\). 
+Let us massage this expression a bit more by introducing two auxiliary states 
+\(\ket{\psi_{\beta}(t)} = e^{-i H t} e^{-\frac{-\beta H}{2}} \ket{\psi} \) and
+\(\ket{\phi_{\beta}(t)} = e^{-i H t} B e^{-\frac{-\beta H}{2}} \ket{\psi} \). We can also
+calculate the partition function as
+\begin{equation}
+	\mathcal{Z} = \Tr\left(e^{-\beta H}\right) = \dimension \matrixel{\psi}{e^{-\beta H}}{\psi} = 
+	\dimension \braket{\psi_{\beta}(0)}{\psi_{\beta}(0)}
+\end{equation}
+\textcolor{red}{What happens to the error from approximatin \(\mathcal{Z}\)? Maybe normalization will help.
+Think about it.}
 % Start with \textcite{Richter2019} to introduce corr fun and ED expression. Then \textcite{Bertini2021,Popescu2006}, about details.
 % And about typicality and unitary invariant Haar measure \textcite{Bartsch2009,Goldstein2006}.
 
