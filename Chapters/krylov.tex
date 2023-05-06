@@ -21,18 +21,20 @@ found in~\textcite{Sandvik2010} and PhD thesis by~\textcite{Crivelli2016}.
 
 \textcolor{red}{Reproduce Figure 32.1 about the difference between direct and iterative algorithms}
 
-We start this chapter by quickly sketching the problems with "direct" algorithms such as Exact Diagonalization, and quickly
-follow with the fundamental iterative algorithm for sparse nonhermitian matrices, the Arnoldi iteration. Its outputs admits several
+We start this chapter by quickly sketching the problems with "direct" algorithms such as Exact Diagonalization (ED), and quickly
+follow with the fundamental iterative algorithm for sparse nonhermitian matrices, the Arnoldi iteration. Its output admits several
 possible interpretations, however we shall focus on the problem of locating extremal eigenvalues.
 Afterwards, we restrict our attention to the class of hermitian matrices, to which of course all typical tigh-binding Hamiltonians
 belong to, and describe the Lanczos algorithm, which allows for efficient calculation of the ground state eigenvalue and eigenvector,
 and thus the ground state properties of a system.
 Yet in this work we are mainly interested in infinite temperature calculations, for which in principle sampling of the whole
 spectrum is required. To this end, in subsequent sections we develop a scheme for time evolution of arbitrary state,
-called the Krylov propagator~\autocite{Park1986}, and combine it with the idea of Dynamical Quantum Typicality (DQT),
+called the Krylov propagator~\autocite{Park1986}, and in the last section combine it with the idea of Dynamical Quantum Typicality (DQT),
 which states that a single pure state can have the same properties as an ensemble density matrix~\autocite{Gemmer2003,Goldstein2006,Popescu2006}.
-We finish this chapter with a proposal of employing this method to the identification of local integrals of motion in a given
-tight-binding system\autocite{Mierzejewski2015a}.
+This will produce a numerical algorithm for efficient calculation of time dependent correlation functions without the need
+for Exact Diagonalization.
+% We finish this chapter with a proposal of employing this method to the identification of local integrals of motion in a given
+% tight-binding system\autocite{Mierzejewski2015a}.
 %  For the remainder of this chapter, let \(H\) denote arbitrary tight-binding Hamiltonian, \(\mathcal{H}\) the associated Hilbert space,
 %  and \(\dimension = \textrm{dim}\left(\mathcal{H}\right) < \infty\) its dimension.
 
@@ -639,7 +641,7 @@ and pure state Green's function of some obervable \(Q\): \(\bra{\psi_{\epsilon_0
 We are now ready to introduce \textbf{time dependent correlation functions} and a method of calculating them using already
 developed Krylov subspace machinery. This function is defined for a pair of operators \(A,B\) as
 \begin{equation}
-C_{AB}(t) \equiv \langle A(t) B \rangle =  \Tr\left(\hat{\rho}A(t)B\right)
+\tilde{C}_{AB}(t) \equiv \Re \langle A(t) B \rangle = \Re \Tr\left(\hat{\rho}A(t)B\right)
 \end{equation}
 where \(\hat{\rho} = e^{-\beta H}/\mathcal{Z},\; \mathcal{Z} = \Tr\left(e^{-\beta H}\right)\) is the canonical ensemble at temperature \(T = 1/\beta\),
 and \(A(t) = e^{i \hat{H} t} A e^{-i \hat{H} t}\) is understood via the Heisenberg picture. In this thesis we are
@@ -788,7 +790,7 @@ and and define a quanitity
 	\alpha = \dimension \matrixel{\psi}{\sqrt{\hat{\rho}}A(t)B\sqrt{\hat{\rho}}}{\psi}
 \end{equation}
 Note that because density matrix \(\hat{\rho}\) is positive semi-definite and Hermitian, the
-square root \(\sqrt{\hat{\rho}}\) exists and is well defined. The next step is to plug in \(\alpha\)
+square root \(\sqrt{\hat{\rho}}\) exists and is well defined. The next step is to plug \(\alpha\)
 into equations~\eqref{eq:HA} and~\eqref{eq:HV}
 \begin{align}
 	\mathrm{HA}\left[\alpha\right] &= \Tr\left(\sqrt{\hat{\rho}}A(t)B\sqrt{\hat{\rho}}\right) = \Tr\left(\hat{\rho}A(t)B\right) = \frac{\Tr\left(e^{-\beta H}A(t)B\right)}{\mathcal{Z}} \label{eq:HAalpha}\\
@@ -798,25 +800,59 @@ into equations~\eqref{eq:HA} and~\eqref{eq:HV}
 	&\leq \frac{\dimension}{\dimension+1} \Tr\left(\hat{\rho}A(t)B \hat{\rho}A(t)B\right) < \Tr\left(\hat{\rho}A(t)B \hat{\rho}A(t)B\right)
 	\label{eq:HValpha}
 \end{align}
-Looking at eq.~\eqref{eq:HAalpha} we immediately see the desired way of calculating out correlation function.
+Looking at eq.~\eqref{eq:HAalpha} we immediately see the desired way of calculating the correlation function.
 \begin{equation}
-	C_{AB}(t) = \Re \frac{\Tr\left(e^{-\beta H}A(t)B\right)}{\mathcal{Z}} = \Re \frac{\dimension}{\mathcal{Z}} 
-	\matrixel{\psi}{e^{-\frac{\beta H}{2}} e^{i H t}A e^{-i H t} Be^{\frac{-\beta H}{2}}}{\psi} + \epsilon
+	\tilde{C}_{AB}(t) = \Re \frac{\Tr\left(e^{-\beta H}A(t)B\right)}{\mathcal{Z}} = \Re \frac{\dimension}{\mathcal{Z}} 
+	\matrixel{\psi}{e^{-\frac{\beta H}{2}} e^{i H t}A e^{-i H t} Be^{\frac{-\beta H}{2}}}{\psi} + \Re \epsilon
+	\label{eq:corr_dqt}
 \end{equation}
 where \(\epsilon\) is the error we made by using just one random state \(\ket{\psi}\). 
 Let us massage this expression a bit more by introducing two auxiliary states 
 \(\ket{\psi_{\beta}(t)} = e^{-i H t} e^{-\frac{-\beta H}{2}} \ket{\psi} \) and
 \(\ket{\phi_{\beta}(t)} = e^{-i H t} B e^{-\frac{-\beta H}{2}} \ket{\psi} \). We can also
-calculate the partition function as
+calculate the partition function using the random state \(\ket{\psi}\) as
 \begin{equation}
 	\mathcal{Z} = \Tr\left(e^{-\beta H}\right) = \dimension \matrixel{\psi}{e^{-\beta H}}{\psi} = 
 	\dimension \braket{\psi_{\beta}(0)}{\psi_{\beta}(0)}
+	\label{eq:partition_dqt}
 \end{equation}
-\textcolor{red}{What happens to the error from approximatin \(\mathcal{Z}\)? Maybe normalization will help.
-Think about it.}
-% Start with \textcite{Richter2019} to introduce corr fun and ED expression. Then \textcite{Bertini2021,Popescu2006}, about details.
-% And about typicality and unitary invariant Haar measure \textcite{Bartsch2009,Goldstein2006}.
+Combining~\eqref{eq:corr_dqt} and~\eqref{eq:partition_dqt}, we arrive at the final expression, as seen in literature~\autocite{Steinigeweg2014,Steinigeweg2015,Richter2019}
+\begin{equation}
+	\tilde{C}_{AB}(t) = \Re \frac{\matrixel{\psi_{\beta}(t)}{A}{\phi_{\beta}(t)}}{\braket{\psi_{\beta}(0)}{\psi_{\beta}(0)}} + \Re \epsilon
+	\label{eq:corr_dqt_final}
+\end{equation}
+We have sucessfully shifted time evolution and the action of density matrix to state vectors instead of operators,
+hence we may apply the Krylov time propagator, studied in previous section, to calculate both real and imaginary time
+evolution. Apart from that, the only other numerical calculations are sparse matrix-vector multiplication\footnote{Matrices representing local observables will also be sparse.}
+and inner products of vectors, which are much less demanding than full exact diagonalization. 
 
-\section{Application to the search for integrals of motion}
+The final thing left is to estimate the error \(\epsilon\), in order to show that this approach actually makes sense.
+From eq.~\eqref{eq:HValpha} it is clear that the Hilbert Space Average of \(\epsilon\) is zero, as
+\begin{equation}
+	\mathrm{HA}(\epsilon) = \mathrm{HA}\left(\alpha - \Tr\left(\hat{\rho}A(t)B\right)\right) = 0
+\end{equation}
+Equation~\eqref{eq:HValpha}, for Hilber Space Variance, allows us to estimate the standard deviation 
+\begin{align}
+	\left(\sigma(\epsilon)\right)^2 &= \mathrm{HV}\left[\epsilon\right] = \mathrm{HV}\left[\alpha\right] < \Tr\left(\hat{\rho}A(t)B \hat{\rho}A(t)B\right) \nonumber\\
+	&= \sum_{m,n} \frac{e^{-\beta \varepsilon_m}}{\mathcal{Z}} \matrixel{m}{A(t)B}{n} \frac{e^{-\beta \varepsilon_n}}{\mathcal{Z}} \matrixel{n}{A(t)B}{m}\nonumber \\
+	&\textcolor{red}{<}  \sum_{m,n} \frac{e^{-\beta \varepsilon_m}}{\mathcal{Z}} \matrixel{m}{A(t)B}{n} \frac{e^{-\beta \varepsilon_0}}{\mathcal{Z}} \matrixel{n}{A(t)B}{m} \nonumber\\
+	&= \frac{1}{\Tr\left(e^{-\beta(H-\varepsilon_0)}\right)} \sum_{m} \frac{e^{-\beta \varepsilon_m}}{\mathcal{Z}} \matrixel{m}{A(t)B A(t) B}{m} \nonumber\\
+	&= \frac{1}{\Tr\left(e^{-\beta(H-\varepsilon_0)}\right)} \Tr\left(\hat{\rho} A(t)B A(t) B\right)
+\end{align}
+Where the red inequality follows from the fact that Boltzmann factor is a strictly decreasing function and assuming that the spectrum
+of \(H\) is ordered in increasing fashion. Defining the effective dimension \(\dimension_{\mathrm{eff}} \equiv \Tr\left(e^{-\beta(H-\varepsilon_0)}\right)\),
+we finally obtain the upper bound on standard deviation of error as 
+\begin{equation}
+	\sigma\left(\Re \epsilon\right) < \sqrt{\frac{\Re \langle A(t)B A(t) B \rangle}{\dimension_{\mathrm{eff}}}}
+\end{equation}
+From this bound we see that at infinite temperature, the error is exponentially supressed in system size and thus for suitably
+large systems even a single pure state \(\ket{\psi}\) is enough to obtain a very good approximation of the correlation function.
+It becomes progressively worse with lower temperature, however as the mean error is \(0\) we can always average over a few random
+states. Fortunately, in this thesis we are only interested in the case \(\beta \to 0\), so usually a single run will be enough.
+
+\textcolor{red}{
+As an example application, we shall look at spin current in XXZ model. Sum rule, normalized corr etc.
+}
+
 
 
