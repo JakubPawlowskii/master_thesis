@@ -4,7 +4,7 @@
 \thispagestyle{chapterBeginStyle}
 
 One of the two purposes of this thesis is to develop and test a set of numerical tools based on the Krylov subspace methods,
-which is a family of iterative methods concerned with projecting high dimensional problems into smaller dimension subspaces
+which is a family of \textbf{iterative} methods concerned with projecting high dimensional problems into smaller dimension subspaces
 and solving them therein. Given a finite dimensional vector space \(V \cong \CC^m \), a vector \(\vectorbold{v}\in \CC^m\) and
 a linear operator \(A\in\CC^{m\cross m}\), represented as a matrix, the \textbf{k-th Krylov subspace} \(\K{k}\) is defined as 
 \begin{equation}
@@ -19,9 +19,7 @@ For the initial part of this exposition we follow the excellent textbook of nume
 whereas for further applications to quantum many-body physics we rely on the excellent treatments of the topic
 found in~\textcite{Sandvik2010} and PhD thesis by~\textcite{Crivelli2016}.
 
-\textcolor{red}{Reproduce Figure 32.1 about the difference between direct and iterative algorithms}
-
-We start this chapter by quickly sketching the problems with "direct" algorithms such as Exact Diagonalization (ED), and quickly
+We start this chapter by quickly sketching the problems with \textbf{direct} algorithms such as Exact Diagonalization (ED), and quickly
 follow with the fundamental iterative algorithm for sparse nonhermitian matrices, the Arnoldi iteration. Its output admits several
 possible interpretations, however we shall focus on the problem of locating extremal eigenvalues.
 Afterwards, we restrict our attention to the class of hermitian matrices, to which of course all typical tigh-binding Hamiltonians
@@ -39,9 +37,20 @@ for Exact Diagonalization.
 %  and \(\dimension = \textrm{dim}\left(\mathcal{H}\right) < \infty\) its dimension.
 
  \section{Problems with Exact Diagonalization}
+
+ \begin{figure}[htbp]
+	\centering
+	\includegraphics{Figures/direct_iterative.pdf}
+	\caption{Schematic representatation of difference between direct (such as Exact Diagonalization) and
+	iterative (such as Lanczos iteration) algorithms. The advantage of iterative methods comes from the fact that they
+	can be stopped midway, after desired precision is reached. On the other hand, direct algorithms require all \(O(m^3)\)
+	operations before any results can be extracted. Figure reproduced from~\textcite{Trefethen1997}.}
+	\label{fig:direct_iter}
+\end{figure}
+
   The most straightforward numerical method for studying discrete quantum many-body systems is without a doubt
- Exact Diagonalization (ED)~\autocite{Weisse2008}. It belongs to the family of the so-called direct algorithms and
-allows one to obtain numerically exact set of eigenvalues and eigenvectors and subsequently compute any desired properties
+ Exact Diagonalization (ED)~\autocite{Weisse2008}. It belongs to the family of the so-called direct algorithms (cf. Fig~\ref{fig:direct_iter})
+and allows one to obtain numerically exact set of eigenvalues and eigenvectors and subsequently compute any desired properties
  of the system, be it thermal expectation values, time evolution, Green's functions etc. Unfortunately, the starting point of any
  ED calculation is the expression of the Hamiltonian as a dense matrix, in the Hilbert space basis of choice. Taking into account
  the fact that the dimension many-body Hilbert space grows exponentially with the size of the system, the memory cost quickly becomes
@@ -53,8 +62,18 @@ allows one to obtain numerically exact set of eigenvalues and eigenvectors and s
  is the next major hurdle. Therefore, it is exceedingly
  difficult to probe the thermodynamic limit physics and ED calculations suffer from finite size effects.
  
- Closer investigation of the Hamiltonian matrix, expressed in computational basis\footnote{For spin systems, it is the eigenbasis of \(\Sz\) operator.}
- quickly reveals the inefficiency of dense storage. Looking at Figure~(\textcolor{red}{Here figure with Hamiltonian, basis ordered by magnetization}), we see that most of
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.7\linewidth]{Figures/matrix_elements.pdf}
+	\caption{Ising basis representation of matrix of the XXZ Hamiltonian \(H = J\sum_{i} \left[\frac{1}{2}\left(\Sp_i \Sm_{i+1} +
+	 \Sm_{i}\Sp_{i+1}\right) + \Delta \Sz_i \Sz_{i+1}\right]\) on \(10\) sites, with \(J = 1\) and \(\Delta=0.5\).
+	Basis states are sorted according to the magnetization which yields the block structure emphasized by dashed lines.
+	The filling factor \(\mu\) is approximately \(0.005\).}
+	\label{fig:sparse_structure}
+\end{figure}
+
+ Closer investigation of the Hamiltonian matrix, expressed in computational basis\footnote{For spin systems, it is the eigenbasis of \(\Sz\) operator, also called the Ising basis.}
+ quickly reveals the inefficiency of dense storage. Looking at Figure~\ref{fig:sparse_structure}, we see that most of
  the matrix elements are zero. In fact only about \(\mu \propto \dimension \) out of \(\dimension^2\) matrix elements
  are non-zero. Hence, a numerical scheme leveraging this sparsity is highly desirable. This is exactly what the Krylov subspace algorithms
  do, by the virtue of requiring only a "black box" computation of matrix-vector product, which can be fairly easily implemented in a way
