@@ -1,7 +1,111 @@
 \chapter{Introduction}
 \thispagestyle{chapterBeginStyle}
 
-The results concerning spin transport in the long range XXZ have already been published in~\textcite{Mierzejewski2023}.
-\textcolor{red}{Writing something about computational basis}
+\section{Nearly integrable quantum systems}
+One of the most widely disputed problems in modern physics is the reconciliation
+of irreversible thermodynamics~\autocite{huang1987statistical,feynman1998statistical}
+with unitary, time-reversible dynamics predicted by quantum mechanics~\autocite{Landau1976,Sakurai2017}.
+In other words, it is the question of whether a generic, isolated quantum system can and will `forget' about its
+initial, nonequilibrium state. In recent years, this problem has attracted the attention of many physicists,
+especially taking into account experimental evidence of the loss of information, or thermalization, in isolated
+systems~\autocite{Trotzky2012325,Rigol2012,Rigol2008854,Hung2010,Hofferberth2007}. Understanding this phenomenon is a necessary first step to
+controlling it, and perhaps to the creation of very sought-after, robust systems which do not exhibit such
+behaviour. After all, `forgetting' about the initial state is equivalent to scrambling of quantum information
+and decoherence, which has been known for a long time to be one of the most important hindrances on
+the way to a functional and scalable quantum computer~\autocite{Shor1995,LewisSwan2019}. Given the multitude
+of possible applications of such a device, both purely scientific and commercial, controlling thermalization
+in isolated systems could be the next big breakthrough~\autocite{MacQuarrie2020}.
+ 
+\paragraph{Preventing thermalization} A possible theoretical explanation of the thermalization in isolated quantum systems
+has been proposed in seminal papers by~\textcite{Deutsch19912046,Srednicki1994} in form of an ansatz for matrix elements of 
+local quantum observables \(A_{mn} = \matrixel{m}{A}{n}\) (in eigenbasis \(H\ket{n}=\varepsilon_n \ket{n}\) of some Hamiltonian),
+known as \textbf{Eigenstate Thermalization Hypothesis} (ETH)
+\begin{equation}
+    A_{mn} = A(\bar{\varepsilon}) \delta_{mn} + \mathrm{e}^{-S(\bar{\varepsilon})/2}f_{A}(\bar{\varepsilon},\omega)R_{mn}
+    \label{eq:ETH}
+\end{equation}
+where \(\bar{\varepsilon} = (\varepsilon_n+\varepsilon_m)/2\), \(\omega=\varepsilon_n-\varepsilon_m\) and \(S(\bar{\varepsilon})\) is
+the thermodynamic entropy at energy \(\bar{\varepsilon}\),  \(A(\bar{\varepsilon})\) and \(f_{A}(\bar{\varepsilon},\omega)\) are
+some smooth functions of their parameters and
+\(R_{mn}\) is a random real or complex variable. The origin of ETH is the Random Matrix Theory~\autocite{Wigner1955548,mehta2004random},
+but it was the key insight of Deutsch and Srednicki that connected it directly to statistical mechanics.
+Unraveling the physics behind equation~\eqref{eq:ETH}, we have that, for generic systems,
+long-time (thermalized) expected values of local observables are related to the predictions of Gibbsian ensembles
+known from equilibrium statistical physics~\autocite{DAlessio2016}. Diagonal matrix elements \(A_{nn} \simeq A(\varepsilon_n)\) are smooth functions of energy and
+coincide with the microcanonical average at energy \(\varepsilon_n\), whereas the off-diagonal matrix elements and fluctuations
+of the diagonal ones are postulated to decrease exponentially with system size~\autocite{Beugeling2014}.
+While ETH has been shown to hold analytically in only a few selected systems~\autocite{Magan2016}, numerical clues can be
+found in various systems with many-body interactions such as hard core bosons, interacting spin 
+chains~\autocite{Santos2010_2,Rigol2010,Khatami2013,Rigol2009a} and fermions~\autocite{Neuenhahn2012,Rigol2009}.
 
-Write overview of the Krylov chapter, in particulat why we introduce all these things
+Given the lack of a definitive answer to the question of when ETH holds and the fact that our 
+ultimate goal is preventing thermalization, it is desirable to look for systems
+which explicitly violate this hypothesis. There are a few known classes of such systems:
+quantum integrable models, systems with `scars', which freeze thermalization for
+some infrequent, but physically relevant states~\autocite{Turner2018a,Turner2018}, quantum time crystals with
+broken time-translation symmetry~\autocite{Wilczek2012,Sacha2017} and systems with many-body interactions together
+with some form of disorder~\autocite{Basko_2006}. As the thermalization in those systems is slowed down or even
+completely stopped, in principle they could preserve information about the initial state for an arbitrarily long time. 
+This behaviour is in strong contrast with what is usually observed in interacting, many-body systems, namely fast
+dynamics on the time scales of tens of femtoseconds~\autocite{DalConte2015}.
+In this thesis we shall concern ourselves only with the case of \textbf{quantum integrable models}.
+
+\paragraph{Robustness of integrability} 
+In quantum mechanics, as opposed to classical mechanics, a unique definition of integrability
+is yet to emerge~\autocite{Caux2011,Yuzbashyan2013}. Nevertheless, a common practice is to take as a sufficient condition of
+integrability the presence of an extensive number (increasing linearly with the system size) of local observables
+that are integrals of motion, i.e. commute with the Hamiltonian, called LIOMs for short. The significance of such
+systems is at least twofold. 
+First, as already mentioned, they can provide a new method of storage of information, encoded in expectation values
+of LIOMs, which can pave the way for the creation of the sought-after quantum memory.
+Second, they are among a few quantum many-body systems that are susceptible to analytical methods and so provide
+a rich playground for both theoretical physicists and mathematicians. Tools such as Algebraic Bethe
+Ansatz~\autocite{Faddeev1995,Faddeev1996,Korepin1993} or Generalized Hydrodynamics~\autocite{Agrawal2020,Friedman2020,
+Bertini2021,Bastianello2021,Bulchandani2021} lead to considerable insight regarding the nature of integrable systems.
+
+Unfortunately, it is often the case for integrable systems such as Heisenberg, Hubbard or Lieb-Linger
+models, that their integrability relies on a certain set of fine-tuned parameters. Any deviation from these parameters, eg.
+in the form of some perturbation, can very easily destroy the integrability. Exactly this situation takes place in most
+experimental setups (albeit some signatures of integrability were observed~\autocite{Khemani2019}, suggesting sufficient
+proximity to an integrable system),  even though the capabilities and precision of control have
+reached remarkable levels~\autocite{Browaeys2020}. Therefore, \textbf{more realistic systems
+are expected to be described by nearly integrable systems}, containing some non-negligible perturbations that
+impact integrability~\autocite{Zotos2004,Brandino2015}.
+This renders all the formalism for investigations of purely
+integrable systems inapplicable and forces one to rely mostly on numerical methods (for a recent review
+see~\textcite{Bertini2021}).
+A general expectation for such nearly integrable systems is such, that in the thermodynamic limit, an
+arbitrarily small perturbation should restore generic chaotic dynamics, which leads to thermalization
+~\autocite{LeBlond2021}. However, there
+are some reports about surviving traces of integrability, for example in the form of residual quasiconserved
+quantities~\autocite{Brandino2015}. Unfortunately, in most cases numerical methods can only access finite 
+systems and indirect transitions to infinite system sizes, such as finite-size scaling, pose great difficulties
+when executed properly, eg. first thermodynamic limit and then infinite time limit~\autocite{Sirker2014,CamposVenuti2010}.
+Therefore, it is important to first gain a deep understanding of \textbf{weakly-perturbed finite systems}. Such
+endeavour immediately raises a few questions: How strong should a perturbation in a finite
+systems be to destroy integrability and how to efficiently describe resulting slow dynamics? 
+Recently, those and other similar questions have been asked concerning the phenomena of ergodicity breaking
+phase transitions~\autocite{Suntajs2020,Suntajs2022}.
+Insight from experiments with ultracold atomic gases suggest also another way for nearly integrable systems to emerge,
+namely generic, chaotic one- and quasi-one dimensional systems that exhibit approximately integrable dynamics on experimentally relevant timescales,
+because of a lack of rapid local thermalization~\autocite{Polkovnikov2011863,Gopalakrishnan2023}.
+
+In classical mechanics, answers to those types of questions are given by the Hamiltonian perturbation
+theory~\autocite{arnold2013mathematical}. There, the distinction between integrable and non-integrable systems is
+well understood. It is known, that for classical systems with \(n\) degrees of freedom
+to be integrable, it is sufficient to have \(n\) integrals of motion \(\{H,F_i\} = 0,\; i \in \{1,\ldots,n\} \) that
+are in involution, i.e. \(\{F_i,F_j\} = 0\) for any \(i,j\in\{1,\ldots,n\}\). Then, dynamics are restricted to an \(n\)-dimensional
+torus in the phase space. The fate of such invariant tori under integrability-breaking perturbations is given by the
+famous Kolmogorov-Arnold-Moser theorem (KAM)~\autocite{Kolmogorov1954,Arnold1963,Moser1962}, stating that for systems
+with finite degrees of freedom, majority of the invariant tori occupying the phase space survive the influence of small 
+perturbations. However, as of now, there is no equivalent of this result in quantum mechanics.
+Nevertheless, such quantum systems are very intriguing as they can facilitate robust
+prethermalization plateaux, i.e. dynamics that at intermediate times resemble that of integrable models
+(at least for suitably weak perturbations), even though the system eventually thermalizes at longer
+times~\autocite{mallayya2019,Bertini2015,Berges2004,Langen2016}.
+
+
+\section{Motivation and aim of this dissertation}
+We'll start far away from physics, in an abstract world of mathematics, but quickly converge towards it.
+\section{Long range anisotropic Heisenberg model}
+\textcolor{red}{why long range models are cool - paraphrase intro to recent PRB}
