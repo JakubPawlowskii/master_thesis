@@ -546,9 +546,20 @@ small \(\varepsilon\), e.g. \(10^{-14}\). As long as it is nondegenerate, the co
 both lowest eigenvalue and corresponding eigenvector. To reliably obtain higher eigenstates one needs to perform
 reorthogonalization, but it requires keeping the matrix \(Q_n\) in memory which can be very costly.
 
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\linewidth]{Figures/lanczos_L_8.pdf}
+	\caption{Plot of Arnoldi eigenvalues as a function of Lanczos steps, for a XXZ chain on \(8\) sites in the
+	subspace with \(0\) total magnetization. The extremal eigenvalues converge very quickly to the values matching
+	Exact Diagonalization. The numerical instability of Lanczos iteration is especially visible for a few lowest
+	eigenvalues, where mutliple ghosts start appearing. After \(\binom{8}{4} = 70\) Lanczos steps, 
+	we should observe the exact spectrum emerging from Arnoldi approximates. However,
+	we see that the ground state is triple degenerated, instead of unique as it should be.}
+	\label{fig:ghosts}
+\end{figure}
+
 This instability can manifest itself in an interesting way, namely in form of additional eigenvalues, called Lanczos `ghosts'.
-They are spurious copies of already found eigenvalues, which start apperating after too many iteration steps (cf. fig. ...)
-\textcolor{red}{plot with Lanczos ghosts}
+They are spurious copies of already found eigenvalues, which start apperating after too many iteration steps (cf. Fig.~\ref{fig:ghosts})
 They are difficult to understand rigorously, however~\textcite{Trefethen1997} offer a nice heuristic explanatation.
 Reaching convergence of some Arnoldi approximated eigenvalue to the true eigenvalue of A causes annihilation
 of corresponding eigenvector component in the vector \(\ket{q}\). However, rounding errors originating from
@@ -872,6 +883,7 @@ states. Fortunately, in this thesis we are only interested in the case \(\beta \
 \textcolor{red}{
 As an example application, we shall look at spin current in XXZ model. Sum rule, normalized corr etc.
 }
+\textcolor{red}{Add relevant equations, depending on whats in the introduction.}
 
 
 
