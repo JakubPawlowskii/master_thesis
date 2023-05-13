@@ -1,4 +1,4 @@
-\chapter{Introduction}
+\chapter{Introduction\label{chap:intro}}
 \thispagestyle{chapterBeginStyle}
 
 \section{Nearly integrable quantum systems}
@@ -104,8 +104,62 @@ prethermalization plateaux, i.e. dynamics that at intermediate times resemble th
 (at least for suitably weak perturbations), even though the system eventually thermalizes at longer
 times~\autocite{mallayya2019,Bertini2015,Berges2004,Langen2016}.
 
-
 \section{Motivation and aim of this dissertation}
-We'll start far away from physics, in an abstract world of mathematics, but quickly converge towards it.
+As argued in the previous section, nearly integrable quantum systems constitute an important generalization
+of ordinary integrable systems, facilitating experimental realizations. They form the broader context this
+thesis is set in and the main motivation. However, to keep it finite in size, we restrict our attention
+to two concrete problems. 
+
+First, we provide a pedagogical introduction to the so-called \textbf{Krylov subspace methods} which allow
+us to leverage the sparsity of local observables
+in order to avoid the limitations originating from exponential growth of many-body Hilbert spaces.
+Following the exposition by~\textcite{Trefethen1997}, in Chapter~\ref{chap:krylov} we start our journey seemingly far away from
+physics, investigating a general algorithm called Arnoldi iteration, which original aim was to reduce
+a matrix to `almost triangular' or Hessenberg form. Along the way we discover that, as a byproduct,
+Arnoldi iteration produces a remarkably good approximations of extremal eigenvalues and eigenvectors. Contrary
+to most physics texts and in spirit of pedagogical nature of this chapter, we try to derive all results when possible
+and motivate them thoroughly when not. Setting course back to physics, next we assume that our matrices are
+Hermitian and observe how the Arnoldi interation simplifies tremendously, producing the well known
+Lanczos iteration~\autocite{Sandvik2010}. Then, going beyond just groundstate calculations, we show how to slighlty
+modify Lanczos iteration to be able to compute an approximation of action of any analytic function of hermitian
+matrix on a vector. Applying this scheme to the function \(f(x) = \exp\left(-i x t\right)\), we obtain an efficient
+way of calculating pure state time evolution, called the Krylov propagator~\autocite{Park1986}.
+To end Chapter~\ref{chap:krylov}, we outline the recent concept of Quantum Typicality~\autocite{Bartsch2009}
+and derive a numerical procedure for efficient calculation of correlation functions, without the need for Exact
+Diagonalization.
+
+\textcolor{red}{Go back to this part after finishing chapters on physics, add some citations}
+Our second topic of interest is the \textbf{spin transport in the long range anisotropic Heisenberg model.}
+Existence of many interesting features of quantum many-body systems, such as ballistic dynamics in Heisenberg spin
+chains~\autocite{Zotos1997,Bertini2021},
+exotic frustrated magnetism~\autocite{Nisoli2017}, peculiar phase transitions~\autocite{Sandvik2010b,Yang2021}
+and entangled spin liquids~\autocite{Balents2010} depends strongly
+on the type and range of interaction present in them, so it is safe to say that it plays a crucial role.
+In the last few years, considerable development of experimental techniques has
+occurred, allowing for unprecedented controll over the interactions.
+Platforms such as individually controlled Rydberg atoms, or optical lattices provide insight into the
+properties of quantum many-body systems. Whereas optical lattice facilitates mostly fermionic 
+systems~\autocite{Bakr2009,Greif2016,Parsons2015,Boll2016}, Rydberg atoms can be used to simulate pure spin systems.
+Models such as Ising or XY emerge naturally from their properties~\autocite{Browaeys2020}, and the ability to control
+range of interactions make them suitable for the simulation of long-range models~\autocite{Borish2020}. Using time-periodic
+driving one can turn naturally existing Hamiltonian into some other, effective one - the so-called Floquet Hamiltonian.
+So far, this method has been applied with great success to create tunable XXZ model~\autocite{Scholl2022}, strongly distance
+selective interactions~\autocite{Hollerith2022} and tunable XYZ models~\autocite{Steinert2022, Geier2021}.
+Progress in experimental methods sparked theoretical interest in long-range
+models~\autocite{Richerme2014,Jurcevic2014,Hauke2013,FossFeig2015,Maghrebi2016,Lepori2017,Frerot2017,Vanderstraeten2018,Cevolani2018,Kloss2019,Ren2020,Bulchandani2022a},
+yet their dynamical properties are still largely unknown, which motivates our interest in long range anisotropic
+Heisenberg model in this thesis.
+In Chapter~\ref{chap:spin_transport}, motivated by experiments with density expansion in cold atoms~\autocite{Ronzheimer2013,Vidmar2013,Neyenhuis2017},
+we study the dynamics of spin domains using the Krylov propagator, followed by Exact Diagonalization studies of the optical conductivity.
+Chapter~\ref{chap:currents} is devoted to investigating a class of local observables exhibitng similar properties
+to the spin current, using a numerical procedure searching for most conserved operators~\autocite{Mierzejewski2015a}.
+It is worth noting that the results presented in Chapters~\ref{chap:spin_transport} and~\ref{chap:currents} have
+been recently published in~\textcite{Mierzejewski2023}.
+
+The remainder of this chapter is devoted to the short introdction to the long range anisotropic Heisenberg model
+and other quantities of interest.
+
 \section{Long range anisotropic Heisenberg model}
-\textcolor{red}{why long range models are cool - paraphrase intro to recent PRB}
+
+
+
