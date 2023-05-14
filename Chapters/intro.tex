@@ -8,13 +8,13 @@ with unitary, time-reversible dynamics predicted by quantum mechanics~\autocite{
 In other words, it is the question of whether a generic, isolated quantum system can and will `forget' about its
 initial, nonequilibrium state. In recent years, this problem has attracted the attention of many physicists,
 especially taking into account experimental evidence of the loss of information, or thermalization, in isolated
-systems~\autocite{Trotzky2012325,Rigol2012,Rigol2008854,Hung2010,Hofferberth2007}. Understanding this phenomenon is a necessary first step to
-controlling it, and perhaps to the creation of very sought-after, robust systems which do not exhibit such
+systems~\autocite{Trotzky2012325,Rigol2012,Rigol2008854,Hung2010,Hofferberth2007}. Understanding this phenomenon is a crucial first step to
+controlling it, and perhaps to the creation of sought-after, robust systems which do not exhibit such
 behaviour. After all, `forgetting' about the initial state is equivalent to scrambling of quantum information
-and decoherence, which has been known for a long time to be one of the most important hindrances on
-the way to a functional and scalable quantum computer~\autocite{Shor1995,LewisSwan2019}. Given the multitude
+and decoherence, which has been known for a long time to be one of the most important hindrances 
+to a functional and scalable quantum computer~\autocite{Shor1995,LewisSwan2019}. Given the multitude
 of possible applications of such a device, both purely scientific and commercial, controlling thermalization
-in isolated systems could be the next big breakthrough~\autocite{MacQuarrie2020}.
+in isolated systems could be the next groundbreaking achievement~\autocite{MacQuarrie2020}.
  
 \paragraph{Preventing thermalization} A possible theoretical explanation of the thermalization in isolated quantum systems
 has been proposed in seminal papers by~\textcite{Deutsch19912046,Srednicki1994} in form of an ansatz for matrix elements of 
@@ -46,7 +46,7 @@ some infrequent, but physically relevant states~\autocite{Turner2018a,Turner2018
 broken time-translation symmetry~\autocite{Wilczek2012,Sacha2017} and systems with many-body interactions together
 with some form of disorder~\autocite{Basko_2006}. As the thermalization in those systems is slowed down or even
 completely stopped, in principle they could preserve information about the initial state for an arbitrarily long time. 
-This behaviour is in strong contrast with what is usually observed in interacting, many-body systems, namely fast
+This behaviour is in stark contrast with what is usually observed in interacting, many-body systems, namely fast
 dynamics on the time scales of tens of femtoseconds~\autocite{DalConte2015}.
 In this thesis we shall concern ourselves only with the case of \textbf{quantum integrable models}.
 
@@ -78,7 +78,7 @@ A general expectation for such nearly integrable systems is such, that in the th
 arbitrarily small perturbation should restore generic chaotic dynamics, which leads to thermalization
 ~\autocite{LeBlond2021}. However, there
 are some reports about surviving traces of integrability, for example in the form of residual quasiconserved
-quantities~\autocite{Brandino2015}. Unfortunately, in most cases numerical methods can only access finite 
+quantities~\autocite{Brandino2015}. In most cases numerical methods can only access finite 
 systems and indirect transitions to infinite system sizes, such as finite-size scaling, pose great difficulties
 when executed properly, eg. first thermodynamic limit and then infinite time limit~\autocite{Sirker2014,CamposVenuti2010}.
 Therefore, it is important to first gain a deep understanding of \textbf{weakly-perturbed finite systems}. Such
@@ -105,14 +105,14 @@ prethermalization plateaux, i.e. dynamics that at intermediate times resemble th
 times~\autocite{mallayya2019,Bertini2015,Berges2004,Langen2016}.
 
 \section{Motivation and aim of this dissertation}
-As argued in the previous section, nearly integrable quantum systems constitute an important generalization
-of ordinary integrable systems, facilitating experimental realizations. They form the broader context this
+As argued in the previous section, nearly integrable quantum systems constitute an important relaxation
+of constraints imposed on ordinary integrable systems, facilitating experimental realizations. They form the broader context this
 thesis is set in and the main motivation. However, to keep it finite in size, we restrict our attention
 to two concrete problems. 
 
 First, we provide a pedagogical introduction to the so-called \textbf{Krylov subspace methods} which allow
 us to leverage the sparsity of local observables
-in order to avoid the limitations originating from exponential growth of many-body Hilbert spaces.
+in order to avoid the limitations originating from exponential growth of many-body Hilbert space.
 Following the exposition by~\textcite{Trefethen1997}, in Chapter~\ref{chap:krylov} we start our journey seemingly far away from
 physics, investigating a general algorithm called Arnoldi iteration, which original aim was to reduce
 a matrix to `almost triangular' or Hessenberg form. Along the way we discover that, as a byproduct,
@@ -124,7 +124,7 @@ Lanczos iteration~\autocite{Sandvik2010}. Then, going beyond just groundstate ca
 modify Lanczos iteration to be able to compute an approximation of action of any analytic function of hermitian
 matrix on a vector. Applying this scheme to the function \(f(x) = \exp\left(-i x t\right)\), we obtain an efficient
 way of calculating pure state time evolution, called the Krylov propagator~\autocite{Park1986}.
-To end Chapter~\ref{chap:krylov}, we outline the recent concept of Quantum Typicality~\autocite{Bartsch2009}
+At the end of Chapter~\ref{chap:krylov}, we outline the recent concept of Quantum Typicality~\autocite{Bartsch2009}
 and derive a numerical procedure for efficient calculation of correlation functions, without the need for Exact
 Diagonalization.
 
@@ -136,7 +136,7 @@ exotic frustrated magnetism~\autocite{Nisoli2017}, peculiar phase transitions~\a
 and entangled spin liquids~\autocite{Balents2010} depends strongly
 on the type and range of interaction present in them, so it is safe to say that it plays a crucial role.
 In the last few years, considerable development of experimental techniques has
-occurred, allowing for unprecedented controll over the interactions.
+occurred, allowing for unprecedented manipulation of the interactions.
 Platforms such as individually controlled Rydberg atoms, or optical lattices provide insight into the
 properties of quantum many-body systems. Whereas optical lattice facilitates mostly fermionic 
 systems~\autocite{Bakr2009,Greif2016,Parsons2015,Boll2016}, Rydberg atoms can be used to simulate pure spin systems.
@@ -147,7 +147,7 @@ So far, this method has been applied with great success to create tunable XXZ mo
 selective interactions~\autocite{Hollerith2022} and tunable XYZ models~\autocite{Steinert2022, Geier2021}.
 Progress in experimental methods sparked theoretical interest in long-range
 models~\autocite{Richerme2014,Jurcevic2014,Hauke2013,FossFeig2015,Maghrebi2016,Lepori2017,Frerot2017,Vanderstraeten2018,Cevolani2018,Kloss2019,Ren2020,Bulchandani2022a},
-yet their dynamical properties are still largely unknown, which motivates our interest in long range anisotropic
+yet their dynamical properties are still largely unknown, which explains our interest in long range anisotropic
 Heisenberg model in this thesis.
 In Chapter~\ref{chap:spin_transport}, motivated by experiments with density expansion in cold atoms~\autocite{Ronzheimer2013,Vidmar2013,Neyenhuis2017},
 we study the dynamics of spin domains using the Krylov propagator, followed by Exact Diagonalization studies of the optical conductivity.
@@ -159,7 +159,16 @@ been recently published in~\textcite{Mierzejewski2023}.
 The remainder of this chapter is devoted to the short introdction to the long range anisotropic Heisenberg model
 and other quantities of interest.
 
-\section{Long range anisotropic Heisenberg model}
+\section{Long range anisotropic Heisenberg model and spin current}
 
-
+In this thesis we study the paradigmatic quantum model of magnetism, anisotropic Heisenberg
+model, but enriched with a long-range exchange \(J(r) = J/r^{\alpha}\). The full Hamiltonian, 
+defined on a one-dimensional lattice with periodic boundary conditions, reads
+\begin{equation}
+    H = \sum_{\ell=1}^{L}\sum_{r=1}^{r_{\mathrm{max}}} J(r) \left[\frac{1}{2} \left(
+        \Sp_{\ell}\Sm_{\ell+r} + \Sm_{\ell}\Sp_{\ell+r}\right) + \Delta \Sz_{\ell}\Sz_{\ell+r}
+    \right]
+    \label{eq:long_range}
+\end{equation}
+where \(r_{\mathrm{max}}\) is taken to be \(\left\lceil L/2\right\rceil - 1 \), to avoid double counting of hoppings.
 
