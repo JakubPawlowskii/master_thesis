@@ -874,6 +874,7 @@ of \(H\) is ordered in increasing fashion. Defining the effective dimension \(\d
 we finally obtain the upper bound on standard deviation of error as 
 \begin{equation}
 	\sigma\left(\Re \epsilon\right) < \sqrt{\frac{\Re \langle A(t)B A(t) B \rangle}{\dimension_{\mathrm{eff}}}}
+	\label{eg:dqt_bound}
 \end{equation}
 From this bound we see that at infinite temperature, the error is exponentially supressed in system size and thus for suitably
 large systems even a single pure state \(\ket{\psi}\) is enough to obtain a very good approximation of the correlation function.
@@ -885,5 +886,15 @@ As an example application, we shall look at spin current in XXZ model. Sum rule,
 }
 \textcolor{red}{Add relevant equations, depending on whats in the introduction.}
 
-
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{Figures/autocorr_spin_current.pdf}
+	\caption{Autocorrelation function of spin current \(j_{\sigma}\) in isotropic Heisenberg model
+	(\(J=1,\;\Delta=1\)), evaluated
+	using Exact Diagonalization for \(L=16,\;18\) and Dynamical Quantum Typicality with Krylov propagator
+	for \(L=16,\;18,\;20,\;22,\;24,\;26\). Already for a modest size of \(L=18\) lattice sites we observe
+	a very good agreement between ED and DQT calculation for a single pure state. Because of eq.~\eqref{eq:dqt_bound},
+	we expect this agreement to be exponentially better for larger system sizes.}
+	\label{fig:spin_autocorr}
+\end{figure}
 
