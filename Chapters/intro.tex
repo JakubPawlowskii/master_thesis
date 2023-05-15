@@ -171,4 +171,97 @@ defined on a one-dimensional lattice with periodic boundary conditions, reads
     \label{eq:long_range}
 \end{equation}
 where \(r_{\mathrm{max}}\) is taken to be \(\left\lceil L/2\right\rceil - 1 \), to avoid double counting of hoppings.
+Unless stated otherwise, we will work in units where \(J = 1\).
+The spin\(-\frac{1}{2}\) operators are defined in the usual way
+\begin{equation}
+    S_{\ell}^{a} = \underbrace{\Id \otimes \Id \otimes \ldots \Id}_{\ell-1} \otimes S^{a} \otimes \underbrace{\Id \otimes \ldots \otimes \Id}_{L-\ell} 
+    \label{eq:spin_op}
+\end{equation} 
+where \(a\in\{+,-,z\}\), \(\Sp = S^x + i S^y\), \(\Sm = \left(\Sp\right)^{\dagger}\),
+ \(\Id\) is a \(2\cross 2\) identity matrix and operators \(S^x,S^y,S^z\) are defined in terms
+ of corresponding Pauli matrices and obey the \(\mathfrak{su}(2)\) algebra commutations relations
+ \begin{equation}
+    \comm{S^a}{S^b} = i \varepsilon_{abc} S^c
+ \end{equation}
+From equation~\eqref{eq:spin_op} it is evident, that the Hilbert space our Hamiltonian acts on
+is the tensor product of \(L\) copies of single spin spaces \(\mathfrak{h} \cong \CC^2\), 
+\(\mathrm{dim_{\CC}}(\mathfrak{h}) = 2\), therefore the total dimension is \(2^L\).
+For numerical calculations, we shall use the so-called Ising basis, consisting of eigenstates
+of the \(S^z_{\mathrm{tot}} = \sum_{\ell=1}^{L} \Sz_{\ell}\) operator.
 
+
+Our main interest in the spin transport in this system. To this end, we first notice that
+the total magnetization, or \(z\) component of the total spin \(\Sz_{\mathrm{tot}}\)  is a conserved quantity.
+It can be shown by directly evaluating the commutator \(\comm{H}{\Sz_{\mathrm{tot}}}=0\), or by just observing
+that both spin-flip and interaction terms do not change the number of up/down spins, when acting on a state
+from the Ising basis. Thus, we can write down a well-defined continuity equation for the evolution
+of local spin density
+\begin{equation}
+    \dv{t} \Sz_{\ell}(t) + \div{j^{\sigma}_{\ell}(t)} = 0
+    \label{eq:spin_cont_eq}
+\end{equation}
+where \(\div{j^{\sigma}_{\ell}(t)} = j^{\sigma}_{\ell+1}(t) - j^{\sigma}_{\ell}\) is the
+discrete divergence of the spin current and \(\Sz_{\ell}(t) = e^{i H t} \Sz_{\ell} e^{-i H t}\).
+The time derivative in the above equation is given by the Heisenberg equation
+\begin{equation}
+    \dv{t} \Sz_{\ell}(t) = i \comm{H}{\Sz_{\ell}(t)}
+    \label{eq:Heisenberg}
+\end{equation}
+Combining equations~\eqref{eq:spin_cont_eq} and~\eqref{eq:Heisenberg}, we get
+\begin{equation}
+    j^{\sigma}_{\ell+1} - j^{\sigma}_{\ell} = i\comm{\Sz_{\ell}}{H}
+\end{equation}
+This equation is simple in principle, however its solution can get tedious in case of more complicated
+operator densities. 
+
+Fortunately, there is a trick that yields a simple expression for the current
+associated to arbitrary conserved, extensive operator. Let \(X = \sum^{L}_{\ell=1}x_l\) be such quantity,
+with \(x_{\ell}\) being its local density and \(j^x = \sum^{L}_{\ell=1} j^x_{\ell}\) being the current.
+Then define the polarization operator
+\begin{equation}
+    P = \sum^{L}_{\ell=1}\ell x_{\ell}
+\end{equation}
+We will now calculate its derivative in two ways, first using the continuity equation and second using
+the Heisenberg picture. For brevity we supress explicit time dependence of operators.
+\begin{align}
+    \dv{P}{t} &= \sum^{L}_{\ell=1} \ell \dv{x_{\ell}}{t} = 
+     \sum^{L}_{\ell=1} \ell j^x_{\ell} - \underbrace{\sum_{\ell=1}^{L} \ell j^x_{\ell+1}}_{\ell \to \ell - 1}
+     = \sum_{\ell=1}^{L} \left[\ell j^x_{\ell} - \left(\ell-1\right)j^{x}_{\ell}\right]
+     = \sum_{\ell=1}^L j^x_{\ell} = j^x\\
+     \dv{P}{t} &= \dv{t} \sum_{\ell=1}^L \ell \left(e^{i H t}x_{\ell} e^{-i H t}\right) = 
+     \sum_{\ell}^{L} \left(\ell e^{i H t} i \comm{H}{x_{\ell}}e^{-i H t}\right) = 
+     e^{i H t} \left(i \sum_{\ell} \ell \comm{H}{x_{\ell}}\right)e^{-i H t}
+\end{align}
+From the two equations above we can read off a compact expression for the current operator in Schr{\"o}dinger
+picture
+\begin{equation}
+    j^x = i \sum_{\ell=1}^L \ell\comm{H}{x_{\ell}}
+    \label{eq:polarization}
+\end{equation}
+Substituting \(x_{\ell} = \Sz_{\ell}\) we now quickly derive
+\begin{align}
+    j^{\sigma} &= i \sum_{\ell=1}^L \comm{H}{\Sz_{\ell}} = i \sum_{\ell,\ell^{\prime}=1}^L \sum_{r=1}^{r_{\mathrm{max}}}
+    \ell J(r) \left(\frac{1}{2}\comm{\Sp_{\ell^{\prime}}\Sm_{\ell^{\prime}+r}}{\Sz_{\ell}}
+    + \frac{1}{2}\comm{\Sm_{\ell^{\prime}}\Sp_{\ell^{\prime}+r}}{\Sz_{\ell}}
+    + \Delta \cancel{\comm{\Sz_{\ell^{\prime}}\Sz_{\ell^{\prime}+1}}{\Sz_{\ell}}} \right) \nonumber \\
+    &= \frac{i}{2}  \sum_{\ell,\ell^{\prime}=1}^L \sum_{r=1}^{r_{\mathrm{max}}}\ell J(r)  \left(
+        \delta_{\ell,\ell^{\prime}+r}\Sp_{\ell^{\prime}} \Sm_{\ell^{\prime}+r}  - \delta_{\ell,\ell^{\prime}}
+        \Sp_{\ell}\Sm_{\ell^{\prime}+r} - \delta_{\ell^{\prime} + r, \ell} \Sm_{\ell^{\prime}} \Sp_{\ell} + 
+        \delta_{\ell^{\prime},\ell}\Sm_{\ell}\Sp_{\ell^{\prime}+r}
+    \right) \nonumber \\
+    &= \frac{i}{2}  \sum_{\ell^{\prime}=1}^L \sum_{r=1}^{r_{\mathrm{max}}} J(r)  \left(
+        (\ell^{\prime}+r)\Sp_{\ell^{\prime}} \Sm_{\ell^{\prime}+r}  - \ell^{\prime}
+        \Sp_{\ell^{\prime}}\Sm_{\ell^{\prime}+r} - (\ell^{\prime}+r) \Sm_{\ell^{\prime}} \Sp_{\ell^{\prime}} + 
+        \ell^{\prime}\Sm_{\ell^{\prime}}\Sp_{\ell^{\prime}+r} 
+    \right) \nonumber\\
+    &= \frac{i}{2} \sum_{\ell=1}^L \sum_{r=1}^{r_{\mathrm{max}}} \frac{J}{r^{\alpha-1}}
+    \left(\Sp_{\ell}\Sm_{\ell+r}-\Sm_{\ell}\Sp_{\ell+r}\right)
+    \label{eq:spin_current}
+\end{align}
+which is our desired spin current.
+
+
+
+\textcolor{red}{Magnetization and momentum sectors}
+Before we finish the introductory chapter, let us notice to particulary useful symmetries of the 
+long-range anisotropic Heisenberg Hamiltonian.
