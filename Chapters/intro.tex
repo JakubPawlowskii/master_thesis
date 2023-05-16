@@ -183,15 +183,19 @@ where \(a\in\{+,-,z\}\), \(\Sp = S^x + i S^y\), \(\Sm = \left(\Sp\right)^{\dagge
  \begin{equation}
     \comm{S^a}{S^b} = i \varepsilon_{abc} S^c
  \end{equation}
-From equation~\eqref{eq:spin_op} it is evident, that the Hilbert space our Hamiltonian acts on
-is the tensor product of \(L\) copies of single spin spaces \(\mathfrak{h} \cong \CC^2\), 
-\(\mathrm{dim_{\CC}}(\mathfrak{h}) = 2\), therefore the total dimension is \(2^L\).
-For numerical calculations, we shall use the so-called Ising basis, consisting of eigenstates
-of the \(S^z_{\mathrm{tot}} = \sum_{\ell=1}^{L} \Sz_{\ell}\) operator.
-
+From equation~\eqref{eq:spin_op} it is evident, that the Hilbert space \(\mathcal{H}\) our Hamiltonian acts on
+is the tensor product of \(L\) copies of single spin spaces \(\mathfrak{h}_{\ell} \cong \CC^2\), 
+\begin{equation}
+    \mathcal{H} = \bigotimes_{\ell=1}^{L} \mathfrak{h}_{\ell}
+\end{equation}
+As \(\mathrm{dim_{\CC}}(\mathfrak{h}) = 2\), the total dimension is \(2^L\).
+For numerical calculations, we shall use the so-called \textbf{Ising basis}, consisting of eigenstates
+of the \(S^z_{\mathrm{tot}} = \sum_{\ell=1}^{L} \Sz_{\ell}\) operator. As on each site we can only
+have spin up or down, an efficient representaion of such states is achieved using binary numbers.
 
 Our main interest in the spin transport in this system. To this end, we first notice that
-the total magnetization, or \(z\) component of the total spin \(\Sz_{\mathrm{tot}}\)  is a conserved quantity.
+the total magnetization, or \(z\) component of the total spin \(\Sz_{\mathrm{tot}}\)
+is a conserved quantity.
 It can be shown by directly evaluating the commutator \(\comm{H}{\Sz_{\mathrm{tot}}}=0\), or by just observing
 that both spin-flip and interaction terms do not change the number of up/down spins, when acting on a state
 from the Ising basis. Thus, we can write down a well-defined continuity equation for the evolution
@@ -258,10 +262,21 @@ Substituting \(x_{\ell} = \Sz_{\ell}\) we now quickly derive
     \left(\Sp_{\ell}\Sm_{\ell+r}-\Sm_{\ell}\Sp_{\ell+r}\right)
     \label{eq:spin_current}
 \end{align}
-which is our desired spin current.
+which is our desired spin current. It will be the quantity of central interest in Chapter~\ref{chap:spin_transport}.
 
-
-
-\textcolor{red}{Magnetization and momentum sectors}
-Before we finish the introductory chapter, let us notice to particulary useful symmetries of the 
-long-range anisotropic Heisenberg Hamiltonian.
+Before we finish the introductory chapter, let us notice two symmetries shared by the 
+Hamiltonian~\eqref{eq:long_range} and spin current~\eqref{eq:spin_current}, that are particulary useful for numerical calculations.
+First of them we have just met -- it manifests itselft as the conservation of magnetization,
+i.e. \(\comm{H}{\Sz_{\mathrm{tot}}}=0\).
+The resulting \(U(1)\) symmetry allows us to decompose the full Hilbert space into parts consisting of states with the same total \(z\)-component
+of spin. In more mathematical terms, we have the following
+\begin{equation*}
+  \mathcal{H} = \bigoplus_{j = 0}^{L} \mathcal{H}_j \text{, where } \big(\forall \ket{\psi} \in \mathcal{H}_j \big) \big(\Sz_{tot} \ket{\psi} = \frac{1}{2}(2j-L) \ket{\psi} \big)
+\end{equation*}
+i.e.,the full Hilbert space with \(\dim{\mathcal{H}} = 2^L\) can be decomposed into the direct sum of its proper subspaces
+\(\mathcal{H}_j\) such that \(\dim{\mathcal{H}_j} = \binom{L}{j}\) and all states in a given subspace correspond to the same
+eigenvalue of \(\Sz_{\mathrm{tot}}\) operator. The index \(j\) denotes the number of sites with spin up.
+It turns out that the Ising basis we use as a default for numerical calculations in spin systems
+is already the `correct' basis, as it is enough to just sort the state with respect to the numbers
+spins pointing up. This yields a manifestly block diagonal structure of the Hamiltonian matrix
+(cf. Figure~\ref{fig:sparse_structure} with matrix of nearest neighbors Heisenberg model).
