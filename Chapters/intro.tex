@@ -4,20 +4,20 @@
 \section{Nearly integrable quantum systems}
 One of the most widely disputed problems in modern physics is the reconciliation
 of irreversible thermodynamics~\autocite{huang1987statistical,feynman1998statistical}
-with unitary, time-reversible dynamics predicted by quantum mechanics~\autocite{Landau1976,Sakurai2017}.
+with unitary, time-reversible dynamics predicted by quantum mechanics~\autocite{Landau1976, Sakurai2017}.
 In other words, it is the question of whether a generic, isolated quantum system can and will `forget' about its
 initial, nonequilibrium state. In recent years, this problem has attracted the attention of many physicists,
 especially taking into account experimental evidence of the loss of information, or thermalization, in isolated
-systems~\autocite{Trotzky2012325,Rigol2012,Rigol2008854,Hung2010,Hofferberth2007}. Understanding this phenomenon is a crucial first step to
+systems~\autocite{Trotzky2012325, Rigol2012, Rigol2008854, Hung2010, Hofferberth2007}. Understanding this phenomenon is a crucial first step to
 controlling it, and perhaps to the creation of sought-after, robust systems which do not exhibit such
-behaviour. After all, `forgetting' about the initial state is equivalent to scrambling of quantum information
-and decoherence, which has been known for a long time to be one of the most important hindrances 
-to a functional and scalable quantum computer~\autocite{Shor1995,LewisSwan2019}. Given the multitude
+behavior. After all, `forgetting' about the initial state is equivalent to scrambling of quantum information
+and decoherence, which has been known for a long time to be one of the most important hindrances
+to a functional and scalable quantum computer~\autocite{Shor1995, LewisSwan2019}. Given the multitude
 of possible applications of such a device, both purely scientific and commercial, controlling thermalization
 in isolated systems could be the next groundbreaking achievement~\autocite{MacQuarrie2020}.
- 
+
 \paragraph{Preventing thermalization} A possible theoretical explanation of the thermalization in isolated quantum systems
-has been proposed in seminal papers by~\textcite{Deutsch19912046,Srednicki1994} in form of an ansatz for matrix elements of 
+has been proposed in seminal papers by~\textcite{Deutsch19912046,Srednicki1994} in form of an ansatz for matrix elements of
 local quantum observables \(A_{mn} = \matrixel{m}{A}{n}\) (in eigenbasis \(H\ket{n}=\varepsilon_n \ket{n}\) of some Hamiltonian),
 known as \textbf{Eigenstate Thermalization Hypothesis} (ETH)
 \begin{equation}
@@ -35,33 +35,32 @@ known from equilibrium statistical physics~\autocite{DAlessio2016}. Diagonal mat
 coincide with the microcanonical average at energy \(\varepsilon_n\), whereas the off-diagonal matrix elements and fluctuations
 of the diagonal ones are postulated to decrease exponentially with system size~\autocite{Beugeling2014}.
 While ETH has been shown to hold analytically in only a few selected systems~\autocite{Magan2016}, numerical clues can be
-found in various systems with many-body interactions such as hard core bosons, interacting spin 
+found in various systems with many-body interactions such as hard-core bosons, interacting spin
 chains~\autocite{Santos2010_2,Rigol2010,Khatami2013,Rigol2009a} and fermions~\autocite{Neuenhahn2012,Rigol2009}.
 
-Given the lack of a definitive answer to the question of when ETH holds and the fact that our 
-ultimate goal is preventing thermalization, it is desirable to look for systems
-which explicitly violate this hypothesis. There are a few known classes of such systems:
+Given the lack of a definitive answer to the question of when ETH holds and the fact that our ultimate goal is preventing thermalization, it is desirable to look for systems
+that explicitly violate this hypothesis. There are a few known classes of such systems:
 quantum integrable models, systems with `scars', which freeze thermalization for
-some infrequent, but physically relevant states~\autocite{Turner2018a,Turner2018}, quantum time crystals with
-broken time-translation symmetry~\autocite{Wilczek2012,Sacha2017} and systems with many-body interactions together
+some infrequent, but physically relevant states~\autocite{Turner2018a, Turner2018}, quantum time crystals with
+broken time-translation symmetry~\autocite{Wilczek2012, Sacha2017} and systems with many-body interactions together
 with some form of disorder~\autocite{Basko_2006}. As the thermalization in those systems is slowed down or even
-completely stopped, in principle they could preserve information about the initial state for an arbitrarily long time. 
-This behaviour is in stark contrast with what is usually observed in interacting, many-body systems, namely fast
+completely stopped, in principle they could preserve information about the initial state for an arbitrarily long time.
+This behavior is in stark contrast with what is usually observed in interacting, many-body systems, namely fast
 dynamics on the time scales of tens of femtoseconds~\autocite{DalConte2015}.
-In this thesis we shall concern ourselves only with the case of \textbf{quantum integrable models}.
+In this thesis, we shall concern ourselves only with the case of \textbf{quantum integrable models}.
 
-\paragraph{Robustness of integrability} 
+\paragraph{Robustness of integrability}
 In quantum mechanics, as opposed to classical mechanics, a unique definition of integrability
-is yet to emerge~\autocite{Caux2011,Yuzbashyan2013}. Nevertheless, a common practice is to take as a sufficient condition of
+is yet to emerge~\autocite{Caux2011, Yuzbashyan2013}. Nevertheless, a common practice is to take as a sufficient condition of
 integrability the presence of an extensive number (increasing linearly with the system size) of local observables
 that are integrals of motion, i.e. commute with the Hamiltonian, called LIOMs for short. The significance of such
-systems is at least twofold. 
+systems is at least twofold.
 First, as already mentioned, they can provide a new method of storage of information, encoded in expectation values
 of LIOMs, which can pave the way for the creation of the sought-after quantum memory.
 Second, they are among a few quantum many-body systems that are susceptible to analytical methods and so provide
 a rich playground for both theoretical physicists and mathematicians. Tools such as Algebraic Bethe
 Ansatz~\autocite{Faddeev1995,Faddeev1996,Korepin1993} or Generalized Hydrodynamics~\autocite{Agrawal2020,Friedman2020,
-Bertini2021,Bastianello2021,Bulchandani2021} lead to considerable insight regarding the nature of integrable systems.
+    Bertini2021, Bastianello2021, Bulchandani2021} lead to considerable insight regarding the nature of integrable systems.
 
 Unfortunately, it is often the case for integrable systems such as Heisenberg, Hubbard or Lieb-Linger
 models, that their integrability relies on a certain set of fine-tuned parameters. Any deviation from these parameters, eg.
@@ -69,7 +68,7 @@ in the form of some perturbation, can very easily destroy the integrability. Exa
 experimental setups (albeit some signatures of integrability were observed~\autocite{Khemani2019}, suggesting sufficient
 proximity to an integrable system),  even though the capabilities and precision of control have
 reached remarkable levels~\autocite{Browaeys2020}. Therefore, \textbf{more realistic systems
-are expected to be described by nearly integrable systems}, containing some non-negligible perturbations that
+    are expected to be described by nearly integrable systems}, containing some non-negligible perturbations that
 impact integrability~\autocite{Zotos2004,Brandino2015}.
 This renders all the formalism for investigations of purely
 integrable systems inapplicable and forces one to rely mostly on numerical methods (for a recent review
@@ -78,12 +77,12 @@ A general expectation for such nearly integrable systems is such, that in the th
 arbitrarily small perturbation should restore generic chaotic dynamics, which leads to thermalization
 ~\autocite{LeBlond2021}. However, there
 are some reports about surviving traces of integrability, for example in the form of residual quasiconserved
-quantities~\autocite{Brandino2015}. In most cases numerical methods can only access finite 
+quantities~\autocite{Brandino2015}. In most cases numerical methods can only access finite
 systems and indirect transitions to infinite system sizes, such as finite-size scaling, pose great difficulties
 when executed properly, eg. first thermodynamic limit and then infinite time limit~\autocite{Sirker2014,CamposVenuti2010}.
 Therefore, it is important to first gain a deep understanding of \textbf{weakly-perturbed finite systems}. Such
 endeavour immediately raises a few questions: How strong should a perturbation in a finite
-systems be to destroy integrability and how to efficiently describe resulting slow dynamics? 
+systems be to destroy integrability and how to efficiently describe resulting slow dynamics?
 Recently, those and other similar questions have been asked concerning the phenomena of ergodicity breaking
 phase transitions~\autocite{Suntajs2020,Suntajs2022}.
 Insight from experiments with ultracold atomic gases suggest also another way for nearly integrable systems to emerge,
@@ -97,7 +96,7 @@ to be integrable, it is sufficient to have \(n\) integrals of motion \(\{H,F_i\}
 are in involution, i.e. \(\{F_i,F_j\} = 0\) for any \(i,j\in\{1,\ldots,n\}\). Then, dynamics are restricted to an \(n\)-dimensional
 torus in the phase space. The fate of such invariant tori under integrability-breaking perturbations is given by the
 famous Kolmogorov-Arnold-Moser theorem (KAM)~\autocite{Kolmogorov1954,Arnold1963,Moser1962}, stating that for systems
-with finite degrees of freedom, majority of the invariant tori occupying the phase space survive the influence of small 
+with finite degrees of freedom, majority of the invariant tori occupying the phase space survive the influence of small
 perturbations. However, as of now, there is no equivalent of this result in quantum mechanics.
 Nevertheless, such quantum systems are very intriguing as they can facilitate robust
 prethermalization plateaux, i.e. dynamics that at intermediate times resemble that of integrable models
@@ -108,7 +107,7 @@ times~\autocite{mallayya2019,Bertini2015,Berges2004,Langen2016}.
 As argued in the previous section, nearly integrable quantum systems constitute an important relaxation
 of constraints imposed on ordinary integrable systems, facilitating experimental realizations. They form the broader context this
 thesis is set in and the main motivation. However, to keep it finite in size, we restrict our attention
-to two concrete problems. 
+to two concrete problems.
 
 First, we provide a pedagogical introduction to the so-called \textbf{Krylov subspace methods} which allow
 us to leverage the sparsity of local observables
@@ -138,7 +137,7 @@ on the type and range of interaction present in them, so it is safe to say that 
 In the last few years, considerable development of experimental techniques has
 occurred, allowing for unprecedented manipulation of the interactions.
 Platforms such as individually controlled Rydberg atoms, or optical lattices provide insight into the
-properties of quantum many-body systems. Whereas optical lattice facilitates mostly fermionic 
+properties of quantum many-body systems. Whereas optical lattice facilitates mostly fermionic
 systems~\autocite{Bakr2009,Greif2016,Parsons2015,Boll2016}, Rydberg atoms can be used to simulate pure spin systems.
 Models such as Ising or XY emerge naturally from their properties~\autocite{Browaeys2020}, and the ability to control
 range of interactions make them suitable for the simulation of long-range models~\autocite{Borish2020}. Using time-periodic
@@ -162,29 +161,29 @@ and other quantities of interest.
 \section{Long range anisotropic Heisenberg model and spin current}
 
 In this thesis we study the paradigmatic quantum model of magnetism, anisotropic Heisenberg
-model, but enriched with a long-range exchange \(J(r) = J/r^{\alpha}\). The full Hamiltonian, 
+model, but enriched with a long-range exchange \(J(r) = J/r^{\alpha}\). The full Hamiltonian,
 defined on a one-dimensional lattice with periodic boundary conditions, reads
 \begin{equation}
     H = \sum_{\ell=1}^{L}\sum_{r=1}^{r_{\mathrm{max}}} J(r) \left[\frac{1}{2} \left(
         \Sp_{\ell}\Sm_{\ell+r} + \Sm_{\ell}\Sp_{\ell+r}\right) + \Delta \Sz_{\ell}\Sz_{\ell+r}
-    \right]
+        \right]
     \label{eq:long_range}
 \end{equation}
 where \(r_{\mathrm{max}}\) is taken to be \(\left\lceil L/2\right\rceil - 1 \), to avoid double counting of hoppings.
 Unless stated otherwise, we will work in units where \(J = 1\).
 The spin\(-\frac{1}{2}\) operators are defined in the usual way
 \begin{equation}
-    S_{\ell}^{a} = \underbrace{\Id \otimes \Id \otimes \ldots \Id}_{\ell-1} \otimes S^{a} \otimes \underbrace{\Id \otimes \ldots \otimes \Id}_{L-\ell} 
+    S_{\ell}^{a} = \underbrace{\Id \otimes \Id \otimes \ldots \Id}_{\ell-1} \otimes S^{a} \otimes \underbrace{\Id \otimes \ldots \otimes \Id}_{L-\ell}
     \label{eq:spin_op}
-\end{equation} 
+\end{equation}
 where \(a\in\{+,-,z\}\), \(\Sp = S^x + i S^y\), \(\Sm = \left(\Sp\right)^{\dagger}\),
- \(\Id\) is a \(2\cross 2\) identity matrix and operators \(S^x,S^y,S^z\) are defined in terms
- of corresponding Pauli matrices and obey the \(\mathfrak{su}(2)\) algebra commutations relations
- \begin{equation}
+\(\Id\) is a \(2\cross 2\) identity matrix and operators \(S^x,S^y,S^z\) are defined in terms
+of corresponding Pauli matrices and obey the \(\mathfrak{su}(2)\) algebra commutations relations
+\begin{equation}
     \comm{S^a}{S^b} = i \varepsilon_{abc} S^c
- \end{equation}
+\end{equation}
 From equation~\eqref{eq:spin_op} it is evident, that the Hilbert space \(\mathcal{H}\) our Hamiltonian acts on
-is the tensor product of \(L\) copies of single spin spaces \(\mathfrak{h}_{\ell} \cong \CC^2\), 
+is the tensor product of \(L\) copies of single spin spaces \(\mathfrak{h}_{\ell} \cong \CC^2\),
 \begin{equation}
     \mathcal{H} = \bigotimes_{\ell=1}^{L} \mathfrak{h}_{\ell}
 \end{equation}
@@ -216,7 +215,7 @@ Combining equations~\eqref{eq:spin_cont_eq} and~\eqref{eq:Heisenberg}, we get
     j^{\sigma}_{\ell+1} - j^{\sigma}_{\ell} = i\comm{\Sz_{\ell}}{H}
 \end{equation}
 This equation is simple in principle, however its solution can get tedious in case of more complicated
-operator densities. 
+operator densities.
 
 Fortunately, there is a trick that yields a simple expression for the current
 associated to arbitrary conserved, extensive operator. Let \(X = \sum^{L}_{\ell=1}x_l\) be such quantity,
@@ -228,13 +227,13 @@ Then define the polarization operator
 We will now calculate its derivative in two ways, first using the continuity equation and second using
 the Heisenberg picture. For brevity we supress explicit time dependence of operators.
 \begin{align}
-    \dv{P}{t} &= \sum^{L}_{\ell=1} \ell \dv{x_{\ell}}{t} = 
-     \sum^{L}_{\ell=1} \ell j^x_{\ell} - \underbrace{\sum_{\ell=1}^{L} \ell j^x_{\ell+1}}_{\ell \to \ell - 1}
-     = \sum_{\ell=1}^{L} \left[\ell j^x_{\ell} - \left(\ell-1\right)j^{x}_{\ell}\right]
-     = \sum_{\ell=1}^L j^x_{\ell} = j^x\\
-     \dv{P}{t} &= \dv{t} \sum_{\ell=1}^L \ell \left(e^{i H t}x_{\ell} e^{-i H t}\right) = 
-     \sum_{\ell}^{L} \left(\ell e^{i H t} i \comm{H}{x_{\ell}}e^{-i H t}\right) = 
-     e^{i H t} \left(i \sum_{\ell} \ell \comm{H}{x_{\ell}}\right)e^{-i H t}
+    \dv{P}{t} & = \sum^{L}_{\ell=1} \ell \dv{x_{\ell}}{t} =
+    \sum^{L}_{\ell=1} \ell j^x_{\ell} - \underbrace{\sum_{\ell=1}^{L} \ell j^x_{\ell+1}}_{\ell \to \ell - 1}
+    = \sum_{\ell=1}^{L} \left[\ell j^x_{\ell} - \left(\ell-1\right)j^{x}_{\ell}\right]
+    = \sum_{\ell=1}^L j^x_{\ell} = j^x                                                    \\
+    \dv{P}{t} & = \dv{t} \sum_{\ell=1}^L \ell \left(e^{i H t}x_{\ell} e^{-i H t}\right) =
+    \sum_{\ell}^{L} \left(\ell e^{i H t} i \comm{H}{x_{\ell}}e^{-i H t}\right) =
+    e^{i H t} \left(i \sum_{\ell} \ell \comm{H}{x_{\ell}}\right)e^{-i H t}
 \end{align}
 From the two equations above we can read off a compact expression for the current operator in Schr{\"o}dinger
 picture
@@ -244,34 +243,34 @@ picture
 \end{equation}
 Substituting \(x_{\ell} = \Sz_{\ell}\) we now quickly derive
 \begin{align}
-    j^{\sigma} &= i \sum_{\ell=1}^L \comm{H}{\Sz_{\ell}} = i \sum_{\ell,\ell^{\prime}=1}^L \sum_{r=1}^{r_{\mathrm{max}}}
+    j^{\sigma} & = i \sum_{\ell=1}^L \comm{H}{\Sz_{\ell}} = i \sum_{\ell,\ell^{\prime}=1}^L \sum_{r=1}^{r_{\mathrm{max}}}
     \ell J(r) \left(\frac{1}{2}\comm{\Sp_{\ell^{\prime}}\Sm_{\ell^{\prime}+r}}{\Sz_{\ell}}
     + \frac{1}{2}\comm{\Sm_{\ell^{\prime}}\Sp_{\ell^{\prime}+r}}{\Sz_{\ell}}
-    + \Delta \cancel{\comm{\Sz_{\ell^{\prime}}\Sz_{\ell^{\prime}+1}}{\Sz_{\ell}}} \right) \nonumber \\
-    &= \frac{i}{2}  \sum_{\ell,\ell^{\prime}=1}^L \sum_{r=1}^{r_{\mathrm{max}}}\ell J(r)  \left(
-        \delta_{\ell,\ell^{\prime}+r}\Sp_{\ell^{\prime}} \Sm_{\ell^{\prime}+r}  - \delta_{\ell,\ell^{\prime}}
-        \Sp_{\ell}\Sm_{\ell^{\prime}+r} - \delta_{\ell^{\prime} + r, \ell} \Sm_{\ell^{\prime}} \Sp_{\ell} + 
-        \delta_{\ell^{\prime},\ell}\Sm_{\ell}\Sp_{\ell^{\prime}+r}
-    \right) \nonumber \\
-    &= \frac{i}{2}  \sum_{\ell^{\prime}=1}^L \sum_{r=1}^{r_{\mathrm{max}}} J(r)  \left(
-        (\ell^{\prime}+r)\Sp_{\ell^{\prime}} \Sm_{\ell^{\prime}+r}  - \ell^{\prime}
-        \Sp_{\ell^{\prime}}\Sm_{\ell^{\prime}+r} - (\ell^{\prime}+r) \Sm_{\ell^{\prime}} \Sp_{\ell^{\prime}} + 
-        \ell^{\prime}\Sm_{\ell^{\prime}}\Sp_{\ell^{\prime}+r} 
-    \right) \nonumber\\
-    &= \frac{i}{2} \sum_{\ell=1}^L \sum_{r=1}^{r_{\mathrm{max}}} \frac{J}{r^{\alpha-1}}
+    + \Delta \cancel{\comm{\Sz_{\ell^{\prime}}\Sz_{\ell^{\prime}+1}}{\Sz_{\ell}}} \right) \nonumber                       \\
+               & = \frac{i}{2}  \sum_{\ell,\ell^{\prime}=1}^L \sum_{r=1}^{r_{\mathrm{max}}}\ell J(r)  \left(
+    \delta_{\ell,\ell^{\prime}+r}\Sp_{\ell^{\prime}} \Sm_{\ell^{\prime}+r}  - \delta_{\ell,\ell^{\prime}}
+    \Sp_{\ell}\Sm_{\ell^{\prime}+r} - \delta_{\ell^{\prime} + r, \ell} \Sm_{\ell^{\prime}} \Sp_{\ell} +
+    \delta_{\ell^{\prime},\ell}\Sm_{\ell}\Sp_{\ell^{\prime}+r}
+    \right) \nonumber                                                                                                     \\
+               & = \frac{i}{2}  \sum_{\ell^{\prime}=1}^L \sum_{r=1}^{r_{\mathrm{max}}} J(r)  \left(
+    (\ell^{\prime}+r)\Sp_{\ell^{\prime}} \Sm_{\ell^{\prime}+r}  - \ell^{\prime}
+    \Sp_{\ell^{\prime}}\Sm_{\ell^{\prime}+r} - (\ell^{\prime}+r) \Sm_{\ell^{\prime}} \Sp_{\ell^{\prime}} +
+    \ell^{\prime}\Sm_{\ell^{\prime}}\Sp_{\ell^{\prime}+r}
+    \right) \nonumber                                                                                                     \\
+               & = \frac{i}{2} \sum_{\ell=1}^L \sum_{r=1}^{r_{\mathrm{max}}} \frac{J}{r^{\alpha-1}}
     \left(\Sp_{\ell}\Sm_{\ell+r}-\Sm_{\ell}\Sp_{\ell+r}\right)
     \label{eq:spin_current}
 \end{align}
 which is our desired spin current. It will be the quantity of central interest in Chapter~\ref{chap:spin_transport}.
 
-Before we finish the introductory chapter, let us notice two symmetries shared by the 
+Before we finish the introductory chapter, let us notice two symmetries shared by the
 Hamiltonian~\eqref{eq:long_range} and spin current~\eqref{eq:spin_current}, that are particulary useful for numerical calculations.
 First of them we have just met -- it manifests itselft as the conservation of magnetization,
 i.e. \(\comm{H}{\Sz_{\mathrm{tot}}}=0\).
 The resulting \(U(1)\) symmetry allows us to decompose the full Hilbert space into parts consisting of states with the same total \(z\)-component
 of spin. In more mathematical terms, we have the following
 \begin{equation*}
-  \mathcal{H} = \bigoplus_{j = 0}^{L} \mathcal{H}_j \text{, where } \big(\forall \ket{\psi} \in \mathcal{H}_j \big) \big(\Sz_{tot} \ket{\psi} = \frac{1}{2}(2j-L) \ket{\psi} \big)
+    \mathcal{H} = \bigoplus_{j = 0}^{L} \mathcal{H}_j \text{, where } \big(\forall \ket{\psi} \in \mathcal{H}_j \big) \big(\Sz_{tot} \ket{\psi} = \frac{1}{2}(2j-L) \ket{\psi} \big)
 \end{equation*}
 i.e.,the full Hilbert space with \(\dim{\mathcal{H}} = 2^L\) can be decomposed into the direct sum of its proper subspaces
 \(\mathcal{H}_j\) such that \(\dim{\mathcal{H}_j} = \binom{L}{j}\) and all states in a given subspace correspond to the same
