@@ -117,14 +117,16 @@ a matrix to `almost triangular' or Hessenberg form. Along the way we discover th
 Arnoldi iteration produces a remarkably good approximation of extremal eigenvalues and eigenvectors. Contrary
 to most physics texts and in the spirit of the pedagogical nature of this chapter, we try to derive all results when possible
 and motivate them thoroughly when not. Setting course back to physics, next, we assume that our matrices are
-Hermitian and observe how the Arnoldi interation simplifies tremendously, producing the well known
+Hermitian and observe how the Arnoldi iteration simplifies tremendously, producing the well known
 Lanczos iteration~\autocite{Sandvik2010}. Then, going beyond just groundstate calculations, we show how to slightly
 modify Lanczos iteration to be able to compute an approximation of action of any analytic function of hermitian
 matrix on a vector. Applying this scheme to the function \(f(x) = \exp\left(-i x t\right)\), we obtain an efficient
 way of calculating pure state time evolution, called the Krylov propagator~\autocite{Park1986}.
 At the end of Chapter~\ref{chap:krylov}, we outline the recent concept of Quantum Typicality~\autocite{Bartsch2009}
 and derive a numerical procedure for efficient calculation of correlation functions, without the need for Exact
-Diagonalization.
+Diagonalization. All algorithms described in chapter~\ref{chap:krylov} were implemented using
+the Armadillo linear algebra library~\autocite{Sanderson2016} and Intel MKL.
+
 
 \textcolor{red}{Go back to this part after finishing chapters on physics, add some citations}
 Our second topic of interest is the \textbf{spin transport in the long-range anisotropic Heisenberg model.}
