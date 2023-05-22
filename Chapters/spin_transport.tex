@@ -4,13 +4,16 @@
 After all the technicalities of the previous chapter, we are finally ready to study spin transport in
 the long-range anisotropic Heisenberg model. The main motivation of this investigation is the fact that this model admits 
 two limits exhibiting ballistic spin transport (cf. Fig.~\ref{fig:spin_transport}), namely the free particles
-with nearest-neighbor hopping for \(\alpha\to \infty,\; \Delta = 0\) and (in the thermodynamic limit) the Haldane-Shastry
-model for \(\alpha = 2\)~\autocite{Haldane1988,Shastry1988}. In both of these limiting models the spin current 
+with nearest-neighbor hopping for \(\alpha\to \infty,\; \Delta = 0\) and the Haldane-Shast ry
+model with \(J_{\mathrm{HS}(r)} = J \sin^2\left(\pi/L\right)/\sin^2\left(\pi r/L\right)\)
+ for \(\alpha = 2\)~\autocite{Haldane1988,Shastry1988}. In the latter case, this limit is only strictly valid
+ in the thermodynamic limit, since \(\sin^{-2}\left(r/L\right)\propto r^{-2}\) for \(r \ll L\).
+ In both of these limiting models the spin current 
 \(j^{\sigma}\) commutes with the Hamiltonian and thus is strictly conserved. Thus, even though
 the Hamiltonian~\eqref{eq:long_range} is not integrable for arbitrary \(\alpha\), one could suspect
 that it will be \textit{nearly integrable}, in the sense described in the introduction, and support
-interesting transport properties. Using spin density expansion and linear response theory of optical conductivity,
-in this chapter we will show that this is indeed the case and the spin transport is \textit{quasibalistic} along a sharp
+interesting transport properties. Using spin density expansion and linear response theory
+of optical conductivity, in this chapter we will show that this is indeed the case and the spin transport is \textit{quasibalistic} along a sharp
 line in the parameter space \(\Delta \simeq \exp(- \alpha + 2)\), which continuously connects the two limiting
 cases mentioned above.
 
@@ -19,7 +22,8 @@ Results described in this chapter were first presented in chapters II and III of
 \begin{figure}[htbp]
     \centering
     \begin{tikzpicture}[scale=1.5]
-      \colorlet{col1}{blue!30}
+      % \colorlet{col1}{blue!30}
+      \colorlet{col1}{wppt!50}
     
      \begin{scope}[smooth,draw=gray!20,y=0.3989422804cm]
           \filldraw[fill=col1] plot[id=f1, domain=-1.5:1.5,samples=100] function {6*exp(-6*x*x)};
@@ -31,9 +35,9 @@ Results described in this chapter were first presented in chapters II and III of
       \draw[<->] (-0.37,1) -- (0.37,1) node [midway, yshift=6pt] {$\gamma$};
     
       \begin{scope}[smooth,draw=gray!20,y=0.3989422804cm]  
-        \draw[black] plot[id=f3,domain=2.35:5.35,samples=100] function {0.7};    
-        \draw[black] plot[id=f4,domain=2.35:5.35,samples=100] function {x};    
-        \draw[black] plot[id=f5,domain=2.35:5.35,samples=100] function {sqrt(x)};    
+        \draw[wppt] plot[id=f3,domain=2.35:5.35,samples=100] function {0.7};    
+        \draw[wppt] plot[id=f4,domain=2.35:5.35,samples=100] function {x};    
+        \draw[wppt] plot[id=f5,domain=2.35:5.35,samples=100] function {sqrt(x)};    
       \end{scope}  
       
       \draw[->] (2.35,0) -- (5.35,0) node [right] {$t$};
@@ -81,7 +85,7 @@ Fig.~\ref{fig:magnetization_profile}.
   The evolution of the center of mass, initially at \(r_{\text{cm}}(t=0)=3\), is marked by a white line.}
   \label{fig:magnetization_profile}
 \end{figure}
-\newpage
+% \newpage
 In order to quantitatively investigate the spin transport in this setup, we introduce the so-called
 \textbf{center of mass}, defined as the first density moment of the magnetization profile  
 \begin{equation}
@@ -100,19 +104,40 @@ non-monotonic dependence of \(r_{\text{cm}}(t)\) on \(\alpha\).
   \centering
   \includegraphics[width=\linewidth]{Figures/center_of_mass.pdf}
   \caption{Time dependence of the center of mass \(r_{\text{cm}}(t)\) for \(\Delta = 0.2\) (left panel) and \(\Delta = 0.5\)
-  (right panel) and various values of interaction decay \(\alpha\). The line corresponding to the fastest moving center of mass
-  is thicker than the others.}
+  (right panel) and various values of interaction decay \(\alpha\). The line corresponding to the fastest-moving center of mass
+  is thicker than the rest.}
   \label{fig:center_of_mass}
 \end{figure}
 
-To see this better, we also look at the velocity
+To see this better, in Fig.~\ref{fig:velocity} we look at the velocity
 obtained from the time derivative of the center of mass
 \begin{equation}
-  v_{\text{cm}}(t) = \dv{r_{\text{cm}}(t)}{t}.
+  {\nu}_{\text{cm}}(t) = \dv{r_{\text{cm}}(t)}{t}.
   \label{eq:velocity}
 \end{equation}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{Figures/velocity.pdf}
+  \caption{Time dependence of the velocity \(\nu_{\text{cm}}(t)\) for \(\Delta = 0.2\) (left panel) and \(\Delta = 0.5\)
+  (right panel) and various values of interaction decay \(\alpha\). The line corresponding to the largest velocity
+  is again thicker than the rest.}
+  \label{fig:velocity}
+\end{figure}
+We observe that for both values of \(\Delta\), there is a clear maximum of the velocity of the expansion
+at some intermediate value of \(\alpha\). To further investigate the dependence of velocity on the parameters
+of the model, we calculate an average velocity \(\bar{\nu}_{\text{cm}}\) on the interval \(t\in\left[20,30\right]\)
+and plot it as a function of \(\alpha\) for various values of \(\Delta\) in the left panel of Fig.~\ref{fig:average_velocity}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{Figures/optimal_velocity.pdf}
+  \caption{<caption>}
+  \label{<label>}
+\end{figure}
 
 
+
+\textcolor{red}{Maximal velocity is approximately constant along the optimal line.}
 
 \textcolor{red}{optimal alpha for a given delta, giving largest velocity}
 \textcolor{red}{average velocities and delta-alpha heatmap}
@@ -128,4 +153,5 @@ obtained from the time derivative of the center of mass
 
 \textcolor{red}{Mention similarity to non interacting fermions.}
 \textcolor{red}{Mention that this quasibalistic transport is characteristic for long range,
-and is not present in NNN, or generalized HS and this is investigated in the paper.}
+and is not present in NNN, or spinless fermions and this is investigated in the paper.}
+\textcolor{red}{Mention that it is similar for generalized HS}
