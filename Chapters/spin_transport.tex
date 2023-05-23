@@ -124,24 +124,35 @@ obtained from the time derivative of the center of mass
   \label{fig:velocity}
 \end{figure}
 We observe that for both values of \(\Delta\), there is a clear maximum of the velocity of the expansion
-at some intermediate value of \(\alpha\). To further investigate the dependence of velocity on the parameters
-of the model, we calculate an average velocity \(\bar{\nu}_{\text{cm}}\) on the interval \(t\in\left[20,30\right]\)
-and plot it as a function of \(\alpha\) for various values of \(\Delta\) in the left panel of Fig.~\ref{fig:average_velocity}.
+at some intermediate value of \(\alpha\). Investigating further the dependence of velocity on the parameters
+of the model, we calculate the average velocity \(\bar{\nu}_{\text{cm}}\) on the interval \(t\in\left[20,30\right]\)
+and plot it as a function of \(\alpha\) for various values of \(\Delta\)
+(cf. left panel of Fig.~\ref{fig:optimal_velocity}).
+The non-monotonic behavior is now evident, as for a fixed \(\Delta\), there exists a value of 
+\( \alpha = \alpha_{\nu_{\mathrm{max}}}(\Delta) \),
+such that the average velocity has a maximum (for \(\Delta = 0.0\) the optimal \(\alpha\) is shifted to infinity).
+Equivalently, for each \(\alpha\) there exists an optimal value of \(\Delta = \Delta_{\nu_{\mathrm{max}}} (\alpha)\).
+
+In the right panel of Fig.~\ref{fig:optimal_velocity} we look at the dependence of average velocity on both
+parameters of the model. Moreover, we superimpose the points corresponding to the
+optimal anisotropies \(\Delta_{\nu_{\mathrm{max}}} (\alpha)\). Curiously, these points
+seem to lie very close to an exponential curve, given by \(\Delta_{\mathrm{O}} = \exp\left(-\alpha + 2\right)\),
+and as seen in the left panel, the average velocity is approximately constant for \(\alpha \geq 2\) and equal to
+\(\bar{\nu} \simeq J/\sqrt{2}\) along this line. Such velocity is a characteristic of ballistic
+transport in the nearest neighbors free-fermion model~\autocite{Vidmar2013, Langer2012},
+corresponding via Jordan-Wigner transformation to our model with \(\alpha \to \infty\) and \(\Delta = 0\).
+Therefore, we suspect that the optimal line \(\Delta_{\nu_{\mathrm{max}}} (\alpha)\), present in an interacting
+system, is a transient remnant of the transport properties of the free fermions.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{Figures/optimal_velocity.pdf}
-  \caption{<caption>}
-  \label{<label>}
+  \caption{Left panel: average velocity \(\bar{\nu}_{\text{cm}}\) as a function of \(\alpha\) for various values of \(\Delta\).
+  Right panel: heatmap of the average velocity \(\bar{\nu}_{\text{cm}}\) as a function of \(\alpha\) and \(\Delta\). The points
+  corresponding to the optimal anisotropies \(\Delta_{\nu_{\mathrm{max}}} (\alpha)\) are marked with black dots, while the solid line
+  indicates the optimal line \(\Delta = \Delta_{\mathrm{O}} = \exp\left(-\alpha + 2\right)\).}
+  \label{fig:optimal_velocity}
 \end{figure}
-
-
-
-\textcolor{red}{Maximal velocity is approximately constant along the optimal line.}
-
-\textcolor{red}{optimal alpha for a given delta, giving largest velocity}
-\textcolor{red}{average velocities and delta-alpha heatmap}
-
 
 
 \section{Optical conductivity}
