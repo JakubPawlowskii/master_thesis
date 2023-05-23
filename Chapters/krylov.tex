@@ -33,19 +33,10 @@ for Exact Diagonalization.
 
  \section{Problems with Exact Diagonalization}
 
- \begin{figure}[htbp]
-	\centering
-	\includegraphics{Figures/direct_iterative.pdf}
-	\caption{Schematic representation of the difference between direct (such as Exact Diagonalization) and
-	iterative (such as Lanczos iteration) algorithms. The advantage of iterative methods comes from the fact that they
-	can be stopped midway after desired precision is reached. On the other hand, direct algorithms require all \(O(m^3)\)
-	operations before any results can be extracted. Figure reproduced from~\textcite{Trefethen1997}.}
-	\label{fig:direct_iter}
-\end{figure}
-
-  The most straightforward numerical method for studying discrete quantum many-body systems is without a doubt
+ 
+ The most straightforward numerical method for studying discrete quantum many-body systems is without a doubt
  Exact Diagonalization (ED)~\autocite{Weisse2008}. It belongs to the family of the so-called direct algorithms (cf. Fig~\ref{fig:direct_iter})
-and allows one to obtain a numerically exact set of eigenvalues and eigenvectors and subsequently compute any desired properties
+ and allows one to obtain a numerically exact set of eigenvalues and eigenvectors and subsequently compute any desired properties
  of the system, be it thermal expectation values, time evolution, Green's functions, etc. Unfortunately, the starting point of any
  ED calculation is the expression of the Hamiltonian as a dense matrix, in the Hilbert space basis of choice. Taking into account
  the fact that the dimension many-body Hilbert space grows exponentially with the size of the system, the memory cost quickly becomes
@@ -56,8 +47,18 @@ and allows one to obtain a numerically exact set of eigenvalues and eigenvectors
  memory platform allowing for handling such large matrices, the computational complexity of ED, requiring \(O(\dimension^3)\) operations,
  is the next major hurdle. Therefore, it is exceedingly
  difficult to probe the thermodynamic limit physics and ED calculations suffer from finite size effects.
+ \vspace*{-0.5cm}
+ \begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{Figures/direct_iterative.pdf}
+	\caption{Schematic representation of the difference between direct (such as Exact Diagonalization) and
+	iterative (such as Lanczos iteration) algorithms. The advantage of iterative methods comes from the fact that they
+	can be stopped midway after desired precision is reached. On the other hand, direct algorithms require all \(O(m^3)\)
+	operations before any results can be extracted. Figure reproduced from~\textcite{Trefethen1997}.}
+	\label{fig:direct_iter}
+\end{figure}
  
-\begin{figure}[htbp]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{Figures/matrix_elements.pdf}
 	\caption{Ising basis representation of matrix of the XXZ Hamiltonian \(H = J\sum_{i} \left[\frac{1}{2}\left(\Sp_i \Sm_{i+1} +
