@@ -4,7 +4,7 @@
 After all the technicalities of the previous chapter, we are finally ready to study spin transport in
 the long-range anisotropic Heisenberg model. The main motivation of this investigation is the fact that this model admits 
 two limits exhibiting ballistic spin transport (cf. Fig.~\ref{fig:spin_transport}), namely the free particles
-with nearest-neighbor hopping for \(\alpha\to \infty,\; \Delta = 0\) and the Haldane-Shast ry
+with nearest-neighbor hopping for \(\alpha\to \infty,\; \Delta = 0\) and the Haldane-Shastry
 model with \(J_{\mathrm{HS}(r)} = J \sin^2\left(\pi/L\right)/\sin^2\left(\pi r/L\right)\)
  for \(\alpha = 2\)~\autocite{Haldane1988,Shastry1988}. In the latter case, this limit is only strictly valid
  in the thermodynamic limit, since \(\sin^{-2}\left(r/L\right)\propto r^{-2}\) for \(r \ll L\).
@@ -136,13 +136,13 @@ Equivalently, for each \(\alpha\) there exists an optimal value of \(\Delta = \D
 In the right panel of Fig.~\ref{fig:optimal_velocity} we look at the dependence of average velocity on both
 parameters of the model. Moreover, we superimpose the points corresponding to the
 optimal anisotropies \(\Delta_{\nu_{\mathrm{max}}} (\alpha)\). Curiously, these points
-seem to lie very close to an exponential curve, given by \(\Delta_{\mathrm{O}} = \exp\left(-\alpha + 2\right)\),
-and as seen in the left panel, the average velocity is approximately constant for \(\alpha \geq 2\) and equal to
+seem to lie very close to an exponential curve, given by \(\Delta_{\mathrm{O}} = \exp\left(-\alpha + 2\right)\).
+Furthermore, as seen in the left panel, the average velocity is approximately constant for \(\alpha \geq 2\) and equal to
 \(\bar{\nu} \simeq J/\sqrt{2}\) along this line. Such velocity is a characteristic of ballistic
 transport in the nearest neighbors free-fermion model~\autocite{Vidmar2013, Langer2012},
 corresponding via Jordan-Wigner transformation to our model with \(\alpha \to \infty\) and \(\Delta = 0\).
-Therefore, we suspect that the optimal line \(\Delta_{\nu_{\mathrm{max}}} (\alpha)\), present in an interacting
-system, is a transient remnant of the transport properties of the free fermions.
+Therefore, we suspect that the optimal line \(\Delta_{\nu_{\mathrm{max}}} (\alpha)\), present in this interacting
+system and indicating \textbf{quasibalistic} transport, is a transient remnant of the transport properties of the free fermions.
 
 \begin{figure}[htbp]
   \centering
@@ -157,12 +157,133 @@ system, is a transient remnant of the transport properties of the free fermions.
 
 \section{Optical conductivity}
 
+In this section, we approach the problem of spin transport in the long-range Heisenberg model from the
+perspective of \textbf{linear response theory}. We study the \textbf{optical conductivity}
+\footnote{The optical conductivity is also known as the spin conductivity.} \(\sigma(\omega)\) of the model,
+which is a measure of the response of the system to an external electromagnetic field. 
+In the linear response regime, the optical conductivity is given by the Kubo formula, which
+for infinite temperature reads
+\begin{equation}
+  \sigma(\omega) = \frac{\pi}{L \mathcal{Z}} \sum_{n,m} \abs{\mel{n}{j^{\sigma}}{n}}^2 \delta(\omega - \epsilon_m + \epsilon_n)
+  \label{eq:kubo}
+\end{equation}
+where \(\mathcal{Z}\) is the number of states in the Hilbert space, \(L\) is the system size and \(j^{\sigma}\) is the spin
+current operator~\eqref{eq:spin_current}, derived in Chapter~\ref{chap:intro}.
+For the derivation of the Kubo formula and the optical conductivity, see Appendix~\ref{app:opt_cond}.
+As the sum in Eq.~\eqref{eq:kubo} runs 
+uniformly over all many-body eigenstates \(H \ket{n} = \epsilon_n \ket{n}\) of the Hamiltonian, this quantity
+probes the whole eigenspectrum. Equation~\ref {eq:kubo} suggests a simple numerical procedure for calculating
+the optical conductivity. First, one needs to diagonalize the Hamiltonian \(H\) and obtain the eigenstates
+\(\ket{n}\) and eigenvalues \(\epsilon_n\). Then, one needs to calculate the matrix elements of the spin current operator
+\(\mel{n}{j^{\sigma}}{n}\) between all pairs of eigenstates. Finally, the optical conductivity is obtained by
+summing over all pairs of eigenstates, weighted by the corresponding matrix elements and the \(\delta\) function.
+It is only the last step that requires some care, as the \(\delta\) function is not a regular function and
+would require some binning of the discrete spectrum. We avoid this, by instead considering the
+\textbf{integrated conductivity}
+\begin{equation}
+  I(\varOmega) = \frac{1}{\mathcal{S}_{\mathrm{tot}}} \int_{-\varOmega}^{\varOmega} \dd{\omega} \sigma(\omega) = 
+  \frac{\pi}{L \mathcal{Z} \mathcal{S}_{\mathrm{tot}}} \sum_{n,m} \abs{\mel{n}{j^{\sigma}}{n}}^2 \theta(\varOmega- \abs{\epsilon_m - \epsilon_n})
+  \label{eq:integrated_conductivity}
+\end{equation}
+where \(\theta(x)\) is the Heaviside step function and  \(\mathcal{S}_{\mathrm{tot}}\) is the sum rule
+\begin{equation}
+  \mathcal{S}_{\mathrm{tot}} = \int_{-\infty}^{\infty} \dd{\omega} \sigma(\omega) = \frac{\pi}{L \mathcal{Z}} \sum_{n,m} \abs{\mel{n}{j^{\sigma}}{n}}^2
+\end{equation}
+It is easy to see that the integrated conductivity \(I(\varOmega)\) is a regular function of \(\varOmega\), and
+contains the information about the spectral weight contained in the frequency window 
+\(\left[-\varOmega,\varOmega\right]\).
+Equation~\eqref{eq:integrated_conductivity} is now straightforward to evaluate numerically.
+
+We evaluate the integrated conductivity~\eqref{eq:integrated_conductivity} for the long-range Heisenberg model
+with periodic boundary conditions, and system sizes up to \(L=20\). We also restrict the calculations to the
+subspace of zero total magnetization, i.e. the largest sector with \(\binom{L}{L/2}\) states. Leveraging
+the periodic boundary conditions, we perform the calculations separately for each momentum sector and then
+add the results together.
+
+\begin{figure}[htbp]
+  \centering
+  \textcolor{red}{optical conductivity}
+  % \includegraphics[width=\linewidth]{Figures/optical_conductivity.pdf}
+  \caption{Left panel: Integrated conductivity \(I(\varOmega)\) as a function of frequency window \(\varOmega\) for various values of \(\alpha\)
+  and \(\Delta = 0.5\). The thicker line denotes the result for optimal decay parameter \(\alpha\). Right panel: Size dependence
+  of the integrated conductivity \(I(\varOmega)\) for \(\alpha = 2.0, \; 2.5,\; 4.0\) and \(\Delta = 0.5\),
+  illustrating the effects of finite size. For clarity, we added a vertical shift to distinguish the curves for different
+  decay parameters.}
+  \label{fig:optical_conductivity}
+\end{figure}
+
+Looking at the left panel of Fig.~\ref{fig:optical_conductivity}, we observe that the integrated conductivity
+for \(\alpha \to \infty\) is exhibiting a \textbf{Drude peak} behavior at \(\varOmega \to 0\), and a distinct 
+incoherent (regular) spectrum for \(0.1 \lesssim \varOmega / J \lesssim 1.0\), which is consistent with the results
+for the nearest neighbor Heisenberg model~\autocite{Prelovsek2021}. As \(\alpha\) is decreased 
+(the range of the interactions increases), but remains \(\alpha \gtrsim 10\), the Drude peak
+becomes suppressed, while the regular part of the spectrum is still more or less the same.
+However, an interesting feature appears in the spectrum for \(\alpha \lesssim 10\), namely
+the incoherent part starts shifting towards lower frequencies. For anisotropy \(\Delta = 0.5\),
+this behavior is most pronounced for \(\alpha = 2.5\), where the integrated conductivity
+is \(I(\varOmega)\simeq 1 \) for \( \varOmega/J < 0.01\), which means that most of the spectral weight
+is contained in the frequency window \(\left[-0.01,0.01\right]\). This in turn implies ballistic-like 
+spin transport for extremely long times up to \(tJ \simeq 100\), similar to the case of noninteracting particles,
+as there we have \(\sigma(\omega) \propto \delta(\omega) \implies I(\varOmega) = 1\) for \(\varOmega > 0\). Furthermore,
+we once again observe some kind of non-monotonic behavior, as decreasing the decay parameter
+beyond \(\alpha \approx 2.5\) shifts the incoherent part of the spectrum back towards higher frequencies.
+
+To quantitatively investigate this effect across the parameter space, in Fig.~\ref{fig:I_cond_heatmap}
+we present heatmaps of the integrated conductivity \(I(\varOmega)\) on the \((\alpha ,\varOmega)\) plane, 
+for different values of the anisotropy \(\Delta\). Moreover, with a solid black line we denote the
+the value \(\varOmega = \varOmega^{\ast}\), for which the integrated conductivity is \(I(\varOmega^{\ast}) = 0.9\),
+i.e. 90\% of the sum rule \(S_{\mathrm{tot}}\).
+
+\begin{figure}[htbp]
+  \centering
+  \textcolor{red}{heatmaps of integrated conductivity}
+  \caption{Heatmaps of the integrated conductivity \(I(\varOmega)\) on the \((\alpha ,\varOmega)\) plane.
+  Black solid line denotes the value \(\varOmega = \varOmega^{\ast}\), 
+  for which the integrated conductivity is \(I(\varOmega^{\ast}) = 0.9\).}
+  \label{fig:I_cond_heatmap}
+\end{figure}
+
+As in the case of average velocity during a spin expansion experiment, 
+for every value of \(\Delta\), we can find a value of \(\alpha\) for which the quantity telling about transiency
+of ballistic transport admits extremal value. Here, it is the \(\varOmega^{\ast}\) that becomes minimal,
+and in fact surprisingly small, implying transient ballistic spin transport. Once again, we can proceed 
+in reverse, and extract the optimal anisotropy \(\Delta_{\sigma} = \Delta_{\sigma}(\alpha)\) as a function
+of the decay parameter \(\alpha\), for which \(\varOmega^{\ast}\) is minimal. We can thus directly compare
+the optimal anisotropies obtained from the two different quantities, namely the average velocity and the integrated conductivity.
+The results are presented in Fig.~\ref{fig:optimal_anisotropy}, where we observe an almost perfect
+agreement between \(\Delta_{\sigma}\) obtained from linear response theory, that is low frequency (long time) dynamics,
+of a system with periodic boundary conditions,
+and the optimal anisotropy \(\Delta_{O}(\alpha)\), inferred from the short-time spin domain expansion in a chain
+with open boundary conditions. This is a strong indication that the transient ballistic spin transport
+is a generic feature of the long-range Heisenberg model, and not an artifact of the finite system size.
+It is further supported by the finite-size analysis of the integrated conductivity, presented in the right panel
+of Fig.~\ref{fig:optical_conductivity}, where we observe that \(I(\varOmega)\) for \(\alpha = 2.0\)
+is almost independent of the system size, and for larger values of \(\alpha\), the incoherent part of the spectrum
+is shifted towards even lower frequencies.
+
+\begin{figure}[htbp]
+  \centering
+  \textcolor{red}{optimal anisotropies}
+  \caption{<caption>}
+  \label{fig:optimal_anisotropy}
+\end{figure}
 
 
-
-
-
-\textcolor{red}{Mention similarity to non interacting fermions.}
-\textcolor{red}{Mention that this quasibalistic transport is characteristic for long range,
-and is not present in NNN, or spinless fermions and this is investigated in the paper.}
-\textcolor{red}{Mention that it is similar for generalized HS}
+It is worth mentioning, that in~\textcite{Mierzejewski2023},
+we have also looked into a generalized version of the aforementioned Haldane-Shastry model,
+with the exchange interaction of the form \(J_{\mathrm{HS}} \propto 1/\sin^{\alpha}(\pi r/L)\).
+We have shown that it exhibits very similar behavior, with the integrated conductivity
+close to the one obtained for the long-range Heisenberg model, and the optimal anisotropy
+following the same curve \(\exp(-\alpha + 2)\). Moreover, we have investigated two other
+models, namely the next-nearest neighbor Heisenberg model (i.e.~\eqref{eq:long_range} with \(r_\mathrm{max} = 2\)),
+and the long-range \(t\)-\(V\) spinless fermion model.
+Contrary to the nearest-neighbor case, the long-range \(t\)-\(V\) model is not related to the long-range
+Heisenberg model via the Jordan-Wigner transformation, and thus the two models are not equivalent.
+The former case yielded results similar to the long-range Heisenberg model for small values
+of anisotropy \(\Delta\in\left[0,0.2\right]\), while for larger values of \(\Delta\), the integrated conductivity
+was rather featureless. It is consistent with our main results, as is this parameter regime, the optimal
+decay is \(\alpha \gtrsim 3.5\), rendering the terms with \(r > 2\) insignificant.
+In the latter case of spinless fermions, the quasibalistic transport was all but absent. Therefore,
+it is expected that this phenomenon is unique to the long-range Heisenberg model.
+For more details of those results that go beyond the scope of this thesis, the interested reader is referred to
+the original research article.
