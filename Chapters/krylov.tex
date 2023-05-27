@@ -666,6 +666,7 @@ We are now ready to introduce \textbf{time dependent correlation functions} and 
 developed Krylov subspace machinery. This function is defined for a pair of operators \(A, B\) as
 \begin{equation}
 \tilde{C}_{AB}(t) \equiv \Re \langle A(t) B \rangle = \Re \Tr\left(\hat{\rho}A(t)B\right)
+\label{eq:corr_fun}
 \end{equation}
 where \(\hat{\rho} = e^{-\beta H}/\mathcal{Z},\; \mathcal{Z} = \Tr\left(e^{-\beta H}\right)\) is the canonical ensemble at temperature \(T = 1/\beta\),
 and \(A(t) = e^{i \hat{H} t} A e^{-i \hat{H} t}\) is understood via the Heisenberg picture. In this thesis we are
@@ -874,12 +875,12 @@ From this bound, we see that at infinite temperature, the error is exponentially
 It becomes progressively worse with lower temperature, however as the mean error is \(0\) we can always average over a few random
 states. Fortunately, in this thesis, we are only interested in case \(\beta \to 0\), so usually a single run will be enough.
 
-As an example application, in figure~\ref{fig:spin_autocorr} we present the spin current autocorrelation functions
+As an example application, in figure~\ref{fig:spin_autocorr} we present the infinite-temperature spin current autocorrelation functions
 in the nearest-neighbor Heisenberg model, obtained by setting \(r_{\mathrm{max}}=1\) in equations~\eqref{eq:long_range} and~\eqref{eq:spin_current}. 
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{Figures/autocorr_spin_current.pdf}
-	\caption{Autocorrelation function of spin current \(j_{\sigma}\) in isotropic Heisenberg model
+	\caption{Infinite-temperature autocorrelation function of spin current \(j_{\sigma}\) in isotropic Heisenberg model
 	(\(J=1,\;\Delta=1\)), evaluated
 	using Exact Diagonalization for \(L=16,\;18\) and Dynamical Quantum Typicality with Krylov propagator
 	for \(L=16,\;18,\;20,\;22,\;24,\;26\). Already for a modest size of \(L=18\) lattice sites we observe
