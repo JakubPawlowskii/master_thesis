@@ -101,7 +101,9 @@ Using the infinite temperature correlation function (cf. Eq.~\eqref{eq:corr_fun}
     \label{eq:hs_prod}
 \end{equation}
 called the \textbf{Hilbert-Schmidt inner product} and
-inducing the \textbf{Hilbert-Schmidt norm} \(\norm{A} = \sqrt{\hs{A}{A}}\).
+inducing the \textbf{Hilbert-Schmidt norm} \(\norm{A} = \sqrt{\hs{A}{A}}\). It is worth noting, that
+if we let the first operator be time-dependent, and consider the Hilbert-Schmidt inner product
+as a function of time, we obtain the infinite temperature correlation function~\eqref{eq:corr_fun}.
 Because we only consider finite systems in this thesis, we do not need to worry about
 situations where the trace is not well defined. The pair \( (\mathcal{V}_M, \hs{\cdot}{\cdot}) \)
 is then a finite-dimensional Hilbert space.
@@ -130,8 +132,8 @@ by considering the infinite time average
 \begin{align}
     \bar{O}_s = \lim_{\tau\to\infty}\frac{1}{\tau} \int_0^{\tau} \mathrm{d}t\, O_s(t) &= 
      \lim_{\tau\to\infty}\frac{1}{\tau} \int_0^{\tau} \mathrm{d}t\, \mathrm{e}^{i H t}O_s \mathrm{e}^{-i H t} \nonumber\\
-     &= \sum_{m,n} (O_s)_{mn}\ketbra{m}{n} \lim_{\tau\to\infty} \frac{1}{\tau} \int_0^{\tau} \mathrm{d}t \, \mathrm{e}^{i(E_m-E_n)t} \nonumber\\
-    &= \sum_{\substack{n,m \\ E_n = E_m}} (O_s)_{mn}\ketbra{m}{n}
+     &= \sum_{m,n} (O_s)_{mn}\ketbra{m}{n} \lim_{\tau\to\infty} \frac{1}{\tau} \int_0^{\tau} \mathrm{d}t \, \mathrm{e}^{i(\epsilon_m-\epsilon_n)t} \nonumber\\
+    &= \sum_{\substack{n,m \\ \epsilon_n = \epsilon_m}} (O_s)_{mn}\ketbra{m}{n}
     \label{eq:time_avg}
 \end{align}
 This time-averaging amounts to a cut-off, removing all matrix elements between non-degenerate eigenstates
@@ -147,15 +149,17 @@ as
     \bar{O}_s^{\tau} = \int_{-\infty}^{\infty} \mathrm{d}t\, O_s(t) \frac{\sin(t/\tau)}{\pi t}
 \end{equation}
 By considering the Fourier transform of the \(\sin(x)/x\) function, it can be shown that
-this expression is equivalent to (\textcolor{red}{Appendix C if time permits})
+this expression is equivalent to (see Appendix~\ref{app:fourier} for details)
 \begin{equation}
-    \bar{O}_s^{\tau} = \sum_{n,m} \underbrace{\theta\left(\frac{1}{\tau} - |E_n - E_m|\right)}_{\theta_{mn}^{\tau}} (O_s)_{mn} \ketbra{m}{n}
+    \bar{O}_s^{\tau} = \sum_{n,m} \underbrace{\theta\left(\frac{1}{\tau} - |\epsilon_n - \epsilon_m|\right)}_{\theta_{mn}^{\tau}} (O_s)_{mn} \ketbra{m}{n}
 \label{eq:finite_time_avg}
 \end{equation}
 and because for Heaviside theta function we have \(\theta(x)^2 = \theta(x)\), the projective character is restored. Notice the similarity
 of this expression to the integrated conductivity~\eqref{eq:integrated_conductivity}. Indeed, the 
 parameter \(1/\tau\) can be interpreted as \(\Omega\), giving the frequency cut-off for the matrix elements.
-Properties the \(\theta\)-function ensure that the \(\tau\to\infty\) limit of Eq.~\eqref{eq:finite_time_avg}
+Thus, for finite \(\tau\), \(\hs{\bar{O}_s^{\tau}}{\bar{O}_t^{\tau}}\) can be related to the low-frequency spectrum of 
+the autocorrelation function \(\langle O_s(t) O_t \rangle\). We shall return to this idea later on.
+Moreover, properties the \(\theta\)-function ensure that the \(\tau\to\infty\) limit of Eq.~\eqref{eq:finite_time_avg}
 agrees with Eq.~\eqref{eq:time_avg}. Let us now calculate the commutator of \(O_s^{\tau}\) with the Hamiltonian
 \begin{align}
     \comm{H}{\bar{O}_s^{\tau}} & = \sum_n \sum_{k,p} \epsilon_n \theta_{kp}^{\tau} (\bar{O}_s)_{kp} \comm{ \ketbra{n}{n}}{ \ketbra{k}{p}} \nonumber         \\
@@ -172,6 +176,7 @@ given by the pairwise inner products of the time-averaged operators, which we co
 \(K^{\tau}\), with elements
 \begin{equation}
     K^{\tau}_{st} = \hs{\bar{O}_s^{\tau}}{\bar{O}_t^{\tau}} = \sum_{n,m} \theta_{mn}^{\tau} (O_s)_{nm} (O_t)_{nm}^{\ast}
+    \label{eq:overlap_matrix}
 \end{equation}
 This matrix is Hermitian by design, and in the case of systems with time-reversal symmetry, it is also real,
 thus symmetric. By the spectral theorem, there exists a unitary matrix \(U\) that diagonalizes it
@@ -227,7 +232,7 @@ This guarantees that the operators \(Q_n\) are integrals of motion.
     \label{eq:liom_norm}
   \end{equation}
 Thus, the spectrum of the matrix \(K\) is contained in the interval \([0,1]\) and
- determines the classification of the integrals of motion. We have three cases:
+ determines the classification of the integrals of motion. We have three classes:
  \begin{itemize}
     \item local: \(\lambda_n = 1 \implies \norm{Q_n^{\perp}} = 0 \implies Q_n \in \mathcal{V}_M\)
     \item quasilocal: \(\lambda_n \in \left(0,1\right) \implies \norm{Q_n^{\perp}} > 0 \implies Q_n \in \mathcal{V} \)
@@ -243,21 +248,121 @@ Thus, the spectrum of the matrix \(K\) is contained in the interval \([0,1]\) an
   for a given \(n\) we have \(0 < \lambda_n < 1\), then \(\norm*{Q^M_n} < 1\). It is only if this norm
   stays non-zero in the thermodynamic limit, we can say that the operator is quasilocal. Then the \(Q_n^M\)
 can be regarded as an \(M\)-local approximation of the true LIOM \(Q_n\).
-  Numerous studies have confirmed their relevance in the theory of integrable systems~\autocite{Ilievski2015,Ilievski2015b,Prosen2013,Prosen2014},
+  Numerous studies have confirmed their relevance in the theory of integrable 
+  systems~\autocite{Ilievski2015, Ilievski2015b, Prosen2013, Prosen2014},
   however, we shall not deal with them any further. In fact, we shall not even deal with LIOMs, as
   the system we are interested in here is not integrable. Nevertheless, even without integrability,
   this algorithm will produce a sequence of operators \(\{Q^M_n\}\), with the largest possible norm,
   often called \textbf{stiffness}. We will refer to them as \textbf{local slowly relaxing operators (LSROs)}
-  and they will play a central role in the next section. We shall also relax the restriction
+  and they will play a central role in section~\ref{sec:fermionic_currents}. We shall also relax the restriction
   \(\tau\to\infty\) and look at the LSROs at finite values of \(\tau\).
 
 \subsection{Details of implementation}
+Before proceeding further toward a concrete application of the procedure outlined above, let us first discuss
+ some technical details of its implementation. The most demanding part, from the computational point of view,
+ is the calculation of matrix elements~\eqref{eq:overlap_matrix}. It requires explicit construction of
+ matrices of all the basis operators \(O_s\), change of basis using Hamiltonian eigenstates,
+ time averaging~\eqref{eq:finite_time_avg}, and finally carrying out the trace of pairwise products.
+ All those operations are constrained by the fact that the Hilbert space dimension grows exponentially.
+ To keep the computational cost manageable, we can use symmetries of the system. In chapter~\ref{chap:intro}, we
+ have explored how the presence of a symmetry, manifested by the existence of an operator \(S\), such
+ that \(\comm{S}{H} = 0\), can be used to decompose the Hilbert space into a direct sum of smaller
+  subspaces \(\mathcal{H}_{s}\), consisting of states with a fixed eigenvalue \(s\) of \(S\). Given a
+  compatible operator \(A\), its matrix in the symmetry-adapted basis has a block-diagonal structure.
+  It is easy to see that then, its trace is equal to the sum of traces of the individual blocks.
+  Thus, instead of carrying out the algorithm in the full Hilbert space, we can perform it separately
+  in each symmetry sector and then construct the matrix \(K^{\tau}\) by summing the matrices of the
+  individual sectors. However, there is a caveat. We require the basis operators \(O_s\) to be
+  traceless, to avoid trivial overlaps with the identity operator, and normalized, to form an orthonormal
+  basis. But they must be traceless and normalized with respect to the full space Hilbert-Schmidt inner
+  product~\eqref{eq:hs_prod}, not the one restricted to a symmetry sector. It is known from linear algebra,
+  that given a collection of spaces equipped with an inner product, a unique way to define an inner product
+  on the direct sum of those spaces is to consider the sum of the individual inner products~\autocite{Conway2007}.
+  Thus, we have the following identities
+  \begin{align}
+    \Lambda_A &\equiv \frac{1}{\mathcal{D}} \Tr(A) = \frac{1}{\mathcal{D}} \sum_{s} \Tr(A^s)\\
+    \Gamma_A &\equiv \norm{A}^2 = \frac{1}{\mathcal{D}} \Tr(A^{\dag}A) = \frac{1}{\mathcal{D}} \sum_{s} \Tr((A^s)^{\dag}A^s)
+  \end{align}
+  where by \(A^s\) we denote the block of matrix of \(A\) in the symmetry sector with eigenvalue \(s\).
+  Now, we are ready to derive the formula for the overlap matrix, using symmetry sectors. For brevity,
+  we shall suppress the \(\tau\) superscript.
+  \begin{align}
+    K_{pt} &= \hs{\frac{\bar{O}_s - \Lambda_{O_s}}{\Gamma_{O_s}}}{\frac{\bar{O}_t - \Lambda_{O_t}}{\Gamma_{O_t}}}
+    = \frac{1}{\mathcal{D}} \Tr\left(\frac{\bar{O}_s - \Lambda_{O_s}}{\Gamma_{O_s}}\frac{\bar{O}_t - \Lambda_{O_t}}{\Gamma_{O_t}}\right) \nonumber \\
+    &= \frac{1}{\mathcal{D} \Gamma_{O_s}\Gamma_{O_t}} \left[\Tr(\bar{O}_s \bar{O}_t) - \Lambda_t \Tr(O_s) - \Lambda_s \Tr(O_t) + \Lambda_s \Lambda_t \mathcal{D} \right]\nonumber\\
+    &= \frac{1}{\mathcal{D} \Gamma_{O_s}\Gamma_{O_t}} \left[\Tr(\bar{O}_s \bar{O}_t) - \Lambda_t \Lambda_s \mathcal{D} \right] \nonumber\\
+    &= \frac{1}{\mathcal{D} \Gamma_{O_s}\Gamma_{O_t}} \left[\sum_s \Tr(\bar{O}_p^s \bar{O}_t^s) - \Lambda_t \Lambda_s \mathcal{D} \right]
+  \end{align}
 
+  We can now write down this algorithm using pseudocode. In the following, we assume that the Hilbert
+  space is decomposed into \(s'\) symmetry sectors.
+\begin{algorithm}
+	\algrenewcommand\algorithmicrequire{\textbf{Input: }}
+	\algrenewcommand\algorithmicensure{\textbf{Output: }}
+	\caption{Algorithm for finding LIOMs/LSROs, optimized using symmetry subspaces}
+	\label{alg:liom_alg}
+	\begin{algorithmic}[1]
+	\Require  \(\{O_i\}_{i=1}^N\) --- Basis of the operator space \(\mathcal{V}_M\), tight-binding Hamiltonian \(H\)
+	\Ensure \(\{Q^M_i\}_{i=1}^N\) --- most conserved operators (LIOMs/LSROs)
+    \State \(\Gamma_{O_i} = 0\), \(\Lambda_{O_i} = 0\), \(K_{ij} = 0\) for all \(i,j = 1,\ldots N\)
+    \For{\(s = 1:s'\)}
+      \State Generate and diagonalize \(H^s\)
+      \For{\(i = 1:N\)}
+        \State Generate \(O_i^s\)
+        \State \(\Gamma_{O_i} = \Gamma_{O_i} + \frac{1}{\mathcal{D}}\Tr((O_i^s)^{\dag}O_i^s)\)
+        \State \(\Lambda_{O_i} = \Lambda_{O_i} + \frac{1}{\mathcal{D}}\Tr(O_i^s)\)
+        \State Change basis and calculate \(\bar{O}_i^s\) according to Eq.~\eqref{eq:finite_time_avg}
+        \For{\(j = i:N\)}
+          \State Generate \(O_j^s\), calculate \(\bar{O}_j^s\) according to Eq.~\eqref{eq:finite_time_avg}
+          \State \(K_{ij} = K_{ij} + \frac{1}{\mathcal{D}}\Tr(\bar{O}_i^s \bar{O}_j^s)\)
+          \State \(K_{ji} = K_{ji} + (1 + \delta_{ij}) K_{ij}\)
+        \EndFor
+      \EndFor
+    \EndFor
+    \For{\(i,j = 1:N\)}
+      \State \(K_{ij} = K_{ij} - \mathcal{D} \Lambda_{O_i} \Lambda_{O_j}\)
+      \State \(K_{ij} = K_{ij}/(\mathcal{D} \Gamma_{O_i} \Gamma_{O_j})\)
+    \EndFor
+    \State Diagonalize \(K\)
+    \State \(\{Q_i^M\} = \sum_j U_{ij} O_j\)
+  \end{algorithmic}
+\end{algorithm}
 
-
-
-\textcolor{red}{failure of lanczos based detection, but describe it}\\
-\textcolor{red}{matrix elements of long range hamiiltonian}
+\newpage
+There is one more possible improvement to the algorithm. We have spent the better part of chapter~\ref{chap:krylov}
+developing numerical methods that allow us to avoid using exact diagonalization. However, the algorithm presented
+above requires knowledge of the full eigenspectrum of the Hamiltonian. It turns out, that it is possible
+to escape this requirement, and instead rely on the Dynamical Quantum Typicality approach to correlation functions.
+We have already hinted at that relationship after introducing finite time averaging~\eqref{eq:finite_time_avg}.
+To see this, let us calculate the Fourier transform of an infinite-temperature correlation function between
+two operators \(A\) and \(B\). It is a bit lengthy to carry out the calculation in a rigorous way, so the
+details are relegated to Appendix~\ref{app:fourier}. The result, written in spectral representation, is
+\begin{equation}  
+  \mathcal{F}\left[\hs{A(t)}{B}\right] = \frac{1}{\dimension}\sum_{n,m} A_{mn} B_{nm} \delta(\epsilon_m-\epsilon_n+\omega)
+  \label{eq:fourier_corr}
+\end{equation}
+Let us now do one more step and consider the integral of \(\mathcal{F}\left[\hs{A(t)}{B}\right]\) over
+some finite frequency window \([-\Omega, \Omega]\), akin to the integrated conductivity~\eqref{eq:integrated_conductivity}.
+\begin{align}
+    I_{AB}(\Omega) &= \int_{-\Omega}^{\Omega} \mathrm{d}\omega\; \mathcal{F}\left[\hs{A(t)}{B}\right](\omega) =
+    \frac{1}{\dimension}\sum_{n,m} A_{mn} B_{nm} \int_{-\Omega}^{\Omega} \mathrm{d}\omega \;
+    \delta(\epsilon_m-\epsilon_n+\omega) \nonumber \\ &= \frac{1}{\dimension}\sum_{n,m} A_{mn} B_{nm}
+    \theta(\Omega + (\epsilon_m-\epsilon_n))\theta(\Omega - (\epsilon_m-\epsilon_n)) \nonumber\\
+    &= \frac{1}{\dimension}\sum_{n,m} A_{mn} B_{nm}\theta(\Omega - \abs{\epsilon_m-\epsilon_n})
+    \label{eq:integrated_spectral}
+\end{align}
+This is a very important result, and the quantity \(I_{AB}(\Omega)\) goes by the name of
+the integrated spectral function~\autocite{Vidmar2021}.
+It tells us that the matrix element of the overlap matrix \(K^{\tau}\),
+for a pair of operators \(A\) and \(B\), is equal to the integrated Fourier transform of the infinite-temperature
+correlation function between \(A\) and \(B\). This means that we can calculate the matrix elements of \(K^{\tau}\)
+by using the Dynamical Quantum Typicality and Lanczos-based approach, which should be more efficient than exact diagonalization.
+Unfortunately, this is not the case for the  physical system considered in this thesis,
+i.e. the long-range Heisenberg model. The reason is that the efficiency of Lanczos-based
+correlation function calculation relies on the sparse structure of the Hamiltonian matrix.
+This is of course not the case for a power-law decaying interaction. Thus, we will not use this approach
+in this thesis. However, all this work is not in vain, as this method will surely prove useful
+for further research.
 
 \section{Fermionic currents in the long-range Heisenberg model \label{sec:fermionic_currents}}
 
