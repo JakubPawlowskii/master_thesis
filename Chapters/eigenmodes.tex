@@ -108,37 +108,37 @@ Because we only consider finite systems in this thesis, we do not need to worry 
 situations where the trace is not well defined. The pair \( (\mathcal{V}_M, \hs{\cdot}{\cdot}) \)
 is then a finite-dimensional Hilbert space.
 We are now able to state more precisely what we mean by a complete set of LIOMs.
-It is a set of local operators \(\{Q_{\alpha} : \comm{Q_{\alpha}}{H} = 0\}\), such that
+It is a set of local operators \(\{Q_{\beta} : \comm{Q_{\beta}}{H} = 0\}\), such that
 for any observable \(A\) we have
 \begin{equation}
-    \lim_{t\to\infty} \hs{A(t)}{A} = \sum_{\alpha} \frac{\hs{Q_{\alpha}}{A}^2}{\hs{Q_{\alpha}}{Q_{\alpha}}}
+    \lim_{t\to\infty} \hs{A(t)}{A} = \sum_{\beta} \frac{\hs{Q_{\beta}}{A}^2}{\hs{Q_{\beta}}{Q_{\beta}}}
 \end{equation}
 i.e. the completeness is understood as the saturation of the Mazur bound~\autocite{Mazur1969}.
 
 The mathematical stage is now set, so let us proceed further toward the algorithm. 
-As \(\mathcal{V}_M\) is a linear space, it possesses a basis \(\{O_{s}\}\),
-which with the help of the inner product can be made into an orthonormal basis \(\hs{O_s}{O_{t}} = \delta_{st}\).
+As \(\mathcal{V}_M\) is a linear space, it possesses a basis \(\{O_{\alpha}\}\),
+which with the help of the inner product can be made into an orthonormal basis \(\hs{O_{\alpha}}{O_{\alpha^{\prime}}} = \delta_{\alpha\alpha^{\prime}}\).
 We can also think of this space as an orthogonal subspace of the space \(\mathcal{V}\) of all possible operators
 acting on \(\mathcal{H}\), in the sense that
 \begin{equation}
-    \big(\forall A \in \mathcal{V} \big) \big( A = A^M + A^{\perp} = \sum_s \hs{O_s}{A} O_s + A^{\perp}\big) ,
-    \text{ such that } \big(\forall s\big) \big( ({O_s}|{A^{\perp}}) = 0\big)
+    \big(\forall A \in \mathcal{V} \big) \big( A = A^M + A^{\perp} = \sum_{\alpha} \hs{O_{\alpha}}{A} O_{\alpha} + A^{\perp}\big) ,
+    \text{ such that } \big(\forall \alpha\big) \big( ({O_{\alpha}}|{A^{\perp}}) = 0\big)
     \label{eq:decomposition}
   \end{equation}
 We will describe an example of such a basis in the next section, but for now, it is enough that it exists.
 
-Next, we would like to determine the conserved part of all the basis operators \(O_s\). We do this
+Next, we would like to determine the conserved part of all the basis operators \(O_{\alpha}\). We do this
 by considering the infinite time average 
 \begin{align}
-    \bar{O}_s = \lim_{\tau\to\infty}\frac{1}{\tau} \int_0^{\tau} \mathrm{d}t\, O_s(t) &= 
-     \lim_{\tau\to\infty}\frac{1}{\tau} \int_0^{\tau} \mathrm{d}t\, \mathrm{e}^{i H t}O_s \mathrm{e}^{-i H t} \nonumber\\
-     &= \sum_{m,n} (O_s)_{mn}\ketbra{m}{n} \lim_{\tau\to\infty} \frac{1}{\tau} \int_0^{\tau} \mathrm{d}t \, \mathrm{e}^{i(\epsilon_m-\epsilon_n)t} \nonumber\\
-    &= \sum_{\substack{n,m \\ \epsilon_n = \epsilon_m}} (O_s)_{mn}\ketbra{m}{n}
+    \bar{O}_{\alpha} = \lim_{\tau\to\infty}\frac{1}{\tau} \int_0^{\tau} \mathrm{d}t\, O_{\alpha}(t) &= 
+     \lim_{\tau\to\infty}\frac{1}{\tau} \int_0^{\tau} \mathrm{d}t\, \mathrm{e}^{i H t}O_{\alpha} \mathrm{e}^{-i H t} \nonumber\\
+     &= \sum_{m,n} (O_{\alpha})_{mn}\ketbra{m}{n} \lim_{\tau\to\infty} \frac{1}{\tau} \int_0^{\tau} \mathrm{d}t \, \mathrm{e}^{i(\epsilon_m-\epsilon_n)t} \nonumber\\
+    &= \sum_{\substack{n,m \\ \epsilon_n = \epsilon_m}} (O_{\alpha})_{mn}\ketbra{m}{n}
     \label{eq:time_avg}
 \end{align}
 This time-averaging amounts to a cut-off, removing all matrix elements between non-degenerate eigenstates
 of the Hamiltonian. A crucial property of this operation is that it is an orthogonal projection
-in the space of operators, i.e. \(\hs{\bar{O}_s}{\bar{O}_t} = \hs{\bar{O}_s}{O_t}\). This will
+in the space of operators, i.e. \(\hs{\bar{O}_{\alpha}}{\bar{O}_{\alpha^{\prime}}} = \hs{\bar{O}_{\alpha}}{O_{\alpha^{\prime}}}\). This will
 in the end will allow us to distinguish between different types of conserved quantities.
 However, our ultimate goal concerns LSROs in a system that is not integrable, which dictates the
 need for performing also a finite-time averaging. Unfortunately, a simple omission of the limit
@@ -146,113 +146,115 @@ in Eq.~\eqref{eq:time_avg} destroys the projective character of this operation. 
 we introduce a parameter \(\tau\) and define effective time averaging~\autocite{Mierzejewski2015}
 as
 \begin{equation}
-    \bar{O}_s^{\tau} = \int_{-\infty}^{\infty} \mathrm{d}t\, O_s(t) \frac{\sin(t/\tau)}{\pi t}
+    \bar{O}_{\alpha}^{\tau} = \int_{-\infty}^{\infty} \mathrm{d}t\, O_{\alpha}(t) \frac{\sin(t/\tau)}{\pi t}
 \end{equation}
 By considering the Fourier transform of the \(\sin(x)/x\) function, it can be shown that
 this expression is equivalent to (see Appendix~\ref{app:fourier} for details)
 \begin{equation}
-    \bar{O}_s^{\tau} = \sum_{n,m} \underbrace{\theta\left(\frac{1}{\tau} - |\epsilon_n - \epsilon_m|\right)}_{\theta_{mn}^{\tau}} (O_s)_{mn} \ketbra{m}{n}
+    \bar{O}_{\alpha}^{\tau} = \sum_{n,m} \underbrace{\theta\left(\frac{1}{\tau} - |\epsilon_n - \epsilon_m|\right)}_{\theta_{mn}^{\tau}} (O_{\alpha})_{mn} \ketbra{m}{n}
 \label{eq:finite_time_avg}
 \end{equation}
-and because for Heaviside theta function we have \(\theta(x)^2 = \theta(x)\), the projective character is restored. Notice the similarity
-of this expression to the integrated conductivity~\eqref{eq:integrated_conductivity}. Indeed, the 
-parameter \(1/\tau\) can be interpreted as \(\Omega\), giving the frequency cut-off for the matrix elements.
-Thus, for finite \(\tau\), \(\hs{\bar{O}_s^{\tau}}{\bar{O}_t^{\tau}}\) can be related to the low-frequency spectrum of 
-the autocorrelation function \(\langle O_s(t) O_t \rangle\). We shall return to this idea later on.
-Moreover, properties the \(\theta\)-function ensure that the \(\tau\to\infty\) limit of Eq.~\eqref{eq:finite_time_avg}
-agrees with Eq.~\eqref{eq:time_avg}. Let us now calculate the commutator of \(O_s^{\tau}\) with the Hamiltonian
+and because for Heaviside theta function we have \(\theta(x)^2 = \theta(x)\), the projective character is restored. 
+Properties the \(\theta\)-function ensure that the \(\tau\to\infty\) limit of Eq.~\eqref{eq:finite_time_avg}
+agrees with Eq.~\eqref{eq:time_avg}. Notice also the similarity of this expression to the integrated conductivity~\eqref{eq:integrated_conductivity}.
+Indeed, the parameter \(1/\tau\) can be interpreted as \(\Omega\), giving the frequency cut-off for the matrix elements.
+Thus, for finite \(\tau\), \(\hs{\bar{O}_{\alpha}^{\tau}}{\bar{O}_{\alpha^{\prime}}^{\tau}}\) can be related to the low-frequency spectrum of 
+the correlation function \(\langle O_{\alpha}(t) O_{\alpha^{\prime}} \rangle\). We shall return to this idea later on.
+
+Let us now calculate the commutator of \(O_{\alpha}^{\tau}\) with the Hamiltonian
 \begin{align}
-    \comm{H}{\bar{O}_s^{\tau}} & = \sum_n \sum_{k,p} \epsilon_n \theta_{kp}^{\tau} (\bar{O}_s)_{kp} \comm{ \ketbra{n}{n}}{ \ketbra{k}{p}} \nonumber         \\
-                             & = \sum_{k,p} \left(\epsilon_k-\epsilon_p\right) \theta_{kp}^{\tau} (\bar{O}_s)_{kp} \ketbra{k}{p} \xrightarrow{\tau \to \infty} 0 
+    \comm{H}{\bar{O}_{\alpha}^{\tau}} & = \sum_n \sum_{k,p} \epsilon_n \theta_{kp}^{\tau} (\bar{O}_{\alpha})_{kp} \comm{ \ketbra{n}{n}}{ \ketbra{k}{p}} \nonumber         \\
+                             & = \sum_{k,p} \left(\epsilon_k-\epsilon_p\right) \theta_{kp}^{\tau} (\bar{O}_{\alpha})_{kp} \ketbra{k}{p} \xrightarrow{\tau \to \infty} 0 
         \label{eq:time_averaged_commutator}
 \end{align}
 We see that the operator obtained from infinite-time averaging is an integral of motion. Unfortunately,
-this procedure modifies the support of the operator and in general \(\bar{O}_s \not\in \mathcal{V}_M\).
+this procedure modifies the support of the operator and in general \(\bar{O}_{\alpha} \not\in \mathcal{V}_M\), i.e. its locality is lost.
 
-Having calculated the time-averaged basis \( \{\bar{O}_s^{\tau}\} \), we would like to perform in a 
+Having calculated the time-averaged basis \( \{\bar{O}_{\alpha}^{\tau}\} \), we would like to perform in a 
 systematic way the decomposition~\ref{eq:decomposition}. We need the overlaps between the basis operators
 before and after the time-averaging. Because of the projective character of the time-averaging, they are
 given by the pairwise inner products of the time-averaged operators, which we collect into a matrix
 \(K^{\tau}\), with elements
 \begin{equation}
-    K^{\tau}_{st} = \hs{\bar{O}_s^{\tau}}{\bar{O}_t^{\tau}} = \sum_{n,m} \theta_{mn}^{\tau} (O_s)_{nm} (O_t)_{nm}^{\ast}
+    K^{\tau}_{\alpha\alpha^{\prime}} = \hs{\bar{O}_{\alpha}^{\tau}}{\bar{O}_{\alpha^{\prime}}^{\tau}} = \sum_{n,m} \theta_{mn}^{\tau} (O_{\alpha})_{nm} (O_{\alpha^{\prime}})_{nm}^{\ast}
     \label{eq:overlap_matrix}
 \end{equation}
 This matrix is Hermitian by design, and in the case of systems with time-reversal symmetry, it is also real,
-thus symmetric. By the spectral theorem, there exists a unitary matrix \(U\) that diagonalizes it
-via a similarity transformation with the following properties
+thus symmetric. By the spectral theorem, there exists a unitary matrix \(U\) that transforms it
+via a similarity transformation to a diagonal matrix \(D\)
 \begin{align}
-    &\sum_{s, t} U_{n s} K_{s t}^{\tau} U_{m t}^{\ast}=\delta_{nm} \lambda_{n} \in
-     \RR,\;\;\; \lambda_n \text{ --- eigenvalue of }K^{\tau} \label{eq:property diag} \\
-    &UU^{\dag} = U^{\dag}U = \mathbb{1} \implies \sum_{s} U_{ns}U_{ms}^{\ast} =
-     \delta_{mn} \label{eq:propery_ortho}\\
-    & U K^{\tau} = D U \implies \sum_s U_{ns} K_{st}^{\tau} = \sum_s  \delta_{ns} \lambda_s U_{st} = \lambda_n U_{nt}\label{eq:property}
+    &\sum_{\alpha,\alpha^{\prime}} U_{\beta \alpha} K_{\alpha\alpha^{\prime}}^{\tau} U_{\beta^{\prime} \alpha^{\prime}}^{\ast}=\delta_{\beta\beta^{\prime}} \lambda_{\beta} \in
+     \RR,\;\;\; \lambda_{\beta} \text{ --- eigenvalue of }K^{\tau} \label{eq:property diag} \\
+    &UU^{\dag} = U^{\dag}U = \mathbb{1} \implies \sum_{\alpha} U_{\beta\alpha}U_{\beta^{\prime}\alpha}^{\ast} =
+     \delta_{\beta\beta^{\prime}} \label{eq:propery_ortho}\\
+    & U K^{\tau} = D U \implies \sum_{\alpha} U_{\beta\alpha} K_{\alpha\alpha^{\prime}}^{\tau} = \sum_{\alpha}  \delta_{\beta\alpha} \lambda_{\alpha} U_{\alpha\alpha^{\prime}} = \lambda_{\beta} U_{\beta\alpha^{\prime}}\label{eq:property}
   \end{align} 
 Using the columns of \(U\), which are just the eigenvectors of \(K^{\tau}\), we can construct a new set of operators
 \begin{equation}
-    Q_{n} = \sum_{s} U_{n s} \bar{O}_s^{\tau}
+    Q_{\beta} = \sum_{\alpha} U_{\beta \alpha} \bar{O}_{\alpha}^{\tau}
     \label{eq:liom}
 \end{equation}
 Let us note a few properties of the newly defined quantities. First, they are orthogonal
 \begin{align}
-    \hs{Q_n}{Q_m} &= \sum_{s,t} U_{ns} {\hs{\bar{O_s}^{\tau}}{\bar{O_t}^{\tau}}} U_{mt}^{\ast} 
-    = \sum_{t} \left(\sum_{s}U_{ns} K_{st}^{\tau}\right)  U_{mt}^{\ast}\nonumber \\ 
-    &= \lambda_n \sum_t U_{nt} U_{mt}^{\ast} = \lambda_n \delta_{mn}
+    \hs{Q_\beta}{Q_{\beta^{\prime}}} &= \sum_{\alpha,\alpha^{\prime}} U_{\beta\alpha} {\hs{\bar{O_{\alpha}}^{\tau}}{\bar{O_{\alpha^{\prime}}}^{\tau}}} U_{\beta^{\prime}\alpha^{\prime}}^{\ast} 
+    = \sum_{\alpha^{\prime}} \left(\sum_{\alpha}U_{\beta\alpha} K_{\alpha\alpha^{\prime}}^{\tau}\right)  U_{\beta^{\prime}{\alpha^{\prime}}}^{\ast}\nonumber \\ 
+    &= \lambda_{\beta} \sum_{\alpha^{\prime}} U_{\beta\alpha^{\prime}} U_{\beta^{\prime}\alpha^{\prime}}^{\ast} = \lambda_{\beta} \delta_{\beta\beta^{\prime}}
   \end{align}
 where the last two equalities follow from~\eqref{eq:property} and~\eqref{eq:propery_ortho} respectively.
-From the fact that \(\hs{Q_n}{Q_n} = \lambda_n\) and that \(\hs{\cdot}{\cdot}\) is an inner product,
+From the fact that \(\hs{Q_{\beta}}{Q_{\beta}} = \lambda_{\beta}\) and that \(\hs{\cdot}{\cdot}\) is an inner product,
 we immediately deduce that \(K^{\tau}\) is positive semidefinite.
 We are now ready to consider the desired decomposition into the part that is supported on at most \(M\) sites and the remaining, nonlocal part
 \begin{align}
-    Q_n &=  \sum_s \hs{O_s}{Q_n}O_s + Q_n^{\perp} = \sum_{s,t} U_{n t}\hs{O_{s}}{\bar{O}_{t}^{\tau}}
-    O_{s}+Q_{n}^{\perp} \nonumber \\
-    &= \sum_{s,t} U_{n t}\hs{\bar{O}_{s}^{\tau}}{\bar{O}_{t}^{\tau}} O_{s}+Q_{n}^{\perp}
-    = \sum_{s,t} U_{n t}K_{ts} O_{s}+Q_{n}^{\perp} \nonumber \\
-    &= \sum_s  \left( \sum_t U_{n t}K_{ts}^{\tau}\right) O_{s}+Q_{n}^{\perp} = \sum_{s} 
-    \lambda_{n} U_{n s} O_{s}+Q_{n}^{\perp} = Q_{n}^{M}+Q_{n}^{\perp}
+    Q_{\beta} &=  \sum_{\alpha} \hs{O_{\alpha}}{Q_{\beta}}O_{\alpha} + Q_{\beta}^{\perp} = \sum_{\alpha,\alpha^{\prime}} U_{\beta \alpha^{\prime}}\hs{O_{\alpha}}{\bar{O}_{\alpha^{\prime}}^{\tau}}
+    O_{\alpha}+Q_{n}^{\perp} \nonumber \\
+    &= \sum_{\alpha,\alpha^{\prime}} U_{\beta\alpha^{\prime}}\hs{\bar{O}_{\alpha}^{\tau}}{\bar{O}_{\alpha^{\prime}}^{\tau}} O_{\alpha}+Q_{\beta}^{\perp}
+    = \sum_{\alpha,\alpha^{\prime}} U_{\beta\alpha^{\prime}}K_{\alpha\alpha^{\prime}} O_{\alpha}+Q_{\beta}^{\perp} \nonumber \\
+    &= \sum_{\alpha}  \left( \sum_{\alpha^{\prime}} U_{\beta\alpha^{\prime}}K_{\alpha\alpha^{\prime}}^{\tau}\right) O_{\alpha}+Q_{\beta}^{\perp} = \sum_{\alpha} 
+    \lambda_{\beta} U_{\beta \alpha} O_{\alpha}+Q_{\beta}^{\perp} = Q_{\beta}^{M}+Q_{\beta}^{\perp}
     \label{eq:decomposition2}
   \end{align}
   Everything we did so far holds for an
 arbitrary value of \(\tau\). However, let us for a moment restrict it to \(\tau\to \infty\).
-This guarantees that the operators \(Q_n\) are integrals of motion.
+This guarantees that the operators \(Q_{\beta}\) are integrals of motion.
   We have one step left to complete the algorithm and obtain a classification scheme for the
   integrals of motion. We need to determine how much of the operator \(Q_n\) is contained in the
-  \(M\)-local part \(Q_n^M\). In other words, we want to calculate \(\norm*{Q_n^{\perp}}\).
+  \(M\)-local part \(Q_{\beta}^M\). In other words, we want to calculate \(\norm*{Q_{\beta}^{\perp}}\).
   Consider the following calculation
   \begin{align}
-    \lambda_n &= \hs{Q_n}{Q_n} = \hs{Q_n^M + Q_n^{\perp}}{Q_n^M + Q_n^{\perp}} = \hs{Q_n^M}{Q_n^M} +
-     \hs{Q_n^{\perp}}{Q_n^{\perp}} + \underbrace{2 \hs{Q_n^M}{Q_n^{\perp}}}_{=0} \nonumber \\
-     &= \hs{\sum_s \lambda_n U_{ns} O_s}{\sum_t \lambda_n U_{nt} O_t} + \norm{Q_n^{\perp}}^2 =
-    \lambda_n^2 \sum_{s,t} U_{ns} \hs{O_s}{O_t} U_{nt}^{\ast} + \norm{Q_n^{\perp}}^2  \nonumber \\
-    &=\lambda_n^2 + \norm{Q_n^{\perp}}^2
+    \lambda_{\beta} &= \hs{Q_{\beta}}{Q_{\beta}} = \hs{Q_{\beta}^M + Q_{\beta}^{\perp}}{Q_{\beta}^M + Q_{\beta}^{\perp}} = \hs{Q_{\beta}^M}{Q_{\beta}^M} +
+     \hs{Q_{\beta}^{\perp}}{Q_{\beta}^{\perp}} + \underbrace{2 \hs{Q_{\beta}^M}{Q_{\beta}^{\perp}}}_{=0} \nonumber \\
+     &= \hs{\sum_{\alpha} \lambda_{\beta} U_{\beta\alpha} O_{\alpha}}{\sum_{\alpha^{\prime}} \lambda_{\beta} U_{\beta\alpha^{\prime}} O_{\alpha^{\prime}}} + \norm{Q_{\beta}^{\perp}}^2 =
+    \lambda_{\beta}^2 \sum_{\alpha,\alpha^{\prime}} U_{\beta\alpha} \hs{O_{\alpha}}{O_{\alpha^{\prime}}} U_{\beta\alpha^{\prime}}^{\ast} + \norm{Q_{\beta}^{\perp}}^2  \nonumber \\
+    &=\lambda_{\beta}^2 + \norm{Q_{\beta}^{\perp}}^2
   \end{align}
   Rearranging the terms, we obtain the desired formula
   \begin{equation}
-    \norm{Q_n^{\perp}}^2 = \lambda_n^2 - \lambda_n = \lambda_n (\lambda_n - 1) \geq 0
+    \norm{Q_{\beta}^{\perp}}^2 = \lambda_{\beta}^2 - \lambda_{\beta} = \lambda_{\beta} (\lambda_{\beta} - 1) \geq 0
     \label{eq:liom_norm}
   \end{equation}
 Thus, the spectrum of the matrix \(K\) is contained in the interval \([0,1]\) and
  determines the classification of the integrals of motion. We have three classes:
  \begin{itemize}
-    \item local: \(\lambda_n = 1 \implies \norm{Q_n^{\perp}} = 0 \implies Q_n \in \mathcal{V}_M\)
-    \item quasilocal: \(\lambda_n \in \left(0,1\right) \implies \norm{Q_n^{\perp}} > 0 \implies Q_n \in \mathcal{V} \)
-    \item generic nonlocal: \(\lambda_n = 0 \implies \norm{Q_n} = 0\)
+    \item local: \(\lambda_{\beta} = 1 \implies \norm{Q_{\beta}^{\perp}} = 0 \implies Q_{\beta} \in \mathcal{V}_M\)
+    \item quasilocal: \(\lambda_{\beta} \in \left(0,1\right) \implies \norm{Q_{\beta}^{\perp}} > 0 \implies Q_{\beta} \in \mathcal{V} \)
+    \item generic nonlocal: \(\lambda_{\beta} = 0 \implies \norm{Q_{\beta}} = 0\)
   \end{itemize}
   Let us now give a physical interpretation of these results. The procedure outlined above
   can be carried out for, in principle, arbitrary but finite systems size \(L\). However,
   to understand the character of the integrals of motion, we need to take the thermodynamic
   limit \(L\to\infty\). In practical calculations, we are always limited to finite, \(M\)-local basis
-  of operators. Thus, the output of the algorithm is not the set of true integrals of motion \(\{Q_n\}\),
-  but rather the set \(\{Q_n^M/\lambda_n\} \equiv \{I_n\}\). If a particular \(\lambda_n = 1\), this
-  is not a problem, as we have \(\norm*{Q^M_n} = 1\), and the true LIOM is \(M\)-local. However, if 
-  for a given \(n\) we have \(0 < \lambda_n < 1\), then \(\norm*{Q^M_n} < 1\). It is only if this norm
-  stays non-zero in the thermodynamic limit, we can say that the operator is quasilocal. Then the \(Q_n^M\)
-can be regarded as an \(M\)-local approximation of the true LIOM \(Q_n\).
+  of operators. Thus, the output of the algorithm is not the set of true integrals of motion \(\{Q_{\beta}\}\),
+  but rather the set \(\{Q_{\beta}^M/\lambda_n\} \equiv \{I_{\beta}\}\) (as eigenvectors obtained from numerical
+  procedures are usually normalized). If a particular \(\lambda_{\beta} = 1\), this
+  is not a problem, as we have \(\norm*{Q^M_{\beta}} = 1\), and the true LIOM is \(M\)-local. However, if 
+  for a given \({\beta}\) we have \(0 < \lambda_{\beta} < 1\), then \(\norm*{Q^M_{\beta}} < 1\). It is only if this norm
+  stays non-zero in the thermodynamic limit, we can say that the operator is quasilocal. Then the \(Q_{\beta}^M\)
+can be regarded as an \(M\)-local approximation of the true LIOM \(Q_{\beta}\).
   Numerous studies have confirmed their relevance in the theory of integrable 
   systems~\autocite{Ilievski2015, Ilievski2015b, Prosen2013, Prosen2014},
   however, we shall not deal with them any further. In fact, we shall not even deal with LIOMs, as
   the system we are interested in here is not integrable. Nevertheless, even without integrability,
-  this algorithm will produce a sequence of operators \(\{Q^M_n\}\), with the largest possible norm,
+  this algorithm will produce a sequence of operators \(\{I_{\beta}\}\), with the largest possible norm,
   often called \textbf{stiffness}. We will refer to them as \textbf{local slowly relaxing operators (LSROs)}
   and they will play a central role in section~\ref{sec:fermionic_currents}. We shall also relax the restriction
   \(\tau\to\infty\) and look at the LSROs at finite values of \(\tau\).
@@ -261,18 +263,18 @@ can be regarded as an \(M\)-local approximation of the true LIOM \(Q_n\).
 Before proceeding further toward a concrete application of the procedure outlined above, let us first discuss
  some technical details of its implementation. The most demanding part, from the computational point of view,
  is the calculation of matrix elements~\eqref{eq:overlap_matrix}. It requires explicit construction of
- matrices of all the basis operators \(O_s\), change of basis using Hamiltonian eigenstates,
+ matrices of all the basis operators \(O_{\alpha}\), change of basis using Hamiltonian eigenstates,
  time averaging~\eqref{eq:finite_time_avg}, and finally carrying out the trace of pairwise products.
  All those operations are constrained by the fact that the Hilbert space dimension grows exponentially.
  To keep the computational cost manageable, we can use symmetries of the system. In chapter~\ref{chap:intro}, we
  have explored how the presence of a symmetry, manifested by the existence of an operator \(S\), such
- that \(\comm{S}{H} = 0\), can be used to decompose the Hilbert space into a direct sum of smaller
+ that \(\comm{S}{H} = 0\), can be used to decompose the Hilbert space into a direct sum of \(s_{\text{max}}\) smaller
   subspaces \(\mathcal{H}_{s}\), consisting of states with a fixed eigenvalue \(s\) of \(S\). Given a
   compatible operator \(A\), its matrix in the symmetry-adapted basis has a block-diagonal structure.
   It is easy to see that then, its trace is equal to the sum of traces of the individual blocks.
   Thus, instead of carrying out the algorithm in the full Hilbert space, we can perform it separately
   in each symmetry sector and then construct the matrix \(K^{\tau}\) by summing the matrices of the
-  individual sectors. However, there is a caveat. We require the basis operators \(O_s\) to be
+  individual sectors. However, there is a caveat. We require the basis operators \(O_{\alpha}\) to be
   traceless, to avoid trivial overlaps with the identity operator, and normalized, to form an orthonormal
   basis. But they must be traceless and normalized with respect to the full space Hilbert-Schmidt inner
   product~\eqref{eq:hs_prod}, not the one restricted to a symmetry sector. It is known from linear algebra,
@@ -280,56 +282,22 @@ Before proceeding further toward a concrete application of the procedure outline
   on the direct sum of those spaces is to consider the sum of the individual inner products~\autocite{Conway2007}.
   Thus, we have the following identities
   \begin{align}
-    \Lambda_A &\equiv \frac{1}{\mathcal{D}} \Tr(A) = \frac{1}{\mathcal{D}} \sum_{s} \Tr(A^s)\\
-    \Gamma_A &\equiv \norm{A}^2 = \frac{1}{\mathcal{D}} \Tr(A^{\dag}A) = \frac{1}{\mathcal{D}} \sum_{s} \Tr((A^s)^{\dag}A^s)
+    \Lambda_A &\equiv \frac{1}{\mathcal{D}} \Tr(A) = \frac{1}{\mathcal{D}} \sum_{s=1}^{s_{\text{max}}} \Tr(A^s)\\
+    \Gamma_A &\equiv \norm{A}^2 = \frac{1}{\mathcal{D}} \Tr(A^{\dag}A) = \frac{1}{\mathcal{D}} \sum_{s=1}^{s_{\text{max}}} \Tr((A^s)^{\dag}A^s)
   \end{align}
   where by \(A^s\) we denote the block of matrix of \(A\) in the symmetry sector with eigenvalue \(s\).
   Now, we are ready to derive the formula for the overlap matrix, using symmetry sectors. For brevity,
   we shall suppress the \(\tau\) superscript.
   \begin{align}
-    K_{pt} &= \hs{\frac{\bar{O}_s - \Lambda_{O_s}}{\Gamma_{O_s}}}{\frac{\bar{O}_t - \Lambda_{O_t}}{\Gamma_{O_t}}}
-    = \frac{1}{\mathcal{D}} \Tr\left(\frac{\bar{O}_s - \Lambda_{O_s}}{\Gamma_{O_s}}\frac{\bar{O}_t - \Lambda_{O_t}}{\Gamma_{O_t}}\right) \nonumber \\
-    &= \frac{1}{\mathcal{D} \Gamma_{O_s}\Gamma_{O_t}} \left[\Tr(\bar{O}_s \bar{O}_t) - \Lambda_t \Tr(O_s) - \Lambda_s \Tr(O_t) + \Lambda_s \Lambda_t \mathcal{D} \right]\nonumber\\
-    &= \frac{1}{\mathcal{D} \Gamma_{O_s}\Gamma_{O_t}} \left[\Tr(\bar{O}_s \bar{O}_t) - \Lambda_t \Lambda_s \mathcal{D} \right] \nonumber\\
-    &= \frac{1}{\mathcal{D} \Gamma_{O_s}\Gamma_{O_t}} \left[\sum_s \Tr(\bar{O}_p^s \bar{O}_t^s) - \Lambda_t \Lambda_s \mathcal{D} \right]
+    K_{pt} &= \hs{\frac{\bar{O}_{\alpha} - \Lambda_{O_{\alpha}}}{\Gamma_{O_{\alpha}}}}{\frac{\bar{O}_{\alpha^{\prime}} - \Lambda_{O_{\alpha^{\prime}}}}{\Gamma_{O_{\alpha^{\prime}}}}}
+    = \frac{1}{\mathcal{D}} \Tr\left(\frac{\bar{O}_{\alpha} - \Lambda_{O_{\alpha}}}{\Gamma_{O_{\alpha}}}\frac{\bar{O}_{\alpha^{\prime}} - \Lambda_{O_{\alpha^{\prime}}}}{\Gamma_{O_{\alpha^{\prime}}}}\right) \nonumber \\
+    &= \frac{1}{\mathcal{D} \Gamma_{O_{\alpha}}\Gamma_{O_{\alpha^{\prime}}}} \left[\Tr(\bar{O}_{\alpha} \bar{O}_{\alpha^{\prime}}) - \Lambda_{\alpha^{\prime}} \Tr(O_{\alpha}) - \Lambda_{\alpha} \Tr(O_{\alpha^{\prime}}) + \Lambda_{\alpha} \Lambda_{\alpha^{\prime}} \mathcal{D} \right]\nonumber\\
+    &= \frac{1}{\mathcal{D} \Gamma_{O_{\alpha}}\Gamma_{O_{\alpha^{\prime}}}} \left[\Tr(\bar{O}_{\alpha} \bar{O}_{\alpha^{\prime}}) - \Lambda_{\alpha^{\prime}} \Lambda_{\alpha} \mathcal{D} \right] \nonumber\\
+    &= \frac{1}{\mathcal{D} \Gamma_{O_{\alpha}}\Gamma_{O_{\alpha^{\prime}}}} \left[\sum_{s=1}^{s_{\text{max}}} \Tr(\bar{O}_{\alpha}^s \bar{O}_{\alpha^{\prime}}^s) - \Lambda_{\alpha^{\prime}} \Lambda_{\alpha} \mathcal{D} \right]
   \end{align}
+  Algorithm~\ref{alg:liom_alg} summarizes the procedure for finding LIOMs/LSROs, optimized using symmetry subspaces.
 
-  We can now write down this algorithm using pseudocode. In the following, we assume that the Hilbert
-  space is decomposed into \(s'\) symmetry sectors.
-\begin{algorithm}
-	\algrenewcommand\algorithmicrequire{\textbf{Input: }}
-	\algrenewcommand\algorithmicensure{\textbf{Output: }}
-	\caption{Algorithm for finding LIOMs/LSROs, optimized using symmetry subspaces}
-	\label{alg:liom_alg}
-	\begin{algorithmic}[1]
-	\Require  \(\{O_i\}_{i=1}^N\) --- Basis of the operator space \(\mathcal{V}_M\), tight-binding Hamiltonian \(H\)
-	\Ensure \(\{Q^M_i\}_{i=1}^N\) --- most conserved operators (LIOMs/LSROs)
-    \State \(\Gamma_{O_i} = 0\), \(\Lambda_{O_i} = 0\), \(K_{ij} = 0\) for all \(i,j = 1,\ldots N\)
-    \For{\(s = 1:s'\)}
-      \State Generate and diagonalize \(H^s\)
-      \For{\(i = 1:N\)}
-        \State Generate \(O_i^s\)
-        \State \(\Gamma_{O_i} = \Gamma_{O_i} + \frac{1}{\mathcal{D}}\Tr((O_i^s)^{\dag}O_i^s)\)
-        \State \(\Lambda_{O_i} = \Lambda_{O_i} + \frac{1}{\mathcal{D}}\Tr(O_i^s)\)
-        \State Change basis and calculate \(\bar{O}_i^s\) according to Eq.~\eqref{eq:finite_time_avg}
-        \For{\(j = i:N\)}
-          \State Generate \(O_j^s\), calculate \(\bar{O}_j^s\) according to Eq.~\eqref{eq:finite_time_avg}
-          \State \(K_{ij} = K_{ij} + \frac{1}{\mathcal{D}}\Tr(\bar{O}_i^s \bar{O}_j^s)\)
-          \State \(K_{ji} = K_{ji} + (1 + \delta_{ij}) K_{ij}\)
-        \EndFor
-      \EndFor
-    \EndFor
-    \For{\(i,j = 1:N\)}
-      \State \(K_{ij} = K_{ij} - \mathcal{D} \Lambda_{O_i} \Lambda_{O_j}\)
-      \State \(K_{ij} = K_{ij}/(\mathcal{D} \Gamma_{O_i} \Gamma_{O_j})\)
-    \EndFor
-    \State Diagonalize \(K\)
-    \State \(\{Q_i^M\} = \sum_j U_{ij} O_j\)
-  \end{algorithmic}
-\end{algorithm}
-
-\newpage
-There is one more possible improvement to the algorithm. We have spent the better part of chapter~\ref{chap:krylov}
+  There is one more possible improvement to the algorithm. We have spent the better part of chapter~\ref{chap:krylov}
 developing numerical methods that allow us to avoid using exact diagonalization. However, the algorithm presented
 above requires knowledge of the full eigenspectrum of the Hamiltonian. It turns out, that it is possible
 to escape this requirement, and instead rely on the Dynamical Quantum Typicality approach to correlation functions.
@@ -361,10 +329,54 @@ Unfortunately, this is not the case for the  physical system considered in this 
 i.e. the long-range Heisenberg model. The reason is that the efficiency of Lanczos-based
 correlation function calculation relies on the sparse structure of the Hamiltonian matrix.
 This is of course not the case for a power-law decaying interaction. Thus, we will not use this approach
-in this thesis. However, all this work is not in vain, as this method will surely prove useful
+in this thesis. However, all the work is not in vain, as this method will surely prove useful
 for further research.
 
+\begin{algorithm}
+	\algrenewcommand\algorithmicrequire{\textbf{Input: }}
+	\algrenewcommand\algorithmicensure{\textbf{Output: }}
+	\caption{Algorithm for finding LIOMs/LSROs, optimized using symmetry subspaces}
+	\label{alg:liom_alg}
+	\begin{algorithmic}[1]
+	\Require  \(\{O_i\}_{i=1}^N\) --- Basis of the operator space \(\mathcal{V}_M\), tight-binding Hamiltonian \(H\)
+	\Ensure \(\{I_i\}_{i=1}^N\) --- most conserved operators (LIOMs/LSROs)
+    \State \(\Gamma_{O_i} = 0\), \(\Lambda_{O_i} = 0\), \(K_{ij} = 0\) for all \(i,j = 1,\ldots N\)
+    \For{\(s = 1:s_{\text{max}}\)}
+      \State Generate and diagonalize \(H^s\)
+      \For{\(i = 1:N\)}
+        \State Generate \(O_i^s\)
+        \State \(\Gamma_{O_i} = \Gamma_{O_i} + \frac{1}{\mathcal{D}}\Tr((O_i^s)^{\dag}O_i^s)\)
+        \State \(\Lambda_{O_i} = \Lambda_{O_i} + \frac{1}{\mathcal{D}}\Tr(O_i^s)\)
+        \State Change basis and calculate \(\bar{O}_i^s\) according to Eq.~\eqref{eq:finite_time_avg}
+        \For{\(j = i:N\)}
+          \State Generate \(O_j^s\), calculate \(\bar{O}_j^s\) according to Eq.~\eqref{eq:finite_time_avg}
+          \State \(K_{ij} = K_{ij} + \frac{1}{\mathcal{D}}\Tr(\bar{O}_i^s \bar{O}_j^s)\)
+          \State \(K_{ji} = K_{ji} + (1 - \delta_{ij}) K_{ij}\)
+        \EndFor
+      \EndFor
+    \EndFor
+    \For{\(i,j = 1:N\)}
+      \State \(K_{ij} = K_{ij} - \mathcal{D} \Lambda_{O_i} \Lambda_{O_j}\)
+      \State \(K_{ij} = K_{ij}/(\mathcal{D} \Gamma_{O_i} \Gamma_{O_j})\)
+    \EndFor
+    \State Diagonalize \(K\), obtaining eigenvalues \(\{\lambda_i\}\) and eigenvectors \(\{U_{ij}\}\)
+    \State \(\{Q_i^M\} = \sum_j U_{ij} O_j\)
+  \end{algorithmic}
+\end{algorithm}
+
+\newpage
 \section{Fermionic currents in the long-range Heisenberg model \label{sec:fermionic_currents}}
 
+We are now ready to apply the algorithm described in the previous section to the long-range Heisenberg model.
+Let us stress again, that this model is not integrable, thus we do not expect to find any
+strictly conserved, local operator, i.e. LIOM \(I_{\beta}\) with \(\lambda_{\beta} = 1\).
+Nevertheless, we can still hope to find a sequence of operators with large stiffness,
+indicating their slow relaxation.
 
-\textcolor{red}{Finite time eigenmodes?}
+In order to use the procedure, we need to construct a basis of the operator space \(\mathcal{V}_M\).
+Our starting point is a set of traceless, translationally invariant operators \(\{O^{\prime}_{\alpha}\}\),
+\begin{equation}
+  O^{\prime}_{\alpha} = \frac{1}{\sqrt{L}}\sum_{\ell=1}^L\left( o_{\ell+1}o_{\ell+2}\ldots o_{\ell+M} \right)
+  \label{eq:operator_basis}
+\end{equation}
+where \(o_{\ell} \in \{\Id_{\ell}, \sqrt{2}\Sm_{\ell},\sqrt{2}\Sp_{\ell},2\Sz_{\ell}\}\) are the single-site operators.

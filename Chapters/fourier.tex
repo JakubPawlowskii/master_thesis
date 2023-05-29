@@ -49,10 +49,11 @@ Thus we get
 \mathcal{I} = \lim _{\varepsilon \to 0^+} \frac{2\varepsilon}{(\epsilon_m-\epsilon_n+\omega)^2 +\varepsilon^2}
 = 2\pi \delta(\epsilon_m-\epsilon_n+\omega)
 \end{equation}
-Inserting this result into equation~\eqref{eq:spectral function simplified} we get
+Inserting this result into equation~\eqref{eq:spectral function simplified} we arrive at
 \begin{align}
 \mathcal{F}\left[\hs{A(t)}{B}\right] &= \frac{1}{\dimension} \frac{1}{2 \pi}\sum_{n,m} A_{mn} B_{nm}  
 \lim _{\varepsilon \to 0^+} \int_{-\infty}^{\infty} \mathrm{d} t \; e^{i \omega t-|t| 
 \varepsilon}e^{i (\epsilon_m-\epsilon_n) t} \nonumber\\
 =& \frac{1}{\dimension}\sum_{n,m} A_{mn} B_{nm} \delta(\epsilon_m-\epsilon_n+\Omega)
 \end{align}
+which is our desired results.
