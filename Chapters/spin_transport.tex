@@ -164,7 +164,7 @@ which is a measure of the response of the system to an external electromagnetic 
 In the linear response regime, the optical conductivity is given by the Kubo formula, which
 for infinite temperature reads
 \begin{equation}
-  \sigma(\omega) = \frac{\pi}{L \mathcal{Z}} \sum_{n,m} \abs{\mel{n}{j^{\sigma}}{n}}^2 \delta(\omega - \epsilon_m + \epsilon_n)
+  \sigma(\omega) = \frac{\pi}{L \mathcal{Z}} \sum_{n,m} \abs{\mel{n}{j^{\sigma}}{m}}^2 \delta(\omega - \epsilon_m + \epsilon_n)
   \label{eq:kubo}
 \end{equation}
 where \(\mathcal{Z}\) is the number of states in the Hilbert space, \(L\) is the system size and \(j^{\sigma}\) is the spin
@@ -182,12 +182,12 @@ would require some binning of the discrete spectrum. We avoid this, by instead c
 \textbf{integrated conductivity}
 \begin{equation}
   I(\Omega) = \frac{1}{\mathcal{S}_{\mathrm{tot}}} \int_{-\Omega}^{\Omega} \dd{\omega} \sigma(\omega) = 
-  \frac{\pi}{L \mathcal{Z} \mathcal{S}_{\mathrm{tot}}} \sum_{n,m} \abs{\mel{n}{j^{\sigma}}{n}}^2 \theta(\Omega- \abs{\epsilon_m - \epsilon_n})
+  \frac{\pi}{L \mathcal{Z} \mathcal{S}_{\mathrm{tot}}} \sum_{n,m} \abs{\mel{n}{j^{\sigma}}{m}}^2 \theta(\Omega- \abs{\epsilon_m - \epsilon_n})
   \label{eq:integrated_conductivity}
 \end{equation}
 where \(\theta(x)\) is the Heaviside step function and  \(\mathcal{S}_{\mathrm{tot}}\) is the sum rule
 \begin{equation}
-  \mathcal{S}_{\mathrm{tot}} = \int_{-\infty}^{\infty} \dd{\omega} \sigma(\omega) = \frac{\pi}{L \mathcal{Z}} \sum_{n,m} \abs{\mel{n}{j^{\sigma}}{n}}^2
+  \mathcal{S}_{\mathrm{tot}} = \int_{-\infty}^{\infty} \dd{\omega} \sigma(\omega) = \frac{\pi}{L \mathcal{Z}} \sum_{n,m} \abs{\mel{n}{j^{\sigma}}{m}}^2
 \end{equation}
 It is easy to see that the integrated conductivity \(I(\Omega)\) is a regular function of \(\Omega\), and
 contains the information about the fraction of the spectral weight contained in the frequency window 
