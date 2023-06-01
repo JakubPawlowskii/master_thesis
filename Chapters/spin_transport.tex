@@ -181,7 +181,7 @@ It is only the last step that requires some care, as the \(\delta\) function is 
 would require some binning of the discrete spectrum. We avoid this, by instead considering the
 \textbf{integrated conductivity}
 \begin{equation}
-  I(\Omega) = \frac{1}{\mathcal{S}_{\mathrm{tot}}} \int_{-\Omega}^{\Omega} \dd{\omega} \sigma(\omega) = 
+  \mathcal{I}(\Omega) = \frac{1}{\mathcal{S}_{\mathrm{tot}}} \int_{-\Omega}^{\Omega} \dd{\omega} \sigma(\omega) = 
   \frac{\pi}{L \mathcal{Z} \mathcal{S}_{\mathrm{tot}}} \sum_{n,m} \abs{\mel{n}{j^{\sigma}}{m}}^2 \theta(\Omega- \abs{\epsilon_m - \epsilon_n})
   \label{eq:integrated_conductivity}
 \end{equation}
@@ -189,7 +189,7 @@ where \(\theta(x)\) is the Heaviside step function and  \(\mathcal{S}_{\mathrm{t
 \begin{equation}
   \mathcal{S}_{\mathrm{tot}} = \int_{-\infty}^{\infty} \dd{\omega} \sigma(\omega) = \frac{\pi}{L \mathcal{Z}} \sum_{n,m} \abs{\mel{n}{j^{\sigma}}{m}}^2
 \end{equation}
-It is easy to see that the integrated conductivity \(I(\Omega)\) is a regular function of \(\Omega\), and
+It is easy to see that the integrated conductivity \(\mathcal{I}(\Omega)\) is a regular function of \(\Omega\), and
 contains the information about the fraction of the spectral weight contained in the frequency window 
 \(\left[-\Omega,\Omega\right]\).
 Equation~\eqref{eq:integrated_conductivity} is now straightforward to evaluate numerically.
@@ -203,7 +203,7 @@ add the results together.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{Figures/optical_conductivity.pdf}
-  \caption{Left panel: Integrated conductivity \(I(\Omega)\) as a function of frequency window \(\Omega\) for various values of \(\alpha\)
+  \caption{Left panel: Integrated conductivity \(\mathcal{I}(\Omega)\) as a function of frequency window \(\Omega\) for various values of \(\alpha\)
   and \(\Delta = 0.5\). The thicker line denotes the result for optimal decay parameter \(\alpha\). Right panel: Size dependence
   of the integrated conductivity \(I(\Omega)\) for \(\alpha = 2.0, \; 2.5,\; 4.0\) and \(\Delta = 0.5\),
   illustrating the effects of finite size. For clarity, we added a vertical shift to distinguish the curves for different
@@ -220,7 +220,7 @@ becomes suppressed, while the regular part of the spectrum is still more or less
 However, an interesting feature appears in the spectrum for \(\alpha \lesssim 10\), namely
 the incoherent part starts shifting towards lower frequencies. For anisotropy \(\Delta = 0.5\),
 this behavior is most pronounced for \(\alpha = 2.5\), where the integrated conductivity
-is \(I(\Omega)\simeq 1 \) for all \( \Omega/J < 0.01\), which means that most of the spectral weight
+is \(\mathcal{I}(\Omega)\simeq 1 \) for all \( \Omega/J < 0.01\), which means that most of the spectral weight
 is contained in the frequency window \(\left[-0.01,0.01\right]\). This in turn implies ballistic-like 
 spin transport for extremely long times up to \(tJ \simeq 100\), similar to the case of noninteracting particles,
 as there we have \(\sigma(\omega) \propto \delta(\omega) \implies I(\Omega) = 1\) for \(\Omega > 0\). Furthermore,
@@ -228,9 +228,9 @@ we once again observe some kind of non-monotonic behavior, as decreasing the dec
 beyond \(\alpha \approx 2.5\) shifts the incoherent part of the spectrum back towards higher frequencies.
 
 To quantitatively investigate this effect across the parameter space, in Fig.~\ref{fig:I_cond_heatmap}
-we present heatmaps of the integrated conductivity \(I(\Omega)\) on the \((\alpha ,\Omega)\) plane, 
+we present heatmaps of the integrated conductivity \(\mathcal{I}(\Omega)\) on the \((\alpha ,\Omega)\) plane, 
 for different values of the anisotropy \(\Delta\). Moreover, with a solid black line we denote the
-the value \(\Omega = \Omega^{\ast}\), for which the integrated conductivity is \(I(\Omega^{\ast}) = 0.9\),
+the value \(\Omega = \Omega^{\ast}\), for which the integrated conductivity is \(\mathcal{I}(\Omega^{\ast}) = 0.9\),
 i.e. 90\% of the sum rule \(S_{\mathrm{tot}}\).
 
 
@@ -245,7 +245,7 @@ the optimal anisotropies obtained from the two different quantities, namely the 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{Figures/I_cond_heatmap.png}
-  \caption{Heatmaps of the integrated conductivity \(I(\Omega)\) on the \((\alpha ,\Omega)\) plane.
+  \caption{Heatmaps of the integrated conductivity \(\mathcal{I}(\Omega)\) on the \((\alpha ,\Omega)\) plane.
   Black solid line denotes the value \(\Omega = \Omega^{\ast}\), 
   for which the integrated conductivity is \(I(\Omega^{\ast}) = 0.9\).}
   \label{fig:I_cond_heatmap}
@@ -258,7 +258,7 @@ and the optimal anisotropy \(\Delta_{O}(\alpha)\), inferred from the short-time 
 with open boundary conditions. This is a strong indication that the transient ballistic spin transport
 is a generic feature of the long-range Heisenberg model, and not an artifact of the finite system size.
 It is further supported by the finite-size analysis of the integrated conductivity, presented in the right panel
-of Fig.~\ref{fig:optical_conductivity}, where we observe that \(I(\Omega)\) for \(\alpha = 2.0\)
+of Fig.~\ref{fig:optical_conductivity}, where we observe that \(\mathcal{I}(\Omega)\) for \(\alpha = 2.0\)
 is almost independent of the system size, and for larger values of \(\alpha\), the incoherent part of the spectrum
 is shifted towards even lower frequencies.
 

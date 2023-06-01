@@ -151,7 +151,7 @@ as
 By considering the Fourier transform of the \(\sin(x)/x\) function, it can be shown that
 this expression is equivalent to (see Appendix~\ref{app:fourier} for details)
 \begin{equation}
-    \bar{O}_{\gamma}^{\tau} = \sum_{n,m} \underbrace{\theta\left(\frac{1}{\tau} - |\epsilon_n - \epsilon_m|\right)}_{\theta_{mn}^{\tau}} (O_{\gamma})_{mn} \ketbra{m}{n}
+    \bar{O}_{\gamma}^{\tau} = \sum_{n,m} \underbrace{\theta\left(\frac{1}{\tau} - |\epsilon_n - \epsilon_m|\right)}_{\theta_{nm}^{\tau}} (O_{\gamma})_{mn} \ketbra{m}{n}
 \label{eq:finite_time_avg}
 \end{equation}
 and because for Heaviside theta function we have \(\theta(x)^2 = \theta(x)\), the projective character is restored. 
@@ -176,7 +176,7 @@ before and after the time-averaging. Because of the projective character of the 
 given by the pairwise inner products of the time-averaged operators, which we collect into a matrix
 \(K^{\tau}\), with elements
 \begin{equation}
-    K^{\tau}_{\gamma\gamma^{\prime}} = \hs{\bar{O}_{\gamma}^{\tau}}{\bar{O}_{\gamma^{\prime}}^{\tau}} = \frac{1}{\mathcal{D}}\sum_{n,m} \theta_{mn}^{\tau} (O_{\gamma})_{nm} (O_{\gamma^{\prime}})_{nm}^{\ast}
+    K^{\tau}_{\gamma\gamma^{\prime}} = \hs{\bar{O}_{\gamma}^{\tau}}{\bar{O}_{\gamma^{\prime}}^{\tau}} = \frac{1}{\mathcal{D}}\sum_{n,m} \theta_{nm}^{\tau} (O_{\gamma})_{nm} (O_{\gamma^{\prime}})_{nm}^{\ast}
     \label{eq:overlap_matrix}
 \end{equation}
 This matrix is Hermitian by design, and in the case of systems with time-reversal symmetry, it is also real,
@@ -312,14 +312,14 @@ details are relegated to Appendix~\ref{app:fourier}. The result, written in spec
 Let us now do one more step and consider the integral of \(\mathcal{F}\left[\hs{A(t)}{B}\right]\) over
 some finite frequency window \([-\Omega, \Omega]\), akin to the integrated conductivity~\eqref{eq:integrated_conductivity}.
 \begin{align}
-    I_{AB}(\Omega) &= \int_{-\Omega}^{\Omega} \mathrm{d}\omega\; \mathcal{F}\left[\hs{A(t)}{B}\right](\omega) =
+    \mathcal{I}_{AB}(\Omega) &= \int_{-\Omega}^{\Omega} \mathrm{d}\omega\; \mathcal{F}\left[\hs{A(t)}{B}\right](\omega) =
     \frac{1}{\dimension}\sum_{n,m} A_{mn} B_{nm} \int_{-\Omega}^{\Omega} \mathrm{d}\omega \;
     \delta(\epsilon_m-\epsilon_n+\omega) \nonumber \\ &= \frac{1}{\dimension}\sum_{n,m} A_{mn} B_{nm}
     \theta(\Omega + (\epsilon_m-\epsilon_n))\theta(\Omega - (\epsilon_m-\epsilon_n)) \nonumber\\
     &= \frac{1}{\dimension}\sum_{n,m} A_{mn} B_{nm}\theta(\Omega - \abs{\epsilon_m-\epsilon_n})
     \label{eq:integrated_spectral}
 \end{align}
-This is a very important result, and the quantity \(I_{AB}(\Omega)\) goes by the name of
+This is a very important result, and the quantity \(\mathcal{I}_{AB}(\Omega)\) goes by the name of
 the integrated spectral function~\autocite{Vidmar2021}.
 It tells us that the matrix element of the overlap matrix \(K^{\tau}\),
 for a pair of operators \(A\) and \(B\), is equal to the integrated Fourier transform of the infinite-temperature
@@ -431,9 +431,12 @@ and discovered that the largest contributions come from three imaginary (current
 \begin{align}
   O_1 &= i \frac{2}{\sqrt{L}} \sum_{\ell=1}^L \left(\Sp_{\ell} \Sm_{\ell+1} - \textrm{H.c.}\right)\nonumber\\
   O_2 &= i \frac{4}{\sqrt{L}} \sum_{\ell=1}^L \left(\Sp_{\ell} \Sz_{\ell+1} \Sp_{\ell+2} - \textrm{H.c.}\right)\nonumber\\
-  O_3 &= i \frac{4}{\sqrt{L}} \sum_{\ell=1}^L \left(\Sp_{\ell} \Sz_{\ell+1} \Sz_{\ell+2} \Sp_{\ell+3} - \textrm{H.c.}\right)
+  O_3 &= i \frac{8}{\sqrt{L}} \sum_{\ell=1}^L \left(\Sp_{\ell} \Sz_{\ell+1} \Sz_{\ell+2} \Sp_{\ell+3} - \textrm{H.c.}\right)
   \label{eq:fermionic_currents}
 \end{align}
+The adjective \textit{fermionic} describing these currents stems from their image under Jordan-Wigner transformation,
+namely currents describing particle hopping between first-, second-, and third-nearest neighbors in a system
+of spinless fermions.
 The dependence of the projections on the parameters is shown in Figure~\ref{fig:projections}.
 
 \begin{figure}[htbp]
@@ -444,35 +447,49 @@ The dependence of the projections on the parameters is shown in Figure~\ref{fig:
   \label{fig:projections}
 \end{figure}
 
-We see that the best LSRO \(I_1\) has nonzero overlap only with \(O_2\), which is even under the
+We see that the best LSRO, \(I_1\), has nonzero overlap only with \(O_2\), which is even under the
 spin-flip transformation\footnote{Spin-flip transformation maps \(\Sz_{\ell}\) to \(-\Sz_{\ell}\).
 \(\Sp_{\ell}\) to \(\Sm_{\ell}\) and \(\Sm_{\ell}\) to \(\Sp_{\ell}\).}.
 Both \(O_1\) and \(O_3\) are odd under this transformation, so they do not contribute to \(I_1\).
-From the fact that \(\lambda_1 \to 1\) as \(\alpha \to \infty\) and \(\hs{O_2}{I_1}^2 \to 1\) as
+This is a consequence of the orthogonality between even and odd subspaces of operator space \(\mathcal{V}_{\textrm{M}}\)
+and in fact those two spaces can be considered separately to reduce the computational cost.
+Observing that \(\lambda_1 \to 1\) as \(\alpha \to \infty\) and \(\hs{O_2}{I_1}^2 \to 1\) as
 \(\Delta\to 0\), we can suspect that this LSRO is a remnant of the energy current operator~\autocite{Zotos1997},
 which in the nearest-neighbor Heisenberg model is a proper LIOM.
-Next, \(I_2\) has a nonzero overlap only with \(O_1\) and \(O_3\), which are odd under spin flip,
-but not with \(O_2\). Moreover, the overlap \(\hs{O_1}{I_2}^2\) is maximal along the line of optimal anisotropy,
-Similar behavior is observed for the case of \(I_3\), but now the overlap with \(O_3\) is maximal along the
+Next, \(I_2\) has a nonzero overlap only with \(O_1\) and \(O_3\), which are odd under spin flip.
+Moreover, the overlap \(\hs{O_1}{I_2}^2\) is maximal along the line of optimal anisotropy.
+Similar behavior is observed for \(I_3\), but now the overlap with \(O_3\) is maximal along the
 line. However, there is a slight difference in comparison to the previous two LSROs. There are
 values of parameters for which \(I_3\) has overlap with just the odd currents, whereas for others
 only with the even one. This is caused by the fact the \(I_3\), defined as the operator with
 the third largest stiffness, can have a completely different structure depending on the parameters of 
 the model. Nevertheless, the important fact is that for optimal anisotropy, it is the odd
-current that contributes the most. 
-
-
-\textcolor{red}{Write about Jordan Wigner and fermionic nature}
-
-
-
+current that contributes the most. It is an interesting fact that even though this model cannot be mapped
+onto a fermionic system with two-body interactions, numerical evidence points to the existence of long-lived
+local, fermionic currents which are the most stable at the line of optimal anisotropy.
 
 Finally, we consider the case \(\tau < \infty\) and look at the eigenvalues
 of the overlap matrix \(K^{\tau}\) as functions of \(\Omega = 1/\tau\). Let us stop
 for a moment and see another interpretation of the eigenvalues of \(K^{\tau}\)
-% \begin{align}
-%   \lambda^{\tau}_{\beta} &= 
-% \end{align}
+\begin{align}
+  \lambda^{\tau}_{\beta} &= \hs{Q_{\beta}^{\tau}}{Q_{\beta}^{\tau}} = \sum_{\gamma\gamma^{\prime}}
+  U_{\beta\gamma}\hs{\bar{O}^{\tau}_{\gamma}}{\bar{O}^{\tau}_{\gamma^{\prime}}}{U}^{\ast}_{\beta\gamma^{\prime}}\nonumber\\
+  &= \frac{1}{\mathcal{D}} \sum_{\gamma\gamma^{\prime}}\sum_{n,m} \theta_{nm}^{\tau}
+  \left(O_{\gamma}\right)_{nm} (O_{\gamma^{\prime}})_{mn} U_{\beta\gamma} {U}^{\ast}_{\beta\gamma^{\prime}}\nonumber\\
+  &= \frac{1}{\mathcal{D}} \sum_{n,m} \theta_{mn}^{\tau} \underbrace{\left[\sum_{\gamma}U_{\beta\gamma} \left(O_{\gamma}\right)_{nm}\right]}{\left(I_{\beta}\right)_{nm}}
+  \underbrace{\left[\sum_{\gamma^{\prime}}{U}^{\ast}_{\beta\gamma^{\prime}} (O_{\gamma^{\prime}})_{mn}\right]}{\left(I_{\beta}\right)^{\ast}_{mn}}\nonumber\\
+  &= \frac{1}{\mathcal{D}} \sum_{n,m} \theta_{nm}^{\tau} \abs{\left(I_{\beta}\right)_{nm}}^2 = \mathcal{I}_{I_{\beta}I_{\beta}}\left(\frac{1}{\tau}\right)
+\end{align} 
+This is precisely the integrated spectral function~\eqref{eq:integrated_spectral} of the operator \(I_{\beta}\) at frequency \(\Omega = 1/\tau\).
+Thus, by investigating the eigenvalues of \(K^{\tau}\) we can study our LSROs on the same footing as the integrated
+conductivity in the previous chapter. \(\Omega\)-dependence of the eigenvalues of \(K^{\tau}\) for the 3 operators
+with largest stiffnesses, \(I_1\), \(I_2\), and \(I_3\), is shown in Figure~\ref{fig:lsro_eigenvalues}.
 
-\textcolor{red}{lambdas are effectively integrated spectral functions}
-\textcolor{red}{Write about finite time eigenmodes - the results are in the nealy integrable folder.}
+\begin{figure}[htbp]
+  \centering
+  \textcolor{red}{Eigenvalues of \(K^{\tau}\) for the 3 operators with largest stiffnesses}
+  \caption{Eigenvalues of \(K^{\tau}\) for the 3 operators with largest stiffnesses, \(I_1\), \(I_2\), and \(I_3\),
+  as a function of \(\Omega = 1/\tau\).}
+  \label{fig:lsro_eigenvalues}
+\end{figure}
+
