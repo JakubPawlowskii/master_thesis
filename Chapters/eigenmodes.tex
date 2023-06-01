@@ -391,12 +391,11 @@ described in Algorithm~\ref{alg:liom_alg}, initially for \(\tau\to\infty\), usin
 and the Hamiltonian~\eqref{eq:long_range} and obtain a sequence of local, orthonormal observables
 \(I_{\beta} = \sum_{\gamma} U_{\beta\gamma} O_{\gamma}\) together with corresponding stifnesses \(\lambda_{\beta}\).
 Figure~\ref{fig:stiffness} shows the stiffness of the top 3 operators, on the parameters \(\Delta\) and \(\gamma\).
-These results were obtained for a system of \(L=14\) sites, with a maximal operator support of \(M=4\).
-% here just the first column of plot from paper, presented in a row
+These results were obtained for a system of \(L=16\) sites, with a maximal operator support of \(M=4\).
 
 \begin{figure}[htbp]
   \centering
-  \textcolor{red}{Heatmaps of stiffness}
+  \includegraphics[width=\linewidth]{Figures/stiffness.jpg}
   \caption{Heatmaps depicting the dependence of the stiffness of the top 3 operators on the parameters \(\Delta\) and \(\gamma\).
   From left to right we have \(\lambda_1\), \(\lambda_2\) and \(\lambda_3\) respectively. The black line corresponds
   to the optimal anisotropy \(\Delta_{O}(\alpha) = \exp(-\alpha + 2)\).}
@@ -441,7 +440,7 @@ The dependence of the projections on the parameters is shown in Figure~\ref{fig:
 
 \begin{figure}[htbp]
   \centering
-  \textcolor{red}{Heatmaps of projections}
+  \includegraphics[width=\linewidth]{Figures/projections.jpg}
   \caption{Projections of the LSROs \(I_{\beta}\) on the local operators \(O_{\gamma}\) defined in~\eqref{eq:fermionic_currents},
   i.e. \(\hs{O_{\gamma}}{I_{\beta}}^2 = \abs{U_{\gamma\beta}}^2\) for \(\beta = 1,2,3\) and \(\gamma = 1,2,3\).}
   \label{fig:projections}
