@@ -260,6 +260,7 @@ can be regarded as an \(M\)-local approximation of the true LIOM \(Q_{\beta}\).
   \(\tau\to\infty\) and look at the LSROs at finite values of \(\tau\).
 
 \subsection{Details of implementation}
+
 Before proceeding further toward a concrete application of the procedure outlined above, let us first discuss
  some technical details of its implementation. The most demanding part, from the computational point of view,
  is the calculation of matrix elements~\eqref{eq:overlap_matrix}. It requires explicit construction of
@@ -332,14 +333,14 @@ This is of course not the case for a power-law decaying interaction. Thus, we wi
 here, as its performance is worse than exact diagonalization. However, all the work is not in vain, as this method will surely prove useful
 for further research.
 
-\begin{algorithm}
-	\algrenewcommand\algorithmicrequire{\textbf{Input: }}
-	\algrenewcommand\algorithmicensure{\textbf{Output: }}
-	\caption{Algorithm for finding LIOMs/LSROs, optimized using symmetry subspaces}
-	\label{alg:liom_alg}
-	\begin{algorithmic}[1]
-	\Require  \(\{O_i\}_{i=1}^N\) --- Basis of the operator space \(\mathcal{V}_M\), tight-binding Hamiltonian \(H\)
-	\Ensure \(\{I_i\}_{i=1}^N\) --- most conserved operators (LIOMs/LSROs)
+\begin{algorithm}[htbp]
+  \algrenewcommand\algorithmicrequire{\textbf{Input: }}
+  \algrenewcommand\algorithmicensure{\textbf{Output: }}
+  \caption{Algorithm for finding LIOMs/LSROs, optimized using symmetry subspaces}
+  \label{alg:liom_alg}
+  \begin{algorithmic}[1]
+  \Require  \(\{O_i\}_{i=1}^N\) --- Basis of the operator space \(\mathcal{V}_M\), tight-binding Hamiltonian \(H\)
+  \Ensure \(\{I_i\}_{i=1}^N\) --- most conserved operators (LIOMs/LSROs)
     \State \(\Gamma_{O_i} = 0\), \(\Lambda_{O_i} = 0\), \(K_{ij} = 0\) for all \(i,j = 1,\ldots N\)
     \For{\(s = 1:s_{\text{max}}\)}
       \State Generate and diagonalize \(H^s\)
@@ -363,6 +364,7 @@ for further research.
     \State \(\{Q_i^M\} = \sum_j U_{ij} O_j\)
   \end{algorithmic}
 \end{algorithm}
+
 
 \section{Fermionic currents in the long-range Heisenberg model \label{sec:fermionic_currents}}
 
@@ -390,8 +392,8 @@ the spin current, so we are going to focus on the imaginary operators. We numeri
 described in Algorithm~\ref{alg:liom_alg}, initially for \(\tau\to\infty\), using the basis of imaginary operators \(\{O_{\gamma}\}\)
 and the Hamiltonian~\eqref{eq:long_range} and obtain a sequence of local, orthonormal observables
 \(I_{\beta} = \sum_{\gamma} U_{\beta\gamma} O_{\gamma}\) together with corresponding stifnesses \(\lambda_{\beta}\).
-Figure~\ref{fig:stiffness} shows the stiffness of the top 3 operators, on the parameters \(\Delta\) and \(\gamma\).
-These results were obtained for a system of \(L=16\) sites, with a maximal operator support of \(M=4\).
+Figure~\ref{fig:stiffness} shows the dependence of the stiffness of the top 3 operators, on the parameters \(\Delta\) and \(\gamma\).
+These results were obtained for a system of \(L=16\) sites, with a maximal operator support of \(M=4\) using full Hilber space.
 
 \begin{figure}[htbp]
   \centering
@@ -405,7 +407,7 @@ These results were obtained for a system of \(L=16\) sites, with a maximal opera
 We see that \(\lambda_2\) and \(\lambda_3\) exhibit behavior resembling the initially investigated spin current,
 that is a clear maximum along the line of optimal anisotropy \(\Delta_{O}(\alpha) = \exp(-\alpha + 2)\),
 whereas \(\lambda_1\) is approximately constant above this line and sharply drops below it.
-As we are not aware of any mechanics explaining non-zero stiffness in the thermodynamic limit, we
+As we are not aware of any mechanism explaining non-zero stiffness in the thermodynamic limit, we
 have also carried out a finite-size analysis of operators \(I_2\) and \(I_3\) for 3 points in the parameter space:
 below the optimal line \((\alpha,\Delta) = (3.5,0.0)\), on the optimal line \((\alpha,\Delta) = (3.5,0.2)\) and
 above the optimal line \((\alpha,\Delta) = (3.5,0.8)\). The results are shown in Figure~\ref{fig:stiffness_finite_size}.
@@ -413,7 +415,7 @@ above the optimal line \((\alpha,\Delta) = (3.5,0.8)\). The results are shown in
 
 \begin{figure}[htbp]
   \centering
-  \textcolor{red}{Finite size analysis}
+  \includegraphics[width=0.8\linewidth]{Figures/finite_size.pdf}
   \caption{Finite size dependence of \(\lambda_2\) (left panel) and \(\lambda_3\) (right panel) for the
   optimal anisotropy \(\alpha = 3.5\), \(\Delta = 0.2\) and away from it (\(\Delta = 0.0,0.8)\).}
   \label{fig:stiffness_finite_size}
@@ -434,7 +436,7 @@ and discovered that the largest contributions come from three imaginary (current
   \label{eq:fermionic_currents}
 \end{align}
 The adjective \textit{fermionic} describing these currents stems from their image under Jordan-Wigner transformation,
-namely currents describing particle hopping between first-, second-, and third-nearest neighbors in a system
+which maps them into currents describing particle hopping between first-, second-, and third-nearest neighbors in a system
 of spinless fermions.
 The dependence of the projections on the parameters is shown in Figure~\ref{fig:projections}.
 
@@ -457,13 +459,13 @@ Observing that \(\lambda_1 \to 1\) as \(\alpha \to \infty\) and \(\hs{O_2}{I_1}^
 which in the nearest-neighbor Heisenberg model is a proper LIOM.
 Next, \(I_2\) has a nonzero overlap only with \(O_1\) and \(O_3\), which are odd under spin flip.
 Moreover, the overlap \(\hs{O_1}{I_2}^2\) is maximal along the line of optimal anisotropy.
-Similar behavior is observed for \(I_3\), but now the overlap with \(O_3\) is maximal along the
-line. However, there is a slight difference in comparison to the previous two LSROs. There are
+Similar behavior is observed for \(I_3\), but now the overlap with \(O_3\) is maximized for parameters
+on the line. However, there is a slight difference in comparison to the previous two LSROs. There are
 values of parameters for which \(I_3\) has overlap with just the odd currents, whereas for others
 only with the even one. This is caused by the fact the \(I_3\), defined as the operator with
 the third largest stiffness, can have a completely different structure depending on the parameters of 
 the model. Nevertheless, the important fact is that for optimal anisotropy, it is the odd
-current that contributes the most. It is an interesting fact that even though this model cannot be mapped
+current that contributes the most. Curiously, even though this model cannot be mapped
 onto a fermionic system with two-body interactions, numerical evidence points to the existence of long-lived
 local, fermionic currents which are the most stable at the line of optimal anisotropy.
 
@@ -486,9 +488,15 @@ with largest stiffnesses, \(I_1\), \(I_2\), and \(I_3\), is shown in Figure~\ref
 
 \begin{figure}[htbp]
   \centering
-  \textcolor{red}{Eigenvalues of \(K^{\tau}\) for the 3 operators with largest stiffnesses}
+  \includegraphics[width=\linewidth]{Figures/finite_time_stiffness.pdf}
   \caption{Eigenvalues of \(K^{\tau}\) for the 3 operators with largest stiffnesses, \(I_1\), \(I_2\), and \(I_3\),
-  as a function of \(\Omega = 1/\tau\).}
+  as a function of \(\Omega = 1/\tau\). Dashed lines correspond to the \(\tau\to\infty\) limit.}
   \label{fig:lsro_eigenvalues}
 \end{figure}
+
+The relaxation time of the first LSRO, \(I_1\), is not very affected by the proximity to the optimal line,
+which is expected given its origin as a remnant of the energy current. However, for both
+\(I_2\) and \(I_3\) we can clearly see that the decay is the slowest for the parameters on the optimal line.
+We have thus shown, that the quasiballistic nature is not exclusive to the nonlocal spin current,
+but also to a broader class of current-like, local operators.
 
