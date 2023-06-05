@@ -2,13 +2,13 @@
 \thispagestyle{chapterBeginStyle}
 
 
-The overarching goal of the work presented in this thesis is to understand the properties of
+The overarching goal of the work presented in this thesis, serving as the background is to understand the properties of
 quantum systems that are close to integrability, as they facilitate real-world implementation, while
-still maintaining some of the desired properties of strictly integrable systems.
+still maintaining some desired properties of strictly integrable systems.
 To aid this development, there is a strong need for a robust set of theoretical tools that one
 could use for the investigation of such systems. As most of the sophisticated machinery developed
 for integrable systems cease to work for the case of nearly integrable systems, one has
-to resort to numerical methods. It is impossible to touch upon all of the aspects of this
+to resort to numerical methods. It is impossible to touch upon all the aspects of this
 topic in a short thesis, thus we had two concrete goals in mind.
 
 The first one was to provide a comprehensive introduction to the numerical methods, beyond the simplest exact
@@ -18,21 +18,21 @@ physical observables, in order to speed up the computations. Starting from the v
 introduced in detail the Arnoldi iteration, which is most often used to find the extremal eigenvalues
 of general, non-hermitian matrices, even though it does so rather accidentally. We then moved on to
 the case of hermitian matrices, where this procedure reduces to the well-known and versatile
-Lanczos iteration. As an immediate application of the Lanczos iteration, beyond just the groundstate
+Lanczos iteration. As an immediate application of the Lanczos iteration, beyond just the ground state
 computations, the so-called Krylov propagator was presented, which allows one to compute the time evolution of
-a state vector, without the need to diagonalize the Hamiltonian. Finally, we described,
+a state vector, without the need for diagonalization of the Hamiltonian. Finally, we described,
 and partially derived, an approach to the correlation functions, based on the Krylov
 propagator and the concept of Quantum Typicality, which allows one to compute the correlation functions
-without carrying out the trace of all many-body states.
+without explicitly carrying out the trace over all many-body states.
 
 The second goal was to apply those methods to the study of the dynamics of the spin transport in the anisotropic
 Heisenberg model with power-law interaction \(J(\alpha) = J/r^{\alpha}\), which is an important example of a
 long-range interacting system. Motivated by experimental setups, we started by considering the
 expansion of a domain-wall initial state and found a non-monotonic dependence of the
 center of mass velocity on the anisotropy parameter. By considering maximal velocities,
-we have found a line in the parameter space, \(\Delta_O(\alpha) = \exp(-\alpha + 2)\),
+we found a line in the parameter space, \(\Delta_O(\alpha) = \exp(-\alpha + 2)\),
 for which the velocity of spin domain wall expansion is similar to the case of free
-NN particles, indicating short-time (high-frequency) ballistic transport. 
+nearest-neighbors particles, indicating short-time (high-frequency) ballistic transport. 
 Next, we studied spin transport from the perspective of the linear response theory,
 by considering the optical conductivity and its integral over a frequency window. 
 It revealed a regime of quasi-ballistic transport, where the spectral sum
@@ -40,33 +40,32 @@ of the optical conductivity accumulated at frequencies below \(\Omega^{\ast}/J \
 10^{-3}-10^{-2}\). As a result, along the line of optimal anisotropy, the spin
 transport is ballistic for surprisingly long times, up to \(t \sim 1/\Omega^{\ast}\),
 which is in agreement with the results of the domain-wall expansion. 
-Finally, we have investigated the properties of the local, slowly relaxing observables
+We also investigated the properties of local, slowly relaxing observables
 (LSROs), obtained using a numerical algorithm designed to find local integrals of
-motion in integrable systems. For completeness, we have also provided a rather detailed
+motion in integrable systems. For completeness, we provided a rather detailed
 description of the algorithm itself, together with a possible upgrade, replacing
 ED-based time averaging with Lanczos-based long-time correlation functions.
 Unfortunately, the upgraded approach turned out to be unsuitable for the purpose of
 this thesis, as matrices of long-range operators are no longer sparse and thus do not
 benefit from the Lanczos iteration. Nevertheless, using the original algorithm, we
-have found that the best LSROs can be understood in terms of
-current-like operators, corresponding via the Jorda-Wigner
-transformation to long-range fermionic hoppings. Furthermore, those operators were
-found to decay the slowest precisely for the optimal anisotropy, obtained from
-previous methods. 
+found that the best LSROs decay the slowest precisely for the optimal anisotropy, obtained from
+previous methods. Additionally, we showed that they can be understood in terms of projections onto
+current-like operators, corresponding via the Jordan-Wigner transformation to long-range fermionic hoppings,
+even though the Hamiltonian does not admit a representation in terms of two-body fermionic operators.
+Finally, using finite-time averaging version of the algorithm, we investigated the frequency dependence
+of the LSROs, akin to the optical conductivity, and found that the concentration of the spectral weight
+resembles the one of the optical conductivity.
 
-\textcolor{red}{State clearly main result}
-
-% Our recent study on the anisotropic Heisenberg model with power-law decaying interaction has shown the existence of a sharp line
-% in parameter space, that interpolates between two integrable regimes and facilitates transient ballistic
-% spin transport~\autocite{Mierzejewski2023}.
-% Using the LIOM algorithm, we have identified
-% the most conserved operators (LSROs) and found that the largest contributions to their stiffness come from current-like operators,
-% corresponding via Jorda-Wigner transformation to long-range fermionic hoppings. Furthermore, one of those operators
-% were found to be similar to the initially studied spin current (in the sense of having a significant overlap).
-
-% To summarize this part, we emphasize that the core goal of this project is to understand the properties of finite
-% systems close to integrability. This includes both systems with integrability-breaking perturbations and
-% systems that we do not expect to be integrable, yet behave as if they would be close to some (possibly unknown)
-% integrable point. Our strategy is based on an investigation of local integrals of motion and their relation
-% to the dynamics of physically relevant observables.
-
+The main result of this thesis, and the broader research published in \autocite{Mierzejewski2023}, is the
+discovery of the line of optimal anisotropy, \(\Delta_{O}(\alpha) = \exp(-\alpha +2)\), 
+along which the spin transport is ballistic for surprisingly long times \(tJ \sim 10^{-2} -10^{-3}\).
+This line smoothly interpolates between integrable two models with purely ballistic
+transport, namely free particles for \(\alpha =\infty,\; \Delta =0\) and Haldane-Shastry
+like model for \(\alpha  = 2,\; \Delta  = 1\). It suggests that the long-range Heisenberg
+model can be thought of as nearly-integrable far beyond just the vicinity of the
+integrable limits, but rather for a whole line of parameters. Unfortunately, the precise
+microscopic origin of the optimal anisotropy is still unknown. A possible explanation
+would be that for \(\delta = \exp(-\alpha  + 2)\) this model is very close to some,
+more complicated, integrable model, in which the spin current is an integral of motion.
+Investigation of systems similar to the one studied in this thesis, from the perspective
+of the search for remnants of integrability, is a promising direction for future research.
