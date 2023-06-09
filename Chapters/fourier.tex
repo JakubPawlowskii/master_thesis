@@ -5,55 +5,55 @@ They originate from the definition of finite-time averaging~\eqref{eq:finite_tim
 the integrated spectral function~\eqref{eq:integrated_spectral}. Let us begin with the latter one,
 as it is simpler. We have
 \begin{align}
-    \mathcal{F}\left[\hs{A(t)}{B}\right] &= \lim _{\varepsilon \to 0^+} \frac{1}{2 \pi} \int_{-\infty}^{\infty} \mathrm{d} t 
+    \mathcal{F}\left[\hs{A(t)}{B}\right] & = \lim _{\varepsilon \to 0^+} \frac{1}{2 \pi} \int_{-\infty}^{\infty} \mathrm{d} t
     \; e^{i \omega t-|t| \varepsilon}\hs{A(t)}{B} = \lim _{\varepsilon \to 0^+} \frac{1}{2 \pi}
     \int_{-\infty}^{\infty} \mathrm{d} t \; e^{i \omega t-|t| \varepsilon} \frac{1}{\dimension}
-    \Tr\left[\left(e^{iHt}Ae^{-iHt}\right)^{\dagger}B\right] \nonumber\\
-    &=\lim _{\varepsilon \to 0^+} \frac{1}{2 \pi}
+    \Tr\left[\left(e^{iHt}Ae^{-iHt}\right)^{\dagger}B\right] \nonumber                                                                    \\
+                                         & =\lim _{\varepsilon \to 0^+} \frac{1}{2 \pi}
     \int_{-\infty}^{\infty} \mathrm{d} t \; e^{i \omega t-|t| \varepsilon} \frac{1}{\dimension}
-    \Tr\left[e^{iHt}\left(\sum_{m} \ketbra{m}{m}\right) 
-    A\left(\sum_{n} \ketbra{n}{n}\right)e^{-iHt}B\right] \nonumber\\
-    &= \frac{1}{\dimension} \frac{1}{2 \pi}\sum_{n,m} \lim _{\varepsilon \to 0^+} 
+    \Tr\left[e^{iHt}\left(\sum_{m} \ketbra{m}{m}\right)
+    A\left(\sum_{n} \ketbra{n}{n}\right)e^{-iHt}B\right] \nonumber                                                                        \\
+                                         & = \frac{1}{\dimension} \frac{1}{2 \pi}\sum_{n,m} \lim _{\varepsilon \to 0^+}
     \int_{-\infty}^{\infty} \mathrm{d} t \; e^{i \omega t-|t| \varepsilon}
-    \Tr\left[e^{i \epsilon_m t}\ketbra{m}{m} A\ketbra{n}{n}e^{-i \epsilon_n t}B\right] \nonumber\\
-    &= \frac{1}{\dimension} \frac{1}{2 \pi}\sum_{n,m} A_{mn}  \lim _{\varepsilon \to 0^+} 
+    \Tr\left[e^{i \epsilon_m t}\ketbra{m}{m} A\ketbra{n}{n}e^{-i \epsilon_n t}B\right] \nonumber                                          \\
+                                         & = \frac{1}{\dimension} \frac{1}{2 \pi}\sum_{n,m} A_{mn}  \lim _{\varepsilon \to 0^+}
     \int_{-\infty}^{\infty} \mathrm{d} t \; e^{i \omega t-|t| \varepsilon}e^{i (\epsilon_m-\epsilon_n) t}
-    \sum_{k} \underbrace{\braket{k}{m}}_{=\delta_{km}} \matrixel{n}{B}{k} \nonumber\\
-    &= \frac{1}{\dimension} \frac{1}{2 \pi}\sum_{n,m} A_{mn} B_{nm}  \underbrace{\lim _{\varepsilon 
-    \to 0^+} \int_{-\infty}^{\infty} \mathrm{d} t \; e^{i \omega t-|t| 
-    \varepsilon}e^{i (\epsilon_m-\epsilon_n) t}}_{\mathcal{I}}\label{eq:spectral function simplified}
+    \sum_{k} \underbrace{\braket{k}{m}}_{=\delta_{km}} \matrixel{n}{B}{k} \nonumber                                                       \\
+                                         & = \frac{1}{\dimension} \frac{1}{2 \pi}\sum_{n,m} A_{mn} B_{nm}  \underbrace{\lim _{\varepsilon
+        \to 0^+} \int_{-\infty}^{\infty} \mathrm{d} t \; e^{i \omega t-|t|
+            \varepsilon}e^{i (\epsilon_m-\epsilon_n) t}}_{\mathcal{I}}\label{eq:spectral function simplified}
 \end{align}
 Let us massage it a bit further, by calculating the integral \(\mathcal{I}\) explicitly.
 \begin{align}
-\mathcal{I} &= \lim _{\varepsilon \to 0^+} \int_{-\infty}^{\infty} \mathrm{d} t \; 
-e^{ i (\epsilon_m-\epsilon_n+\omega)t -|t| \varepsilon} = \lim _{\varepsilon \to 0^+} 
-\Bigg[\lim_{T_1\to -\infty}\int_{T_1}^{0} \mathrm{d} t \; e^{ i (\epsilon_m-\epsilon_n+\omega -i \varepsilon)t}\nonumber\\
-&+\lim_{T_2\to \infty}\int_{0}^{T_2} \mathrm{d} t \;  e^{ i (\epsilon_m-\epsilon_n+\omega + i\varepsilon)t}\Bigg]
-= \lim _{\varepsilon \to 0^+} \Bigg[\lim_{T_1\to -\infty} 
-\frac{1-e^{ i (\epsilon_m-\epsilon_n+\omega )T_1} e^{\varepsilon T_1}}{i (\epsilon_m-\epsilon_n+\omega -i \varepsilon)}\nonumber\\
- &+ \lim_{T_2\to \infty} \frac{e^{ i (\epsilon_m-\epsilon_n+\omega )T_2} e^{-\varepsilon T_2}-1}
-{i (\epsilon_m-\epsilon_n+\omega +i \varepsilon)}\Bigg]
-= \lim _{\varepsilon \to 0^+} \left[\frac{i}{\epsilon_n-\epsilon_m-\omega +i \varepsilon} + 
-\frac{i}{\epsilon_m-\epsilon_n+\omega +i \varepsilon} \right]\nonumber\\
- &= \lim _{\varepsilon \to 0^+}
-\frac{2\varepsilon}{(\epsilon_m-\epsilon_n+\omega -i \varepsilon)(\epsilon_m-\epsilon_n+\omega +i \varepsilon)}
-=\lim _{\varepsilon \to 0^+} \frac{2\varepsilon}{(\epsilon_m-\epsilon_n+\omega)^2 +\varepsilon^2}
+    \mathcal{I} & = \lim _{\varepsilon \to 0^+} \int_{-\infty}^{\infty} \mathrm{d} t \;
+    e^{ i (\epsilon_m-\epsilon_n+\omega)t -|t| \varepsilon} = \lim _{\varepsilon \to 0^+}
+    \Bigg[\lim_{T_1\to -\infty}\int_{T_1}^{0} \mathrm{d} t \; e^{ i (\epsilon_m-\epsilon_n+\omega -i \varepsilon)t}\nonumber         \\
+                & +\lim_{T_2\to \infty}\int_{0}^{T_2} \mathrm{d} t \;  e^{ i (\epsilon_m-\epsilon_n+\omega + i\varepsilon)t}\Bigg]
+    = \lim _{\varepsilon \to 0^+} \Bigg[\lim_{T_1\to -\infty}
+    \frac{1-e^{ i (\epsilon_m-\epsilon_n+\omega )T_1} e^{\varepsilon T_1}}{i (\epsilon_m-\epsilon_n+\omega -i \varepsilon)}\nonumber \\
+                & + \lim_{T_2\to \infty} \frac{e^{ i (\epsilon_m-\epsilon_n+\omega )T_2} e^{-\varepsilon T_2}-1}
+    {i (\epsilon_m-\epsilon_n+\omega +i \varepsilon)}\Bigg]
+    = \lim _{\varepsilon \to 0^+} \left[\frac{i}{\epsilon_n-\epsilon_m-\omega +i \varepsilon} +
+    \frac{i}{\epsilon_m-\epsilon_n+\omega +i \varepsilon} \right]\nonumber                                                           \\
+                & = \lim _{\varepsilon \to 0^+}
+    \frac{2\varepsilon}{(\epsilon_m-\epsilon_n+\omega -i \varepsilon)(\epsilon_m-\epsilon_n+\omega +i \varepsilon)}
+    =\lim _{\varepsilon \to 0^+} \frac{2\varepsilon}{(\epsilon_m-\epsilon_n+\omega)^2 +\varepsilon^2}
 \end{align}
 The obtained result is a limit of the so-called Poisson kernel. This happens to be
 a representation of Dirac \(\delta\) in the form of a limit of a sequence of functions~\autocite{byron1992mathematics}
 \begin{equation}
-\lim _{\varepsilon \to 0^+} \frac{1}{\pi} \frac{\varepsilon}{x^2 +\varepsilon^2} = \delta(x) 
+    \lim _{\varepsilon \to 0^+} \frac{1}{\pi} \frac{\varepsilon}{x^2 +\varepsilon^2} = \delta(x)
 \end{equation}
 Thus we get
 \begin{equation}
-\mathcal{I} = \lim _{\varepsilon \to 0^+} \frac{2\varepsilon}{(\epsilon_m-\epsilon_n+\omega)^2 +\varepsilon^2}
-= 2\pi \delta(\epsilon_m-\epsilon_n+\omega)
+    \mathcal{I} = \lim _{\varepsilon \to 0^+} \frac{2\varepsilon}{(\epsilon_m-\epsilon_n+\omega)^2 +\varepsilon^2}
+    = 2\pi \delta(\epsilon_m-\epsilon_n+\omega)
 \end{equation}
 Inserting this result into equation~\eqref{eq:spectral function simplified} we arrive at
 \begin{align}
-\mathcal{F}\left[\hs{A(t)}{B}\right] &= \frac{1}{\dimension} \frac{1}{2 \pi}\sum_{n,m} A_{mn} B_{nm}  
-\lim _{\varepsilon \to 0^+} \int_{-\infty}^{\infty} \mathrm{d} t \; e^{i \omega t-|t| 
-\varepsilon}e^{i (\epsilon_m-\epsilon_n) t} \nonumber\\
-=& \frac{1}{\dimension}\sum_{n,m} A_{mn} B_{nm} \delta(\epsilon_m-\epsilon_n+\Omega)
+    \mathcal{F}\left[\hs{A(t)}{B}\right] & = \frac{1}{\dimension} \frac{1}{2 \pi}\sum_{n,m} A_{mn} B_{nm}
+    \lim _{\varepsilon \to 0^+} \int_{-\infty}^{\infty} \mathrm{d} t \; e^{i \omega t-|t|
+    \varepsilon}e^{i (\epsilon_m-\epsilon_n) t} \nonumber                                                                    \\
+    =                                    & \frac{1}{\dimension}\sum_{n,m} A_{mn} B_{nm} \delta(\epsilon_m-\epsilon_n+\Omega)
 \end{align}
 which is our desired results.

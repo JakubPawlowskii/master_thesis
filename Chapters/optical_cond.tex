@@ -1,5 +1,193 @@
 \chapter{Optical conductivity in spin chains\label{app:opt_cond}}
 \thispagestyle{chapterBeginStyle}
 
-\textcite{Sirker2011,Sirker2020} for derivation of \(\sigma(\omega)\) from Kubro formula
-\textcite{Gohmann2022} for the derivation of Kubo formula
+% \textcite{Sirker2011,Sirker2020} for derivation of \(\sigma(\omega)\) from Kubro formula
+% \textcite{Gohmann2022} for the derivation of Kubo formula
+
+The aim of this appendix is to derive the Kubo formula for the optical conductivity in spin chains,
+specifically the spectral representation of the real part, as given in Eq.~\eqref{eq:kubo}.
+In the spirit of the pedagogical approach of this thesis, we shall present all the steps in detail.
+% The derivation follows closely the one presented in Ref.~\autocite{Gohmann2022}. 
+For simplicity, we consider the nearest-neighbor version of the Heisenberg model:
+\begin{equation}
+    H =  \underbrace{\frac{J}{2} \sum_{\ell=1}^{L} \left(\Sp_{\ell} \Sm_{\ell+1} + \Sm_{\ell}\Sp_{\ell+1} \right)}_{H_{0}}
+    + \underbrace{J \Delta  \sum_{\ell=1}^{L} \Sz_{\ell}\Sz_{\ell+1}}_{H_{\text{int}}}
+    - h \sum_{\ell=1}^{L} \Sz_{\ell}
+    \label{eq:nn_heisenberg}
+\end{equation}
+
+\section{Peierls phase}
+To discuss the linear \textit{response}, we need to couple our model to some external field, in our
+case the electromagnetic field. Under the Jordan-Wigner transformation, the Hamiltonian~\eqref{eq:nn_heisenberg}
+maps to a model of spinless fermions, with a density-density interaction term.
+\begin{equation}
+    H_{\text{F} } = \frac{J}{2}\sum_{\ell=1}^{L} \left( c_{\ell}^{\dagger} c_{\ell+1} + c_{\ell+1}^{\dagger} c_{\ell} \right)
+    + J \Delta \sum_{\ell=1}^{L} \left(n_{\ell} - \frac{1}{2}\right)\left(n_{\ell+1}-\frac{1}{2}\right)
+    - h \sum_{\ell=1}^{L} \left(n_{\ell} - \frac{1}{2}\right)
+\end{equation}
+where \(n_{\ell} = c^{\dag}_{\ell}c_{\ell}\).
+In this picture, the kinetic part of the fermionic Hamiltonian couple to the electromagnetic field
+via the so-called \textbf{Peierls phase}, which is a manifestation of the \(U(1)\) gauge field. To understand
+how this happens in the formalism of second quantization, we need to return for a moment back to the
+first quantization picture for spinless fermions. This section is based on the book by~\textcite{Essler2005}.
+A single particle Hamiltonian in a 3-dimensional space is given by
+\begin{equation}
+    h_{1} = \frac{\mathbf{p}^{2}}{2m} + V(\mathbf{x} )
+\end{equation}
+where \(\mathbf{p}\) is the momentum operator and \(V(x)\) is some external potential. In the presence of an
+electromagnetic 4-potential \(\left(\Phi(\mathbf{x},t ), A^{\alpha }(\mathbf{x} ,t)/c\right)\),
+the momentum operator is modified, via the minimal coupling, to the following form:
+\begin{equation}
+    h_{1} \to \frac{1}{2m}\left(\mathbf{p} + \frac{e}{c}\mathbf{A}\right)^{2} - e\,\Phi(\mathbf{x},t) + V(\mathbf{x} )
+\end{equation}
+where \(\Phi \) is the scalar potential and \(\mathbf{A}\) is the vector potential.
+Moreover, we can choose the \textbf{radiation gauge} \(\Phi(\mathbf{x} ,t) = 0\).
+Now, let us proceed with the second quantization procedure in the standard fashion. Let
+\(c^{\dag}_{\ell},c_{\ell}\) create and annihilate a particle in the Wannier state \(\phi(\mathbf{x - \mathbf{R}_{\ell}})\),
+corresponding to the \(\ell\)-th lattice site (we assume only a single band).
+Written using those operators, the single-particle part of the Hamiltonian \textit{without} the electromagnetic field is
+\begin{equation}
+    H_{1} = \sum_{\ell,\ell^{\prime} } t_{\ell\ell^{\prime}} c^{\dag}_{\ell}c_{\ell^{\prime}}
+\end{equation}
+where the hopping matrix elements are given by the matrix elements of the single-particle operator,
+between the Wannier states:
+\begin{equation}
+    t_{\ell\ell^{\prime}} = \int \dd{x^3} \phi^{*}(\mathbf{x} - \mathbf{R}_{\ell})
+    \left(\frac{\mathbf{p}^{2}}{2m} + V(\mathbf{x} )\right)\phi(\mathbf{x} - \mathbf{R}_{\ell^{\prime}})
+\end{equation}
+From the above expression, we can see that the influence of the electromagnetic field enters the second-quantized
+Hamiltonian via the hopping integrals. Let us see now how this happens
+\begin{align}
+    t_{\ell\ell^{\prime}} & \to \int \dd{x^3} \phi^{*}(\mathbf{x} - \mathbf{R}_{\ell})
+    \left[\frac{1}{2m}\left( \mathbf{p} + \frac{e}{c} \mathbf{A}  \right)^2  + V(\mathbf{x} )\right]
+    \phi(\mathbf{x} - \mathbf{R}_{\ell^{\prime}}) \nonumber                                                                 \\
+                          & \triangleq \int \dd{x^3} \phi^{*}(\mathbf{x} - \mathbf{R}_{\ell}) \mathrm{e}^{-i e \lambda / c}
+    \left[\frac{1}{2m}\left( \mathbf{p} - \frac{e}{c} \left( \mathbf{A} - \grad{\lambda } \right)   \right)^2  + V(\mathbf{x} )\right]
+    \mathrm{e}^{i e \lambda / c} \phi(\mathbf{x} - \mathbf{R}_{\ell^{\prime}})
+\end{align}
+Note, that the equality denoted with \(\triangleq \) is valid for any differentiable, complex function \(\lambda (\mathbf{x},t)\).
+We choose it to be
+\begin{equation}
+    \lambda (\mathbf{x},t) =  \int_{\mathbf{x}_0 }^{\mathbf{x}} \dd{\mathbf{x}^{\prime}} \cdot \mathbf{A}(\mathbf{x}^{\prime},t)
+\end{equation}
+for an arbitrary reference point \(\mathbf{x}_0 \). Furthermore, we introduce modified Wannier functions
+\begin{equation}
+    \Tilde{\phi}(\mathbf{x} - \mathbf{R}_{\ell}) = \mathrm{e}^{i e \lambda(\mathbf{x} ,t) / c} \phi(\mathbf{x} - \mathbf{R}_{\ell})
+\end{equation}
+This way, we can write the modified hopping integrals as
+\begin{equation}
+    {t}_{\ell\ell^{\prime}}(t) = \int \dd{x^3} \Tilde{\phi}^{*}(\mathbf{x} - \mathbf{R}_{\ell})
+    \left[\frac{\mathbf{p}^2}{2m}  + V(\mathbf{x} )\right]
+    \Tilde{\phi}(\mathbf{x} - \mathbf{R}_{\ell^{\prime}})
+\end{equation}
+thus recovering (almost) the original form of the hopping integral, but with the modified Wannier functions.
+We need a few more steps to get to the final result. First, let us assume that the Wannier functions
+are strongly localized, and that the vector potential varies slowly on the scale of the lattice constant.
+This permits the approximation
+\begin{equation}
+    \Tilde{\phi}(\mathbf{x - \mathbf{R}_{\ell}}) \approx \phi(\mathbf{x - \mathbf{R}_{\ell}}) \mathrm{e}^{i e \lambda(\mathbf{R}_{\ell} ,t) / c}
+\end{equation}
+We can also assume that the hopping integrals beyond nearest neighbors are negligible, and denote
+its nearest-neighbor value by \(t\). Then, we can write the single-particle Hamiltonian as
+\begin{equation}
+    H_1(t) = -t \sum_{\langle \ell,\ell^{\prime} \rangle } \mathrm{e}^{-i e \left( \lambda(\mathbf{R}_{\ell},t) -
+    \lambda (\mathbf{R}_{\ell^{\prime}},t) \right) /c } c^{\dag}_{\ell}c_{\ell^{\prime}}
+\end{equation}
+Phase appearing in the above expression is precisely the Peierls phase. This is a general result, valid for
+any lattice geometry and in the tight-binding approximation. However, in this thesis we are only interested in a
+one-dimensional, periodic lattice, so let us simplify a bit. We can slightly modify the Peierls phase
+and absorb the constant \(\frac{e}{c}\)
+\begin{align}
+    \lambda_{\ell,\ell+1}(t) & = \frac{e}{c} \int_{\mathbf{R}_{\ell}}^{\mathbf{R}_{\ell+1}} \dd{\mathbf{x}} \cdot \mathbf{A}(\mathbf{x},t)
+    = \frac{e}{c} \int_{\mathbf{x}_0}^{\mathbf{R}_{\ell+1}} \dd{\mathbf{x}} \cdot \mathbf{A}(\mathbf{x},t) + \frac{e}{c} \int_{\mathbf{R}_{\ell}}^{\mathbf{x}_0} \dd{\mathbf{x}} \cdot \mathbf{A}(\mathbf{x},t) \nonumber               \\
+                             & = \frac{e}{c} \int^{\mathbf{R}_{\ell+1}}_{\mathbf{x}_0} \dd{\mathbf{x}}\cdot \mathbf{A}(\mathbf{x},t)- \frac{e}{c} \int_{\mathbf{x}_0}^{\mathbf{R}_{\ell}} \dd{\mathbf{x}}\cdot \mathbf{A}(\mathbf{x},t)
+    = \frac{e}{c}\left[ \lambda(\mathbf{R}_{\ell+1},t) - \lambda(\mathbf{R}_{\ell},t) \right]
+    \label{eq:peierls_phase}
+\end{align}
+and finally obtain the desired result
+\begin{equation}
+    H_1(t) = -t \sum_{ \ell=1}^{L} \mathrm{e}^{i \lambda_{\ell,\ell+1}(t) } c^{\dag}_{\ell}c_{\ell+1} + \mathrm{h.c.}
+    \label{eq:peierls_hamiltonian}
+\end{equation}
+Before we return to the original problem, let us see what is the relation of the Peierls phase to the electric field.
+We define the electric field in terms of the 4-potential as
+\begin{equation}
+    \mathbf{E}(\mathbf{x},t) = -\grad{\phi(\mathbf{x},t)} - \frac{1}{c} \pdv{\mathbf{A}(\mathbf{x},t)}{t}
+    = -\frac{1}{c} \pdv{\mathbf{A} (\mathbf{x},t)}{t}
+\end{equation}
+where the gradient of scalar potential is zero, since we are working in the radiation gauge.
+As we consider a one-dimensional, periodic system, i.e. ring lattice, the electric field vector can be decomposed into
+the radial and azimuthal components \(\mathbf{E} (\mathbf{x} ,t) = -E(r,t)\mathbf{e}_{\varphi}\), where
+\(\mathbf{e}_{\varphi }\) is the unit vector along the ring and \(r\) is the distance from the center of the ring.
+Thus, we can choose the vector potential to have the same form \(\mathbf{A}(\mathbf{x},t) = A(r,t)\mathbf{e}_{\varphi}\).
+Then, we can carry out the integration in \eqref{eq:peierls_phase} and obtain
+\begin{equation}
+    \lambda(t) \equiv \lambda_{\ell,\ell+1}(t) = \frac{e a_0}{c} A(R,t)
+\end{equation}
+where \(a_0 = 2\pi \frac{R}{L}\) is the lattice constant and \(R\) is the radius of the ring.
+
+\section{Linear response of the spin current}
+
+Now, we can return from the fermionic realm back to our spin chain. For the remainder of this section, we set
+the speed of light \(c = 1\). Using new insight from the previous section, we can write our Heisenberg
+Hamiltonian, with the Peierls phase, as
+\begin{equation}
+    \underbrace{\frac{J}{2} \sum_{\ell=1}^{L} \left(\mathrm{e}^{i \lambda(t)} \Sp_{\ell} \Sm_{\ell+1} + \mathrm{e}^{-i \lambda(t)} \Sm_{\ell}\Sp_{\ell+1} \right)}_{H_{\lambda }(t)}
+    + \underbrace{J \sum_{\ell=1}^{L} \Sz_{\ell}\Sz_{\ell+1}}_{H_{\text{int}}}
+    - h \sum_{\ell=1}^{L} \Sz_{\ell}
+\end{equation}
+where the gauge field \(\lambda(t)\) is related to time-dependent electric field \(E(t)\) as
+\begin{equation}
+    \pdv{\lambda(t)}{t} = - e a_0 E(t)
+\end{equation}
+Thus, in Fourier space, we have the relation
+\begin{equation}
+    \lambda_{\mathrm{F}} (\omega) = \frac{e a_0}{i \omega} E_{\mathrm{F}} (\omega), \text{ where } \lambda_{\mathrm{F}} (\omega) = \int_{-\infty}^{\infty} \dd{t} \mathrm{e}^{i \omega t} \lambda(t)
+\end{equation}
+provided that the Fourier transform exists. We assume that the electric field is switched on adiabatically, and
+is asymptotically constant. In terms of the gauge field, this can be expressed as
+\(\abs{\lambda (t)} \leq \mathrm{e}^{\varepsilon t} \) for \(t\to -\infty \) and
+\(\abs{\lambda (t)} \leq b t \) for \(t\to \infty \), where \(\varepsilon > 0\) and \(b>0\) are some constants.
+Then, in the \( t \to \infty \) limit, we have \[\mathrm{e}^{i (\Re(\omega) t + i \Im(\omega) t )} \lambda (t)
+    \leq \mathrm{e}^{i \Re (\omega) t}  \mathrm{e}^{- \Im (\omega)  t} b t\], whereas in the \(t \to -\infty \) limit,
+we have \[\mathrm{e}^{i (\Re (\omega) t + i \Im (\omega) t )} \lambda (t) \leq \mathrm{e}^{i \Re (\omega) t}
+    \mathrm{e}^{(- \Im (\omega) + \varepsilon )t}\]
+Thus, the Fourier transform of the gauge field exists in the
+vertical strip \(0 < \Im (\omega) < \varepsilon \).
+
+Of course, application of such external field will induce a current in the system. We can obtain the
+corresponding current operator by inspecting the nearest-neighbor restriction of the long-range
+current~\eqref{eq:spin_current} and noticing that the gauge field enters the Hamiltonian only through
+the Peierls phase, which is a scalar and commutes with the spin operators. Thus, the current density
+reads
+\begin{equation}
+     \mathcal{J}^{\sigma }_{\ell}(t) = i\frac{J}{2} \left( \mathrm{e}^{i \lambda(t)} \Sp_{\ell} \Sm_{\ell+1} - \mathrm{e}^{-i \lambda(t)} \Sm_{\ell}\Sp_{\ell+1} \right)
+\end{equation}
+and the total current is 
+\begin{equation}
+    \mathcal{J}^{\sigma } (t) = \sum_{\ell=1}^{L} J^{\sigma }_{\ell}(t) = i\frac{J}{2} \sum_{\ell=1}^{L} \left( \mathrm{e}^{i \lambda(t)} \Sp_{\ell} \Sm_{\ell+1} - \mathrm{e}^{-i \lambda(t)} \Sm_{\ell}\Sp_{\ell+1} \right)
+    \label{eq:total_current}
+\end{equation}
+Here, as in \(H_{\lambda }(t)\), the time argument is an explicit time-dependence, not the Heisenberg picture one.
+Note that we reserve the script \(\mathcal{J}^{\sigma}\) for current including Peierls phase,
+and keep the lowercase \(j^{\sigma }\) for the current without it.
+To apply the reasoning typical for the linear response theory, we need to identify the perturbation
+\(V(t)\), such that our time-dependent Hamiltonian reads is decomposed as \( H + V(t)\).
+However, we will only need this perturbation up to the first order, so let us expand the Hamiltonian into the
+power series in the gauge field \(\lambda(t)\) as
+\begin{align}
+    H_{\lambda }(t) &= \frac{J}{2} \sum_{\ell=1}^{L} \left[\mathrm{e}^{i \lambda(t)} \Sp_{\ell} \Sm_{\ell+1}
+    + \mathrm{e}^{-i \lambda(t)} \Sm_{\ell}\Sp_{\ell+1} \right] \nonumber \\
+    &= \frac{J}{2} \sum_{\ell=1}^{L} \left[\left( 1 + i \lambda (t) + O(\lambda ^2) \right)  \Sp_{\ell} \Sm_{\ell+1}
+    + \left( 1 - i \lambda (t) + O(\lambda ^2) \right) \Sm_{\ell}\Sp_{\ell+1} \right] \nonumber \\
+    &= \frac{J}{2} \sum_{\ell=1}^{L} \left[ \Sp_{\ell} \Sm_{\ell+1} + \Sm_{\ell}\Sp_{\ell+1} \right] + 
+    \frac{i J}{2} \sum_{\ell=1}^{L} \left[ \Sp_{\ell} \Sm_{\ell+1} \lambda (t) - \Sm_{\ell}\Sp_{\ell+1} \lambda (t) \right] + O(\lambda ^2) \nonumber \\
+    &= H_0 + \lambda(t) j^{\sigma } + O(\lambda ^2)
+\end{align}
+Analogously, we can expand the current operator to obtain
+\begin{equation}
+    \mathcal{J}^{\sigma } (t) = j^{\sigma } - \lambda(t) H_0 + O(\lambda ^2)
+\end{equation}
+We have now all the ingredients to proceed with the calculation of linear response.
+
+\textcolor{red}{Wont derive the linear response formula, it would be too long. Cite mahan}

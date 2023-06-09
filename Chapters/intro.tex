@@ -3,21 +3,21 @@
 
 \section{Nearly integrable quantum systems}
 One of the most widely disputed problems in modern physics is the reconciliation
-of irreversible thermodynamics~\autocite{huang1987statistical,feynman1998statistical}
+of irreversible thermodynamics~\autocite{Huang1987,Feynman2018}
 with unitary, time-reversible dynamics predicted by quantum mechanics~\autocite{Landau1976, Sakurai2017}.
 In other words, it is the question of whether a generic, isolated quantum system can and will `forget' about its
 initial, nonequilibrium state. In recent years, this problem has attracted the attention of many physicists,
 especially taking into account experimental evidence of the loss of information, or thermalization, in isolated
-systems~\autocite{Trotzky2012325, Rigol2012, Rigol2008854, Hung2010, Hofferberth2007}. Understanding this phenomenon is a crucial first step to
+systems~\autocite{Trotzky2012, Rigol2012, Rigol2008, Hung2010, Hofferberth2007}. Understanding this phenomenon is a crucial first step to
 controlling it, and perhaps to the creation of sought-after, robust systems which do not exhibit such
 behavior. After all, `forgetting' about the initial state is equivalent to scrambling of quantum information
 and decoherence, which has been known for a long time to be one of the most important hindrances
-to a functional and scalable quantum computer~\autocite{Shor1995, LewisSwan2019}. Given the multitude
+to a functional and scalable quantum computer~\autocite{Shor1995,Lewis-Swan2019}. Given the multitude
 of possible applications of such a device, both purely scientific and commercial, controlling thermalization
 in isolated systems could be the next groundbreaking achievement~\autocite{MacQuarrie2020}.
 
 \paragraph{Preventing thermalization} A possible theoretical explanation of the thermalization in isolated quantum systems
-has been proposed in seminal papers by~\textcite{Deutsch19912046,Srednicki1994} in form of an ansatz for matrix elements of
+has been proposed in seminal papers by~\textcite{Deutsch1991,Srednicki1994} in form of an ansatz for matrix elements of
 local quantum observables \(A_{mn} = \matrixel{m}{A}{n}\) (in eigenbasis \(H\ket{n}=\varepsilon_n \ket{n}\) of some Hamiltonian),
 known as \textbf{Eigenstate Thermalization Hypothesis} (ETH)
 \begin{equation}
@@ -27,7 +27,7 @@ known as \textbf{Eigenstate Thermalization Hypothesis} (ETH)
 where \(\bar{\varepsilon} = (\varepsilon_n+\varepsilon_m)/2\), \(\omega=\varepsilon_n-\varepsilon_m\) and \(S(\bar{\varepsilon})\) is
 the thermodynamic entropy at energy \(\bar{\varepsilon}\),  \(A(\bar{\varepsilon})\) and \(f_{A}(\bar{\varepsilon},\omega)\) are
 some smooth functions of their parameters and
-\(R_{mn}\) is a random real or complex variable. The origin of ETH is the Random Matrix Theory~\autocite{Wigner1955548,mehta2004random},
+\(R_{mn}\) is a random real or complex variable. The origin of ETH is the Random Matrix Theory~\autocite{Wigner1955,Mehta2004},
 but it was the key insight of Deutsch and Srednicki that connected it directly to statistical mechanics.
 Unraveling the physics behind equation~\eqref{eq:ETH}, we have that, for generic systems,
 long-time (thermalized) expected values of local observables are related to the predictions of Gibbsian ensembles
@@ -36,14 +36,14 @@ coincide with the microcanonical average at energy \(\varepsilon_n\), whereas th
 of the diagonal ones are postulated to decrease exponentially with system size~\autocite{Beugeling2014}.
 While ETH has been shown to hold analytically in only a few selected systems~\autocite{Magan2016}, numerical clues can be
 found in various systems with many-body interactions such as hard-core bosons, interacting spin
-chains~\autocite{Santos2010_2,Rigol2010,Khatami2013,Rigol2009a} and fermions~\autocite{Neuenhahn2012,Rigol2009}.
+chains~\autocite{Santos2010a,Rigol2010,Khatami2013,Rigol2009a} and fermions~\autocite{Neuenhahn2012,Rigol2009}.
 
 Given the lack of a definitive answer to the question of when ETH holds and the fact that our ultimate goal is preventing thermalization, it is desirable to look for systems
 that explicitly violate this hypothesis. There are a few known classes of such systems:
 quantum integrable models, systems with `scars', which freeze thermalization for
 some infrequent, but physically relevant states~\autocite{Turner2018a, Turner2018}, quantum time crystals with
 broken time-translation symmetry~\autocite{Wilczek2012, Sacha2017} and systems with many-body interactions together
-with some form of disorder~\autocite{Basko_2006}. As the thermalization in those systems is slowed down or even
+with some form of disorder~\autocite{Basko2006}. As the thermalization in those systems is slowed down or even
 completely stopped, in principle they could preserve information about the initial state for an arbitrarily long time.
 This behavior is in stark contrast with what is usually observed in interacting, many-body systems, namely fast
 dynamics on the time scales of tens of femtoseconds~\autocite{DalConte2015}.
@@ -87,10 +87,10 @@ Recently, those and other similar questions have been asked concerning the pheno
 phase transitions~\autocite{Suntajs2020,Suntajs2022}.
 Insight from experiments with ultracold atomic gases suggest also another way for nearly integrable systems to emerge,
 namely generic, chaotic one- and quasi-one-dimensional systems that exhibit approximately integrable dynamics on experimentally relevant timescales,
-because of a lack of rapid local thermalization~\autocite{Polkovnikov2011863, Gopalakrishnan2023}.
+because of a lack of rapid local thermalization~\autocite{Polkovnikov2011, Gopalakrishnan2023}.
 
 In classical mechanics, answers to those types of questions are given by the Hamiltonian perturbation
-theory~\autocite{arnold2013mathematical}. There, the distinction between integrable and non-integrable systems is
+theory~\autocite{Arnold1990}. There, the distinction between integrable and non-integrable systems is
 well understood. It is known, that for classical systems with \(n\) degrees of freedom
 to be integrable, it is sufficient to have \(n\) integrals of motion \(\{H,F_i\} = 0,\; i \in \{1,\ldots,n\} \) that
 are in involution, i.e. \(\{F_i,F_j\} = 0\) for any \(i,j\in\{1,\ldots,n\}\). Then, dynamics are restricted to an \(n\)-dimensional
@@ -99,8 +99,8 @@ famous Kolmogorov-Arnold-Moser theorem (KAM)~\autocite{Kolmogorov1954, Arnold196
 with finite degrees of freedom, majority of the invariant tori occupying the phase space survive the influence of small
 perturbations. However, as of now, there is no equivalent of this result in quantum mechanics.
 Nevertheless, such quantum systems are very intriguing as they can facilitate robust prethermalization plateaux,
- i.e. dynamics that at intermediate times resemble that of integrable models
-(at least for suitably weak perturbations), even though the system eventually thermalizes at longer times~\autocite{mallayya2019, Bertini2015,Berges2004,Langen2016}.
+i.e. dynamics that at intermediate times resemble that of integrable models
+(at least for suitably weak perturbations), even though the system eventually thermalizes at longer times~\autocite{Mallayya2019, Bertini2015,Berges2004,Langen2016}.
 
 \section{Motivation and aim of this dissertation}
 As argued in the previous section, nearly integrable quantum systems constitute an important relaxation
@@ -132,7 +132,7 @@ the Armadillo linear algebra library~\autocite{Sanderson2016} and Intel MKL.
 Our second topic of interest is the \textbf{spin transport in the long-range anisotropic Heisenberg model.}
 Existence of many interesting features of quantum many-body systems, such as ballistic dynamics in Heisenberg spin
 chains~\autocite{Zotos1997,Bertini2021},
-exotic frustrated magnetism~\autocite{Nisoli2017}, peculiar phase transitions~\autocite{Sandvik2010b,Yang2021}
+exotic frustrated magnetism~\autocite{Nisoli2017}, peculiar phase transitions~\autocite{Sandvik2010a,Yang2021}
 and entangled spin liquids~\autocite{Balents2010} depends strongly
 on the type and range of interaction present in them, so it is safe to say that it plays a crucial role.
 In the last few years, considerable development of experimental techniques has
@@ -146,7 +146,7 @@ driving one can turn naturally existing Hamiltonian into some other, effective o
 So far, this method has been applied with great success to create tunable XXZ model~\autocite{Scholl2022}, strongly distance
 selective interactions~\autocite{Hollerith2022}, and tunable XYZ models~\autocite{Steinert2022, Geier2021}.
 Progress in experimental methods sparked theoretical interest in long-range
-models~\autocite{Richerme2014,Jurcevic2014,Hauke2013,FossFeig2015,Maghrebi2016,Lepori2017,Frerot2017,Vanderstraeten2018,Cevolani2018,Kloss2019,Ren2020,Bulchandani2022a},
+models~\autocite{Richerme2014,Jurcevic2014,Hauke2013,Foss-Feig2015,Maghrebi2016,Lepori2017,Frerot2017,Vanderstraeten2018,Cevolani2018,Kloss2019,Ren2020,Bulchandani2022a},
 yet their dynamical properties are still largely unknown, which explains our interest in long-range anisotropic
 Heisenberg model in this thesis.
 In Chapter~\ref{chap:spin_transport}, motivated by experiments with density expansion in cold atoms~\autocite{Ronzheimer2013,Vidmar2013,Neyenhuis2017},
@@ -299,10 +299,10 @@ As a consequence, the Hilbert space can be decomposed into the direct sum of eig
 and once again the Hamiltonian and the spin current are block diagonal in this basis, which each block being
 about \(L\) times smaller than the full Hilbert space.
 The practical construction of the momentum states is more complicated than that of the magnetization states,
- so it has been moved to Appendix~\ref{app:momentum}.
+so it has been moved to Appendix~\ref{app:momentum}.
 Importantly, we also have \(\comm{T}{\Sz_{\mathrm{tot}}}=0\) and thus the two symmetries are compatible.
 Using both of them at the same time, the size of the largest block is reduced to \(\binom{L}{L/2}\frac{1}{L}\), which is
-still exponentially large in \(L\), but much smaller than the full Hilbert space of dimension \(2^L\). 
+still exponentially large in \(L\), but much smaller than the full Hilbert space of dimension \(2^L\).
 
-To end this chapter we note that these two symmetries are not the only ones present in this model. 
+To end this chapter we note that these two symmetries are not the only ones present in this model.
 For a comprehensive treatment of this topic, together with details of numerical implementation, we refer the reader to~\textcite{Sandvik2010}.

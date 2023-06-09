@@ -8,3 +8,12 @@ Lanczos
 groundstate
 Jorda-Wigner
 hoppings
+nearest-neighbour
+Kubo
+Eq
+denisty-density
+Peierls
+magneton
+Wannier
+azimuthal
+adiabatically
