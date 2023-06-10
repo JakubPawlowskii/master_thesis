@@ -65,7 +65,7 @@ Hamiltonian via the hopping integrals. Let us see now how this happens
     \left[\frac{1}{2m}\left( \mathbf{p} - \frac{e}{c} \left( \mathbf{A} - \grad{\lambda } \right)   \right)^2  + V(\mathbf{x} )\right]
     \mathrm{e}^{i e \lambda / c} \phi(\mathbf{x} - \mathbf{R}_{\ell^{\prime}})
 \end{align}
-Note, that the equality denoted with \(\triangleq \) is valid for any differentiable, complex function \(\lambda (\mathbf{x},t)\).
+Note, that the equality denoted with \(\triangleq \) is valid for any differentiable, complex gauge field \(\lambda (\mathbf{x},t)\).
 We choose it to be
 \begin{equation}
     \lambda (\mathbf{x},t) =  \int_{\mathbf{x}_0 }^{\mathbf{x}} \dd{\mathbf{x}^{\prime}} \cdot \mathbf{A}(\mathbf{x}^{\prime},t)
@@ -95,7 +95,7 @@ its nearest-neighbor value by \(t\). Then, we can write the single-particle Hami
 \end{equation}
 Phase appearing in the above expression is precisely the Peierls phase. This is a general result, valid for
 any lattice geometry and in the tight-binding approximation. However, in this thesis we are only interested in a
-one-dimensional, periodic lattice, so let us simplify a bit. We can slightly modify the Peierls phase
+one-dimensional, periodic lattice, so let us simplify a bit. We can slightly modify the gauge field
 and absorb the constant \(\frac{e}{c}\)
 \begin{align}
     \lambda_{\ell,\ell+1}(t) & = \frac{e}{c} \int_{\mathbf{R}_{\ell}}^{\mathbf{R}_{\ell+1}} \dd{\mathbf{x}} \cdot \mathbf{A}(\mathbf{x},t)
@@ -109,7 +109,7 @@ and finally obtain the desired result
     H_1(t) = -t \sum_{ \ell=1}^{L} \mathrm{e}^{i \lambda_{\ell,\ell+1}(t) } c^{\dag}_{\ell}c_{\ell+1} + \mathrm{h.c.}
     \label{eq:peierls_hamiltonian}
 \end{equation}
-Before we return to the original problem, let us see what is the relation of the Peierls phase to the electric field.
+Before we return to the original problem, let us see what is the relation of \(\lambda_{\ell,\ell+1}(t)\)  to the electric field.
 We define the electric field in terms of the 4-potential as
 \begin{equation}
     \mathbf{E}(\mathbf{x},t) = -\grad{\phi(\mathbf{x},t)} - \frac{1}{c} \pdv{\mathbf{A}(\mathbf{x},t)}{t}
@@ -129,10 +129,10 @@ where \(a_0 = 2\pi \frac{R}{L}\) is the lattice constant and \(R\) is the radius
 \section{Linear response of the spin current}
 
 Now, we can return from the fermionic realm back to our spin chain. For the remainder of this section, we set
-the speed of light \(c = 1\). Using new insight from the previous section, we can write our Heisenberg
+the speed of light \(c = 1\). Using new insight from the previous section and following~\textcite{Gohmann2022}, we can write our Heisenberg
 Hamiltonian, with the Peierls phase, as
 \begin{equation}
-    \underbrace{\frac{J}{2} \sum_{\ell=1}^{L} \left(\mathrm{e}^{i \lambda(t)} \Sp_{\ell} \Sm_{\ell+1} + \mathrm{e}^{-i \lambda(t)} \Sm_{\ell}\Sp_{\ell+1} \right)}_{H_{\lambda }(t)}
+    H^{\prime}(t) = \underbrace{\frac{J}{2} \sum_{\ell=1}^{L} \left(\mathrm{e}^{i \lambda(t)} \Sp_{\ell} \Sm_{\ell+1} + \mathrm{e}^{-i \lambda(t)} \Sm_{\ell}\Sp_{\ell+1} \right)}_{H_{\lambda }(t)}
     + \underbrace{J \sum_{\ell=1}^{L} \Sz_{\ell}\Sz_{\ell+1}}_{H_{\text{int}}}
     - h \sum_{\ell=1}^{L} \Sz_{\ell}
 \end{equation}
@@ -149,7 +149,8 @@ is asymptotically constant. In terms of the gauge field, this can be expressed a
 \(\abs{\lambda (t)} \leq \mathrm{e}^{\varepsilon t} \) for \(t\to -\infty \) and
 \(\abs{\lambda (t)} \leq b t \) for \(t\to \infty \), where \(\varepsilon > 0\) and \(b>0\) are some constants.
 Then, in the \( t \to \infty \) limit, we have \[\mathrm{e}^{i (\Re(\omega) t + i \Im(\omega) t )} \lambda (t)
-    \leq \mathrm{e}^{i \Re (\omega) t}  \mathrm{e}^{- \Im (\omega)  t} b t\], whereas in the \(t \to -\infty \) limit,
+    \leq \mathrm{e}^{i \Re (\omega) t}  \mathrm{e}^{- \Im (\omega)  t} b t,\]
+whereas in the \(t \to -\infty \) limit,
 we have \[\mathrm{e}^{i (\Re (\omega) t + i \Im (\omega) t )} \lambda (t) \leq \mathrm{e}^{i \Re (\omega) t}
     \mathrm{e}^{(- \Im (\omega) + \varepsilon )t}\]
 Thus, the Fourier transform of the gauge field exists in the
@@ -161,33 +162,93 @@ current~\eqref{eq:spin_current} and noticing that the gauge field enters the Ham
 the Peierls phase, which is a scalar and commutes with the spin operators. Thus, the current density
 reads
 \begin{equation}
-     \mathcal{J}^{\sigma }_{\ell}(t) = i\frac{J}{2} \left( \mathrm{e}^{i \lambda(t)} \Sp_{\ell} \Sm_{\ell+1} - \mathrm{e}^{-i \lambda(t)} \Sm_{\ell}\Sp_{\ell+1} \right)
+    \mathcal{J}^{\sigma }_{\ell}(t) = i\frac{J}{2} \left( \mathrm{e}^{i \lambda(t)} \Sp_{\ell} \Sm_{\ell+1} - \mathrm{e}^{-i \lambda(t)} \Sm_{\ell}\Sp_{\ell+1} \right)
 \end{equation}
-and the total current is 
+and the total current is
 \begin{equation}
-    \mathcal{J}^{\sigma } (t) = \sum_{\ell=1}^{L} J^{\sigma }_{\ell}(t) = i\frac{J}{2} \sum_{\ell=1}^{L} \left( \mathrm{e}^{i \lambda(t)} \Sp_{\ell} \Sm_{\ell+1} - \mathrm{e}^{-i \lambda(t)} \Sm_{\ell}\Sp_{\ell+1} \right)
+    \mathcal{J}^{\sigma } (t) = \sum_{\ell=1}^{L} J^{\sigma }_{\ell}(t)
+    = i\frac{J}{2} \sum_{\ell=1}^{L} \left( \mathrm{e}^{i \lambda(t)} \Sp_{\ell} \Sm_{\ell+1} - \mathrm{e}^{-i \lambda(t)} \Sm_{\ell}\Sp_{\ell+1} \right)
     \label{eq:total_current}
 \end{equation}
-Here, as in \(H_{\lambda }(t)\), the time argument is an explicit time-dependence, not the Heisenberg picture one.
+Here, as in \(H^{\prime} (t)\), the time argument is an explicit time-dependence, not the Heisenberg picture one.
 Note that we reserve the script \(\mathcal{J}^{\sigma}\) for current including Peierls phase,
 and keep the lowercase \(j^{\sigma }\) for the current without it.
 To apply the reasoning typical for the linear response theory, we need to identify the perturbation
-\(V(t)\), such that our time-dependent Hamiltonian reads is decomposed as \( H + V(t)\).
-However, we will only need this perturbation up to the first order, so let us expand the Hamiltonian into the
+\(V(t)\), such that our time-dependent Hamiltonian reads is decomposed as \(H^{\prime} = H + V(t)\).
+However, we will only need this perturbation up to the first order, so let us expand \(H_{\lambda }(t)\)  into the
 power series in the gauge field \(\lambda(t)\) as
 \begin{align}
-    H_{\lambda }(t) &= \frac{J}{2} \sum_{\ell=1}^{L} \left[\mathrm{e}^{i \lambda(t)} \Sp_{\ell} \Sm_{\ell+1}
-    + \mathrm{e}^{-i \lambda(t)} \Sm_{\ell}\Sp_{\ell+1} \right] \nonumber \\
-    &= \frac{J}{2} \sum_{\ell=1}^{L} \left[\left( 1 + i \lambda (t) + O(\lambda ^2) \right)  \Sp_{\ell} \Sm_{\ell+1}
-    + \left( 1 - i \lambda (t) + O(\lambda ^2) \right) \Sm_{\ell}\Sp_{\ell+1} \right] \nonumber \\
-    &= \frac{J}{2} \sum_{\ell=1}^{L} \left[ \Sp_{\ell} \Sm_{\ell+1} + \Sm_{\ell}\Sp_{\ell+1} \right] + 
+    H_{\lambda }(t) & = \frac{J}{2} \sum_{\ell=1}^{L} \left[\mathrm{e}^{i \lambda(t)} \Sp_{\ell} \Sm_{\ell+1}
+    + \mathrm{e}^{-i \lambda(t)} \Sm_{\ell}\Sp_{\ell+1} \right] \nonumber                                                                             \\
+                    & = \frac{J}{2} \sum_{\ell=1}^{L} \left[\left( 1 + i \lambda (t) + O(\lambda ^2) \right)  \Sp_{\ell} \Sm_{\ell+1}
+    + \left( 1 - i \lambda (t) + O(\lambda ^2) \right) \Sm_{\ell}\Sp_{\ell+1} \right] \nonumber                                                       \\
+                    & = \frac{J}{2} \sum_{\ell=1}^{L} \left[ \Sp_{\ell} \Sm_{\ell+1} + \Sm_{\ell}\Sp_{\ell+1} \right] +
     \frac{i J}{2} \sum_{\ell=1}^{L} \left[ \Sp_{\ell} \Sm_{\ell+1} \lambda (t) - \Sm_{\ell}\Sp_{\ell+1} \lambda (t) \right] + O(\lambda ^2) \nonumber \\
-    &= H_0 + \lambda(t) j^{\sigma } + O(\lambda ^2)
+                    & = H_0 + \lambda(t) j^{\sigma } + O(\lambda ^2)
 \end{align}
+Thus we have \(H^{\prime} = H + \lambda (t) j^{\sigma } + O(\lambda ^2)\) and the perturbation is
+identified as, up to the first order, \(V(t) = \lambda (t) j^{\sigma }\).
 Analogously, we can expand the current operator to obtain
 \begin{equation}
     \mathcal{J}^{\sigma } (t) = j^{\sigma } - \lambda(t) H_0 + O(\lambda ^2)
 \end{equation}
-We have now all the ingredients to proceed with the calculation of linear response.
 
-\textcolor{red}{Wont derive the linear response formula, it would be too long. Cite mahan}
+We have now all the ingredients to proceed with the calculation of linear response.
+From now on, we suppress the explicit time-dependence of the operators, and assume all appearing time
+indices to be related to time evolution. Despite the pedagogical character of this section, we will
+refrain from the full derivation of the Kubo linear response theory, as this would enlarge this long
+appendix even further. Instead, here we will only sketch the idea and present the final formula,
+whereas the interested reader is, as usual, referred to the literature for details~\autocite{Mahan2000,Pottier2014,Gohmann2021}.
+Formal solution of the Schrödinger equation, with the Hamiltonian \(H^{\prime} = H + V\), is given
+by the unitary time evolution operator \(U(t,t_{0})\) which acting on the initial state \(\ket{\psi
+    (t_{0})}\) yields the state at time \(t\), \(\ket{\psi (t)} = U(t,t_{0}) \ket{\psi (t_{0})}\).
+Moreover, it fulfills the equation
+\begin{equation}
+    i \partial_t U(t,t_{0}) = H^{\prime} U(t,t_{0})
+    \label{eq:time_evolution_operator}
+\end{equation}
+Let now \(\rho (t)\) be the density operator at time \(t\).
+We assume that our system, before the perturbation is switched on at time \(t_0\), is in the thermal equilibrium
+thus \(\rho (t<t_0 ) = \rho_0\), where \(\rho_0\) denotes the canonical ensemble density operator,
+\( \rho_0 = \mathrm{e}^{-\beta H_0} / \Tr \mathrm{e}^{-\beta
+    H_0}\), where \(\beta = 1 / k_B T\) is the inverse temperature. Corresponding average will be
+denoted as \(\langle \dots  \rangle_0 \). By expanding the density operator in the time-evolved basis
+of eigenstates of \(H\), the unperturbed Hamiltonian, we obtain
+\begin{align}
+    \rho (t) & = \sum_{n} \frac{\mathrm{e}^{-\beta E_n} }{\Tr \mathrm{e}^{-\beta H_0}} \ketbra{n(t)}{n(t)} = \sum_n \frac{\mathrm{e}^{-\beta E_n}}{\Tr \mathrm{e}^{-\beta H_0}} U(t,t_0) \ketbra{n}{n} U^{\dag}(t,t_0)\nonumber \\
+             & = U(t,t_0) \rho_0 U^{\dag}(t,t_0)
+\end{align}
+The time-dependent average of any operator \(A\) is then
+given using \(\rho (t)\),
+\begin{equation}
+    \langle A \rangle_t = \Tr \left( \rho (t) A \right) = \langle U^{\dag}(t,t_0)  A  U(t,t_0)\rangle_0
+\end{equation}
+where for the last equality we have used the cyclic property of the trace. Core goal of the linear response
+theory is the calculation of the above quantity, up to linear order in the perturbation \(V\).
+The standard approach is to move to the so-called \textbf{interaction picture}, where the time evolution
+given by the unperturbed Hamiltonian is absorbed into the states and the observables, and the time evolution
+operator depends only on the perturbation. It facilitates a systematic way for the perturbative solution
+of the equation~\eqref{eq:time_evolution_operator}, yielding subsequent approximations to the time evolution
+operator. Omitting the details, we present the final result for the time-dependent
+average up to the first order in the perturbation,
+\begin{align}
+    \langle A \rangle_t & = \langle \mathrm{e}^{i H_0 t}  A \mathrm{e}^{-i H_0 t} \rangle_0
+    - i \int_{-\infty }^{t} \mathrm{d}t^{\prime} \langle \comm*{\mathrm{e}^{i H_0 t} A \mathrm{e}^{-i H_0 t}}
+    {\mathrm{e}^{i H_0 t^{\prime} }V\mathrm{e}^{-i H_0 t^{\prime} }} \rangle_0 \nonumber         \\
+                        & = \langle \mathrm{e}^{i H_0 t}  A \mathrm{e}^{-i H_0 t} \rangle_0
+    + \int_{-\infty }^{\infty } \mathrm{d}t^{\prime} \left(-i \theta (t-t^{\prime} ) \langle \comm*{\mathrm{e}^{i H_0 t} A \mathrm{e}^{-i H_0 t}}
+    {\mathrm{e}^{i H_0 t^{\prime} }V\mathrm{e}^{-i H_0 t^{\prime} }} \rangle_0 \right) \nonumber \\
+                        & =\langle \mathrm{e}^{i H_0 t}  A \mathrm{e}^{-i H_0 t} \rangle_0
+    + \int_{-\infty }^{\infty } \mathrm{d}t^{\prime} \left(-i \theta (t-t^{\prime} ) \langle \comm*{\mathrm{e}^{i H_0 (t-t^{\prime} )} A \mathrm{e}^{-i H_0 (t-t^{\prime} )}}
+    {V} \rangle_0 \right)
+    \label{eq:linear_response}
+\end{align}
+known as the \textbf{Kubo formula}. The last equality comes from the fact that
+\(\Tr(A(t)B(t^{\prime} )) = \Tr(A(t-t^{\prime} )B)\), which is a consequence of the cyclic property of the trace. 
+We also assume that the perturbation is turned adiabatically,
+starting from the infinite past, i.e. \(t_0 \to -\infty \). What is interesting about the above formula, is that
+it does not require the knowledge of neither full evolution operator \(U(t,t_0)\) nor the evolution operator
+generated by the perturbation.
+
+Let us now take the current operator \(\mathcal{J}^{\sigma }\) as the observable \(A\), and
+the perturbation \(V = \lambda j^{\sigma } + O(\lambda^2)\), remembering that \(\lambda \) is still time-dependent.
