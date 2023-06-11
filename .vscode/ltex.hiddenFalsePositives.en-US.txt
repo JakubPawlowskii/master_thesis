@@ -1,0 +1,4 @@
+{"rule":"ORDER","sentence":"^\\QThe first order of this expansion also goes under the name of the Born approximation.\\E$"}
+{"rule":"ORDER","sentence":"^\\QOmitting the details, we present the final result for the time-dependent average up to the first order in the perturbation, \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q known as the Kubo formula.\\E$"}
+{"rule":"WORD_CONTAINS_UNDERSCORE","sentence":"^\\QOmitting the details, we have _0 = A _0 + _- ^ dt^ (-i (t-t^ ) A_H(t) e^i H_0 t^ Ve^-i H_0 t^ _0 ) = e^i H_0 t A e^-i H_0 t _0 + _- ^ dt^ (-i (t-t^ ) e^i H_0 (t-t^ ) A e^-i H_0 (t-t^ ) V _0 ) \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q This equation is known as the Kubo formula.\\E$"}
+{"rule":"FREQUENCY","sentence":"^\\QMost transport experiments measure quantities in the frequency domain,\\E$"}
