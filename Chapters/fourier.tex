@@ -3,7 +3,7 @@
 The goal of this appending is the calculation of two Fourier transforms, which appear in the main text.
 They originate from the definition of finite-time averaging~\eqref{eq:finite_time_avg} and
 the integrated spectral function~\eqref{eq:integrated_spectral}. Let us begin with the latter one,
-as it is simpler. We have
+as it is simpler. We have, starting from the left-hand side of~\eqref{eq:fourier_corr}
 \begin{align}
     \mathcal{F}\left[\hs{A(t)}{B}\right] & = \lim _{\varepsilon \to 0^+} \frac{1}{2 \pi} \int_{-\infty}^{\infty} \mathrm{d} t
     \; e^{i \omega t-|t| \varepsilon}\hs{A(t)}{B} = \lim _{\varepsilon \to 0^+} \frac{1}{2 \pi}
@@ -40,7 +40,7 @@ Let us massage it a bit further, by calculating the integral \(\mathcal{I}\) exp
     =\lim _{\varepsilon \to 0^+} \frac{2\varepsilon}{(\epsilon_m-\epsilon_n+\omega)^2 +\varepsilon^2}
 \end{align}
 The obtained result is a limit of the so-called Poisson kernel. This happens to be
-a representation of Dirac \(\delta\) in the form of a limit of a sequence of functions~\autocite{byron1992mathematics}
+a representation of Dirac \(\delta\) in the form of a limit of a sequence of functions~\autocite{Byron1992}
 \begin{equation}
     \lim _{\varepsilon \to 0^+} \frac{1}{\pi} \frac{\varepsilon}{x^2 +\varepsilon^2} = \delta(x)
 \end{equation}
@@ -57,3 +57,67 @@ Inserting this result into equation~\eqref{eq:spectral function simplified} we a
     =                                    & \frac{1}{\dimension}\sum_{n,m} A_{mn} B_{nm} \delta(\epsilon_m-\epsilon_n+\Omega)
 \end{align}
 which is our desired results.
+
+Now, let us tackle the more difficult integral, necessary to show, that Eq.~\eqref{eq:finite_time_avg_integral}
+and Eq~\eqref{eq:finite_time_avg} are equivalent. We start the usual way, by passing to spectral representation
+of the observable \(A\)
+\begin{equation}
+    \bar{A}^{\tau} = \int_{-\infty}^{\infty} \mathrm{d}t A(t) \frac{\sin (t/\tau )}{\pi t}
+    = \sum_{n,m}  \matrixel{n}{A}{m} \ketbra{n}{m} \frac{1}{\pi } \int_{-\infty}^{\infty} \mathrm{d}t\;
+    \mathrm{e}^{i (E_n-E_m) t} \frac{\sin (t/\tau )}{t}
+\end{equation}
+where \(H\ket{n} = E_n \ket{n}\) is the eigenbasis of our Hamiltonian. Our problem reduces to calculating
+the integral
+\begin{equation}
+    I =\mathcal{F}\left[ \frac{\sin (\alpha t)}{t} \right]=  \int_{-\infty}^{\infty} \mathrm{d}t\; \mathrm{e}^{i \omega  t} \frac{\sin (\alpha  t )}{t}
+\end{equation}
+where \(\alpha = 1/\tau\) and \(\omega = E_n-E_m\), which can be recognized as a Fourier transform of
+\(\sin (\alpha  t )/t\). Here is where things become a bit subtle. The Fourier transform is traditionally
+defined on functions belonging to the space \(L^1 \equiv L^1(\RR)\) of Lebesgue-measurable, \textbf{integrable
+    functions}~\autocite{Rudin1987}, that is
+\begin{equation}
+    L^1 = \left\{f:\RR \to \CC \mid \int_{-\infty}^{\infty} \mathrm{d}x \; |f(x)| < \infty \right\}
+\end{equation}
+It is a member of a larger family of spaces \(L^p,\; p \in \left[ 1,\infty  \right] \), defined as
+\begin{equation}
+    L^p = \left\{f:\RR \to \CC \mid \int_{-\infty}^{\infty} \mathrm{d}x \; |f(x)|^p < \infty \right\}
+\end{equation}
+thus guaranteeing the existence of respective \(L^p\) norms \(\Vert f \Vert_p = \left(\int_{-\infty}^{\infty} \mathrm{d}x \; |f(x)|^p \right)^{1/p}\).
+Unfortunately, the function \(\sin (x)/x\) is not in \(L^1\). To see it, note that
+\(\int_{-\infty}^{\infty} \mathrm{d}x\; \vert \sin (x)/x \vert = 2 \int_{0}^{\infty} \mathrm{d}x \vert \sin (x)/x \vert  \)
+and consider the following
+\begin{align*}
+    \int_{\pi}^{(N+1)\pi}\mathrm{d}x\;  \left|\frac{\sin x}x\right| & =\sum_{k=1}^N\int_{k\pi}^{(k+1)\pi}\mathrm{d}x \;\left|\frac{\sin x}x\right|
+    =\sum_{k=1}^N\int_0^{\pi}\mathrm{d}t \;\frac{|\sin(t+k\pi)|}{t+k\pi}
+    =\sum_{k=1}^N\int_0^{\pi}\mathrm{d}t \;\frac{|\sin t|}{t+k\pi}                                                                                 \\\
+                                                                    & \geq \sum_{k=1}^N\frac 1{(k+1)\pi}\int_0^{\pi}\mathrm{d}t\;  \sin t
+    =\frac 2{\pi}\sum_{k=1}^N\frac 1{k+1},
+\end{align*}
+Thus, the integral is bounded from below by the harmonic series, which diverges.
+Now, the question is whether we can somehow make sesne of the integral \(I\).
+It turns out, that
+even though the function is not integrable, it is \textbf{square integrable} --- that is, it belongs to the
+space \(L^2 \equiv L^2(\RR)\)
+which can be seen by noting that
+\begin{equation}
+    \int_{-\infty }^{\infty} \mathrm{d}x \; \left|\frac{\sin x}x\right|^2  =
+    2\left[ \int_{0}^{1} \mathrm{d}x \; \frac{\sin^2(x)}{x^2} + \int_{1}^{\infty } \mathrm{d}x \; \frac{\sin^2(x)}{x^2}   \right]
+\end{equation}
+and that the first integral is finite, while the second one is bounded from above by \(\int_{1}^{\infty}\mathrm{d}x\;  1/x^2 = 1\).
+The space \(L^2\) is unique among all the \(L^p\) --- it is the only \textit{Hilbert space},
+where the norm \(\Vert \cdot \Vert_p \) is induced by an inner product
+\begin{equation}
+    L^2 \cross L^2 \ni (f,g) \to \langle f,g \rangle = \int_{-\infty}^{\infty} \mathrm{d}x \; f(x)g^*(x) \in \CC
+\end{equation}
+\(g^*\) being the complex conjugate of \(g\). We are going to work out an extenstion of the Fourier transform
+to the space \(L^2\), using a classic \textbf{density argument}. To this end, we need the following theorem
+\begin{theorem}[Parseval-Plancherel]
+
+        Let \(f,g \in L^1 \cap L^2\), and let \(\hat{f},\hat{g}\) be respective Fourier transforms. Then
+    \begin{equation*}
+        \langle f,g \rangle = \frac{1}{2\pi }\langle \hat{f} ,\hat{g}  \rangle  
+    \end{equation*}
+\end{theorem}
+The proof on this theorem is not difficult, but it would require us to introduce some new notions and deviate
+too much from the scope of this thesis. Thus, we shall take it for granted and the reader is encouraged to
+look it up in any textbook on Fourier analysis~\autocite{Rudin1987,Stein2011}. 
