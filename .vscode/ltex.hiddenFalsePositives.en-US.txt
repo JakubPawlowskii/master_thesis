@@ -4,3 +4,5 @@
 {"rule":"FREQUENCY","sentence":"^\\QMost transport experiments measure quantities in the frequency domain,\\E$"}
 {"rule":"PASSIVE_VOICE","sentence":"^\\QThe Fourier transform is traditionally defined on function belonging to the space \\E(?:Dummy|Ina|Jimmy-)[0-9]+$"}
 {"rule":"PASSIVE_VOICE","sentence":"^\\QTo see it, note that \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q and consider the following \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q, Thus, the integral is bounded from below by the harmonic series, which diverges.\\E$"}
+{"rule":"PASSIVE_VOICE","sentence":"^\\QThus, we shall take it for granted and the reader is encouraged to look it up in any textbook on Fourier analysis \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
+{"rule":"EXPONENT","sentence":"^\\QWe have, starting from the left-hand side of \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q The \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q part in the exponent is a trick to make the integral converge, without assuming anything about the behavior of the correlation function at infinity.\\E$"}

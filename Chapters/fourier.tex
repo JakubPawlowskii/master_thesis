@@ -2,7 +2,10 @@
 \thispagestyle{chapterBeginStyle}
 The goal of this appending is the calculation of two Fourier transforms, which appear in the main text.
 They originate from the definition of finite-time averaging~\eqref{eq:finite_time_avg} and
-the integrated spectral function~\eqref{eq:integrated_spectral}. Let us begin with the latter one,
+the integrated spectral function~\eqref{eq:integrated_spectral}. 
+
+\section{Fourier transform of the correlation function}
+Let us begin with the latter one,
 as it is simpler. We have, starting from the left-hand side of~\eqref{eq:fourier_corr}
 \begin{align}
     \mathcal{F}\left[\hs{A(t)}{B}\right] & = \lim _{\varepsilon \to 0^+} \frac{1}{2 \pi} \int_{-\infty}^{\infty} \mathrm{d} t
@@ -23,6 +26,8 @@ as it is simpler. We have, starting from the left-hand side of~\eqref{eq:fourier
         \to 0^+} \int_{-\infty}^{\infty} \mathrm{d} t \; e^{i \omega t-|t|
             \varepsilon}e^{i (\epsilon_m-\epsilon_n) t}}_{\mathcal{I}}\label{eq:spectral function simplified}
 \end{align}
+The \(\varepsilon \) part in the exponent is a trick to make the integral converge, without assuming anything
+about the behavior of the correlation function at infinity.
 Let us massage it a bit further, by calculating the integral \(\mathcal{I}\) explicitly.
 \begin{align}
     \mathcal{I} & = \lim _{\varepsilon \to 0^+} \int_{-\infty}^{\infty} \mathrm{d} t \;
@@ -58,6 +63,7 @@ Inserting this result into equation~\eqref{eq:spectral function simplified} we a
 \end{align}
 which is our desired results.
 
+\section{Extension of Fourier transform to \(L^2(\RR)\) and the Fourier transform of \(\frac{sin(x)}{x}\)}
 Now, let us tackle the more difficult integral, necessary to show, that Eq.~\eqref{eq:finite_time_avg_integral}
 and Eq~\eqref{eq:finite_time_avg} are equivalent. We start the usual way, by passing to spectral representation
 of the observable \(A\)
@@ -78,7 +84,7 @@ defined on functions belonging to the space \(L^1 \equiv L^1(\RR)\) of Lebesgue-
 \begin{equation}
     L^1 = \left\{f:\RR \to \CC \mid \int_{-\infty}^{\infty} \mathrm{d}x \; |f(x)| < \infty \right\}
 \end{equation}
-It is a member of a larger family of spaces \(L^p,\; p \in \left[ 1,\infty  \right] \), defined as
+It is a member of a larger family of spaces \(L^p \equiv L^p(\RR),\; p \in \left[ 1,\infty  \right] \), defined as
 \begin{equation}
     L^p = \left\{f:\RR \to \CC \mid \int_{-\infty}^{\infty} \mathrm{d}x \; |f(x)|^p < \infty \right\}
 \end{equation}
@@ -97,7 +103,7 @@ Thus, the integral is bounded from below by the harmonic series, which diverges.
 Now, the question is whether we can somehow make sesne of the integral \(I\).
 It turns out, that
 even though the function is not integrable, it is \textbf{square integrable} --- that is, it belongs to the
-space \(L^2 \equiv L^2(\RR)\)
+space \(L^2\)
 which can be seen by noting that
 \begin{equation}
     \int_{-\infty }^{\infty} \mathrm{d}x \; \left|\frac{\sin x}x\right|^2  =
@@ -113,11 +119,64 @@ where the norm \(\Vert \cdot \Vert_p \) is induced by an inner product
 to the space \(L^2\), using a classic \textbf{density argument}. To this end, we need the following theorem
 \begin{theorem}[Parseval-Plancherel]
 
-        Let \(f,g \in L^1 \cap L^2\), and let \(\hat{f},\hat{g}\) be respective Fourier transforms. Then
+    Let \(f,g \in L^1 \cap L^2\), and let \(\hat{f},\hat{g}\) be respective Fourier transforms. Then
     \begin{equation*}
-        \langle f,g \rangle = \frac{1}{2\pi }\langle \hat{f} ,\hat{g}  \rangle  
+        \langle f,g \rangle = \frac{1}{2\pi }\langle \hat{f} ,\hat{g}  \rangle  \; .
     \end{equation*}
 \end{theorem}
 The proof on this theorem is not difficult, but it would require us to introduce some new notions and deviate
 too much from the scope of this thesis. Thus, we shall take it for granted and the reader is encouraged to
-look it up in any textbook on Fourier analysis~\autocite{Rudin1987,Stein2011}. 
+look it up in any textbook on Fourier analysis~\autocite{Rudin1987,Stein2011}. Now, we are ready for
+\begin{theorem}
+    \(L^1 \cap L^2\) is a dense subset of \(L^2\).
+\end{theorem}
+\begin{proof}
+    We need to show, that for any \(f \in L^2\), there exists a sequence \(\{f_n\}_{n=1}^{\infty}\) of functions
+    in \(L^1 \cap L^2\) such that \(\lim_{n \to \infty} \Vert f_n - f \Vert_2 = 0\). So let us take an arbitrary
+    function \(f \in L^2\) and define a sequence of functions \(\{f_n\}_{n=1}^{\infty}\) as follows
+    \begin{equation*}
+        f_n(t) = \mathbb{1}_{[-n,n]}(t)f(t)
+    \end{equation*}
+    where \(\mathbb{1}_{[-n,n]}\) is the indicator function of the interval \([-n,n]\). Obviously, \(f_n \in L^2\)
+    as \(\lVert f_n \rVert_2 \leq \lVert f \rVert_2 \leq \infty \).  We need to show that for every
+    \(n \in \NN\setminus \left\{ 0 \right\}  \), \(f_n \in L^1\). Indeed, we have
+    \begin{equation*}
+        \lVert f_n \rVert_1 = \lVert \mathbb{1}_{[-n,n]}f \rVert_1 \leq \lVert \mathbb{1}_{[-n,n]} \rVert_2 \lVert f \rVert_2
+        = \sqrt{2n} \lVert f \rVert_2 < \infty
+    \end{equation*}
+    where the first inequality above is an application of the Hölder's inequality. As \(\hat{f} \in L^1\cap L^2\)
+    Thus, \(f_n \in L^1 \cap L^2\) as required. Now, we need to show that \(\lim_{n \to \infty} \lVert f_n - f \rVert_2 = 0\).
+    Notice, that for every \(t\in\RR\), the pointwise convergence in \(\RR\)  holds
+    \begin{equation*}
+         \lim_{n \to  \infty} \vert  f(t)-f_n(t) \vert=0,                                           \\
+    \end{equation*}
+    Also, we can dominate this sequence of real numbers by
+    \begin{equation*}
+        \left|f(t)-f_n(t)\right|^2 \leq 2\left(|f(t)|^2+\left|f_n(t)\right|^2\right) \leq 4|f(t)|^2
+    \end{equation*}
+    and \(4|f|^2 \in L^1(\mathbb{R})\), so it is Lebesgue-integrable and by the Lebesgue Dominated Convergence Theorem,
+    \begin{equation*}
+        \lim_{n \to \infty}\left\|f-f_n\right\|_2^2=\lim_{n \to  \infty} \int_{-\infty}^{\infty}\left|f(t)-f_n(t)\right|^2 \mathrm{d}t =\int_{-\infty}^{\infty}\left(\lim_{n \to  \infty}\left|f(t)-f_n(t)\right|^2\right) \mathrm{d}t =0
+    \end{equation*}
+\end{proof}
+Let \(\hat{f}_n\) be the Fourier transform of \(f_n\). By the Parseval-Plancherel theorem, \(\lVert \hat{f}_n \rVert_2^2 = 2\pi \lVert f_n \rVert_2^2 \leq \infty  \),
+so \(\{\hat{f}_n\}_{n=1}^{\infty }\) is a sequence of functions in \(L^2\). 
+Let us now take \(n \geq m\) and consider
+\begin{align*}
+    \frac{1}{2\pi }\lVert \hat{f} _n - \hat{f} _m \rVert _2 &= \lVert f_n - f_m \rVert_2^2 = \lVert ( \mathbb{1}_{[-n,n]} - \mathbb{1}_{[-m,m]} ) f \rVert_2^2 
+    = \lVert ( \mathbb{1}_{[-n,-m]} + \mathbb{1}_{[m,n]} ) f \rVert_2^2 \\
+    &\leq \lVert \mathbb{1}_{[-n,-m]} f \rVert_2 + \lVert \mathbb{1}_{[m,n]} f \rVert_2
+    \leq \lVert \mathbb{1}_{[-\infty ,-m]} f \rVert_2 + \lVert \mathbb{1}_{[m,\infty ]} f \rVert_2 \xrightarrow[m\to \infty ]{} 0
+\end{align*}
+where the first equality is again due to the Parseval-Plancherel theorem.
+Thus, \(\{\hat{f} _n\}_{n=1}^{\infty}\) is a Cauchy sequence in \(L^2\), and since \(L^2\) is complete, it converges to some
+function \(\hat{f} \in L^2\). We now \textbf{define} the Fourier transform of \(f\in L^2\) as the limit of this sequence,
+i.e.
+\begin{equation}
+    \hat{f} \equiv  \lim_{n \to \infty} \hat{f} _n = \lim_{n \to \infty} \int_{-\infty}^{\infty} f_n(t) e^{-itx} \mathrm{d}t
+\end{equation}  
+It is no longer an ordinary Lebesgue integral, but an \(L^2\)-limit of improper Riemann integrals. Of course, in case
+of Lebesgue integrable functions, the two definitions coincide. 
+
+All this work was to convince ourselves that it actually \textit{makes sense} to talk about the Fourier transform of
+\(\sin (x)/x\), which is not Lebesgue integrable. Now, with clear conscience, we can calculate it.
