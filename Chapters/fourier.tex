@@ -71,6 +71,7 @@ of the observable \(A\)
     \bar{A}^{\tau} = \int_{-\infty}^{\infty} \mathrm{d}t A(t) \frac{\sin (t/\tau )}{\pi t}
     = \sum_{n,m}  \matrixel{n}{A}{m} \ketbra{n}{m} \frac{1}{\pi } \int_{-\infty}^{\infty} \mathrm{d}t\;
     \mathrm{e}^{i (E_n-E_m) t} \frac{\sin (t/\tau )}{t}
+    \label{eq:b1}
 \end{equation}
 where \(H\ket{n} = E_n \ket{n}\) is the eigenbasis of our Hamiltonian. Our problem reduces to calculating
 the integral
@@ -221,7 +222,52 @@ by the Cauchy-Goursat theorem, since the integrand is holomorphic in the interio
     \psi _n(\eta ) = \frac{1}{2i} \int_{\Gamma_n} \frac{e^{i \eta z}}{z}\; \mathrm{d}z = \frac{1}{2i} \int_{-\Gamma_n^L} \frac{e^{i \eta z}}{z}\; \mathrm{d}z
 \end{equation}
 where \(-\Gamma_n^L\) is the same contour as \(\Gamma_n^L\), but traversed in the opposite direction. We can parametrize
-\(\Gamma _n^L\) as \(z = n \mathrm{e}^{i \varphi },\; \varphi  \in \left[ -\pi , 0 \right]  \) and calculate the integral
+\(\Gamma _n^L\) as \(z = n \mathrm{e}^{i \varphi },\; \varphi  \in \left[ -\pi , 0 \right]  \) and the integral becomes
 \begin{align}
-    \psi _n(\eta ) &= 
+    \psi _n(\eta ) &= \frac{1}{2\cancel{i}} \int_{-\pi }^{0} \frac{\exp(i \eta  n \mathrm{e}^{i \varphi }) } {\cancel{n \mathrm{e^{i \varphi }}} }
+    \cancel{i n \mathrm{e}^{i \varphi }}  \,\mathrm{d}\varphi = \frac{1}{2}\int_{-\pi }^{0} \exp (i \eta  n \mathrm{e}^{i \varphi } )  \,\mathrm{d}\varphi \nonumber\\
+    &\leq \frac{1}{2} \max_{-\pi \leq \varphi \leq 0 }\abs{\exp (i \eta  n \mathrm{e}^{i \varphi } ) } \underbrace{2 \pi  n}_{\mathclap{\text{Length of }\Gamma_n^L }}
+    = \pi  n \max_{-\pi \leq \varphi \leq 0}\left\vert \exp(-n \eta \sin (\varphi )) \right\vert \nonumber\\
+    &\leq \pi  n \left\vert \exp (n \eta ) \right\vert \xrightarrow{n\to \infty } 0,\; \text{if } \eta  < 0 
+\end{align} 
+
+Now it is clear why two different contours are necessary, as the above argument fails for \(\eta \geq 0\). 
+We can easily salvage the trivial case \(\eta = 0\), as it is just \(\psi_n(0) = 1/2 \int_{-\pi }^{0} \mathrm{d} \varphi = \pi /2\),
+but for the case \(\eta  > 0\), we need the second contour \(\Gamma _n^U\).
+
+Inside the contour \(\Gamma _n + \Gamma_n^U\), our function \(\mathrm{e}^{i \eta z}/z \) is meromorphic, with 
+a pole at \(z=0\).  By the Residue theorem~\autocite{Byron1992, Rudin1987},
+\begin{equation}
+    \int_{\Gamma _n+\Gamma _n^U} \frac{\mathrm{e}^{i \eta z} }{z}\,\mathrm{d}z = 2 \pi  i\; \mathrm{Res} \left( \frac{\mathrm{e}^{i \eta z}}{z}, 0 \right)
+\end{equation}
+and the residue can be easily calculated as \(\mathrm{Res} \left( \mathrm{e}^{i \eta z}/z, 0 \right) = 
+\lim_{z \to 0} z \frac{\mathrm{e}^{i \eta z}}{z} = 1\). Thus,
+\begin{equation}
+    \psi_n(\eta ) = \frac{1}{2i}\int_{\Gamma _n} \frac{\mathrm{e}^{i \eta  z} }{z} \,\mathrm{d}z = \pi - \frac{1}{2i} \int_{\Gamma _n^U} \frac{\mathrm{e}^{i \eta z}}{z}\,\mathrm{d}z 
+\end{equation}
+We now play the same game as before, parametrizing \(\Gamma _n^U\) as \(z = n \mathrm{e}^{i \varphi },\; \varphi  \in \left[ 0, \pi  \right]  \), and
+bounding the integral from above. But this time, we have
+\begin{align}
+    \frac{1}{2i} \int_{\Gamma _n^U} \frac{\mathrm{e}^{i \eta z}}{z}\,\mathrm{d}z &= \frac{1}{2i} \int_{0}^{\pi } \exp({i \eta n \mathrm{e}^{i \varphi } }) \,\mathrm{d}\varphi 
+    \leq \frac{1}{2} \max_{0 \leq \varphi \leq \pi } \abs{\exp ( i \eta n \mathrm{e}^{i \varphi } ) } \underbrace{2 \pi  n}_{\mathclap{\text{Length of }\Gamma _n^U}} \nonumber\\
+    &= \pi  n \max_{0 \leq \varphi \leq \pi } \left\vert \exp (-n \eta \sin (\varphi )) \right\vert \leq \pi  n \left\vert \exp (-n \eta ) \right\vert \xrightarrow{n\to \infty } 0, \; \text{if } \eta  > 0
 \end{align}
+Summarizing, the in the limit \(n \to \infty \), we obtain
+\begin{equation}
+    \lim_{n \to \infty}  \psi _n(\eta ) = \begin{cases}
+        \pi & \text{if} \eta > 0 \\
+        \pi /2 & \text{if } \eta  = 0 \\
+        0 & \text{if } \eta  < 0
+    \end{cases}
+    = \pi \theta (\eta )
+\end{equation} 
+where \(\theta (\eta )\) is the Heaviside step function and we define \(\theta (0) = 1/2\).  Finally, we get
+\begin{align}
+    \lim_{n \to \infty} I_n(\omega ) &= \lim_{n \to \infty} \psi _n(\alpha + \omega ) - \lim_{n \to \infty} \psi _n(-\alpha +\omega )\nonumber\\
+    &= \pi \left[ \theta (\alpha +\omega ) - \theta(-\alpha +\omega ) \right] = \pi \theta (\alpha - \vert \omega  \vert )
+\end{align}
+Substituting this result into \eqref{eq:b1}, we arrive at the final expression
+\begin{equation}
+    \bar{A}^{\tau } = \sum_{n,m} \theta \left( \frac{1}{\tau }- \left\vert E_n - E_m \right\vert  \right)   \matrixel{n}{A}{m} \ketbra{n}{m}
+\end{equation}
+which is precisely Eq.~\eqref{eq:finite_time_avg}.
