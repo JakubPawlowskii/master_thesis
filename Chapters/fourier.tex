@@ -63,7 +63,7 @@ Inserting this result into equation~\eqref{eq:spectral function simplified} we a
 \end{align}
 which is our desired results.
 
-\section{Extension of Fourier transform to \(L^2(\RR)\) and the Fourier transform of \(\frac{sin(x)}{x}\)}
+\section{Extension of Fourier transform to \(L^2(\RR)\) and the Fourier transform of \(\frac{\sin(x)}{x}\)}
 Now, let us tackle the more difficult integral, necessary to show, that Eq.~\eqref{eq:finite_time_avg_integral}
 and Eq~\eqref{eq:finite_time_avg} are equivalent. We start the usual way, by passing to spectral representation
 of the observable \(A\)
@@ -82,21 +82,21 @@ where \(\alpha = 1/\tau\) and \(\omega = E_n-E_m\), which can be recognized as a
 defined on functions belonging to the space \(L^1 \equiv L^1(\RR)\) of Lebesgue-measurable, \textbf{integrable
     functions}~\autocite{Rudin1987}, that is
 \begin{equation}
-    L^1 = \left\{f:\RR \to \CC \mid \int_{-\infty}^{\infty} \mathrm{d}x \; |f(x)| < \infty \right\}
+    L^1 = \left\{f:\RR \to \CC \mid \int_{-\infty}^{\infty} \mathrm{d}t \; |f(t)| < \infty \right\}
 \end{equation}
 It is a member of a larger family of spaces \(L^p \equiv L^p(\RR),\; p \in \left[ 1,\infty  \right] \), defined as
 \begin{equation}
-    L^p = \left\{f:\RR \to \CC \mid \int_{-\infty}^{\infty} \mathrm{d}x \; |f(x)|^p < \infty \right\}
+    L^p = \left\{f:\RR \to \CC \mid \int_{-\infty}^{\infty} \mathrm{d}t \; |f(t)|^p < \infty \right\}
 \end{equation}
-thus guaranteeing the existence of respective \(L^p\) norms \(\Vert f \Vert_p = \left(\int_{-\infty}^{\infty} \mathrm{d}x \; |f(x)|^p \right)^{1/p}\).
-Unfortunately, the function \(\sin (x)/x\) is not in \(L^1\). To see it, note that
-\(\int_{-\infty}^{\infty} \mathrm{d}x\; \vert \sin (x)/x \vert = 2 \int_{0}^{\infty} \mathrm{d}x \vert \sin (x)/x \vert  \)
+thus guaranteeing the existence of respective \(L^p\) norms \(\Vert f \Vert_p = \left(\int_{-\infty}^{\infty} \mathrm{t}x \; |f(t)|^p \right)^{1/p}\).
+Unfortunately, the function \(\sin (t)/t\) is not in \(L^1\). To see it, note that
+\(\int_{-\infty}^{\infty} \mathrm{d}t\; \vert \sin (t)/t \vert = 2 \int_{0}^{\infty} \mathrm{d}t \vert \sin (t)/t \vert  \)
 and consider the following
 \begin{align*}
-    \int_{\pi}^{(N+1)\pi}\mathrm{d}x\;  \left|\frac{\sin x}x\right| & =\sum_{k=1}^N\int_{k\pi}^{(k+1)\pi}\mathrm{d}x \;\left|\frac{\sin x}x\right|
-    =\sum_{k=1}^N\int_0^{\pi}\mathrm{d}t \;\frac{|\sin(t+k\pi)|}{t+k\pi}
-    =\sum_{k=1}^N\int_0^{\pi}\mathrm{d}t \;\frac{|\sin t|}{t+k\pi}                                                                                 \\\
-                                                                    & \geq \sum_{k=1}^N\frac 1{(k+1)\pi}\int_0^{\pi}\mathrm{d}t\;  \sin t
+    \int_{\pi}^{(N+1)\pi}\mathrm{d}t\;  \left|\frac{\sin t}{t}\right| & =\sum_{k=1}^N\int_{k\pi}^{(k+1)\pi}\mathrm{d}t \;\left|\frac{\sin t}t\right|
+    =\sum_{k=1}^N\int_0^{\pi}\mathrm{d}t^{\prime}  \;\frac{|\sin(t^{\prime} +k\pi)|}{t^{\prime} +k\pi}
+    =\sum_{k=1}^N\int_0^{\pi}\mathrm{d}t^{\prime}  \;\frac{|\sin t^{\prime} |}{t^{\prime} +k\pi}                                                                                 \\\
+                                                                    & \geq \sum_{k=1}^N\frac 1{(k+1)\pi}\int_0^{\pi}\mathrm{d}t^{\prime} \;  \sin t^{\prime} 
     =\frac 2{\pi}\sum_{k=1}^N\frac 1{k+1},
 \end{align*}
 Thus, the integral is bounded from below by the harmonic series, which diverges.
@@ -106,16 +106,16 @@ even though the function is not integrable, it is \textbf{square integrable} ---
 space \(L^2\)
 which can be seen by noting that
 \begin{equation}
-    \int_{-\infty }^{\infty} \mathrm{d}x \; \left|\frac{\sin x}x\right|^2  =
-    2\left[ \int_{0}^{1} \mathrm{d}x \; \frac{\sin^2(x)}{x^2} + \int_{1}^{\infty } \mathrm{d}x \; \frac{\sin^2(x)}{x^2}   \right]
+    \int_{-\infty }^{\infty} \mathrm{d}t \; \left|\frac{\sin t}t\right|^2  =
+    2\left[ \int_{0}^{1} \mathrm{d}t \; \frac{\sin^2(t)}{t^2} + \int_{1}^{\infty } \mathrm{d}t \; \frac{\sin^2(t)}{t^2}   \right]
 \end{equation}
-and that the first integral is finite, while the second one is bounded from above by \(\int_{1}^{\infty}\mathrm{d}x\;  1/x^2 = 1\).
+and that the first integral is finite, while the second one is bounded from above by \(\int_{1}^{\infty}\mathrm{d}t\;  1/t^2 = 1\).
 The space \(L^2\) is unique among all the \(L^p\) --- it is the only \textit{Hilbert space},
 where the norm \(\Vert \cdot \Vert_p \) is induced by an inner product
 \begin{equation}
-    L^2 \cross L^2 \ni (f,g) \to \langle f,g \rangle = \int_{-\infty}^{\infty} \mathrm{d}x \; f(x)g^*(x) \in \CC
+    L^2 \cross L^2 \ni (f,g) \to \langle f,g \rangle = \int_{-\infty}^{\infty} \mathrm{d}t \; f(t)g^*(t) \in \CC
 \end{equation}
-\(g^*\) being the complex conjugate of \(g\). We are going to work out an extenstion of the Fourier transform
+\(g^*\) being the complex conjugate of \(g\). We are going to work out an extension of the Fourier transform
 to the space \(L^2\), using a classic \textbf{density argument}. To this end, we need the following theorem
 \begin{theorem}[Parseval-Plancherel]
 
@@ -166,17 +166,62 @@ Let us now take \(n \geq m\) and consider
     \frac{1}{2\pi }\lVert \hat{f} _n - \hat{f} _m \rVert _2 &= \lVert f_n - f_m \rVert_2^2 = \lVert ( \mathbb{1}_{[-n,n]} - \mathbb{1}_{[-m,m]} ) f \rVert_2^2 
     = \lVert ( \mathbb{1}_{[-n,-m]} + \mathbb{1}_{[m,n]} ) f \rVert_2^2 \\
     &\leq \lVert \mathbb{1}_{[-n,-m]} f \rVert_2 + \lVert \mathbb{1}_{[m,n]} f \rVert_2
-    \leq \lVert \mathbb{1}_{[-\infty ,-m]} f \rVert_2 + \lVert \mathbb{1}_{[m,\infty ]} f \rVert_2 \xrightarrow[m\to \infty ]{} 0
+    \leq \lVert \mathbb{1}_{(-\infty ,-m]} f \rVert_2 + \lVert \mathbb{1}_{[m,\infty )} f \rVert_2 \xrightarrow[m\to \infty ]{} 0
 \end{align*}
 where the first equality is again due to the Parseval-Plancherel theorem.
 Thus, \(\{\hat{f} _n\}_{n=1}^{\infty}\) is a Cauchy sequence in \(L^2\), and since \(L^2\) is complete, it converges to some
 function \(\hat{f} \in L^2\). We now \textbf{define} the Fourier transform of \(f\in L^2\) as the limit of this sequence,
 i.e.
 \begin{equation}
-    \hat{f} \equiv  \lim_{n \to \infty} \hat{f} _n = \lim_{n \to \infty} \int_{-\infty}^{\infty} f_n(t) e^{-itx} \mathrm{d}t
+    \hat{f} \equiv  \lim_{n \to \infty} \hat{f} _n = \lim_{n \to \infty} \int_{-\infty}^{\infty} f_n(t) e^{i \omega t} \mathrm{d}t
 \end{equation}  
 It is no longer an ordinary Lebesgue integral, but an \(L^2\)-limit of improper Riemann integrals. Of course, in case
 of Lebesgue integrable functions, the two definitions coincide. 
 
 All this work was to convince ourselves that it actually \textit{makes sense} to talk about the Fourier transform of
 \(\sin (x)/x\), which is not Lebesgue integrable. Now, with clear conscience, we can calculate it.
+Our task at hand is to calculate the integral 
+
+\begin{equation}
+    \lim_{n \to \infty} \underbrace{\int_{-n}^{n} \frac{\sin (\alpha t)}{t} \mathrm{e}^{i \omega  t} \,\mathrm{d}t}_{I_n(\omega )}
+\end{equation}
+
+Consider the above integrand, but as a function of the complex variable \(z\). Since \(\mathrm{e}^{i \omega  z}  \sin (\alpha z)/z\)
+is an entire function, we can apply the Cauchy-Goursat theorem~\autocite{Byron1992} and deform the integration path.
+Instead of integrating over a real interval \([-n,n]\), we can integrate over the contour \(\Gamma_n\) consisting of
+an interval \([-n,-1]\), a lower semicircle of radius \(1\) centered at \(0\) and an interval \([1,n]\).
+\begin{figure}
+    \centering
+    \textcolor{red}{First contour}
+    \label{fig:contour_gamma_n}
+\end{figure}
+Now, because we avoided the problematic point \(z=0\), we are safe to use the Euler's formula
+\(2i\sin (\alpha z) = \left( e^{i \alpha z} - e^{-i \alpha  z} \right) \), obtaining
+\begin{equation}
+    I_n(\omega ) = \frac{1}{2i} \int_{\Gamma_n} \frac{1}{z} \left( \mathrm{e}^{i (\alpha + \omega )z}- \mathrm{e}^{i(-\alpha + \omega )z}  \right)  \mathrm{d}z
+\end{equation} 
+Introducing 
+\begin{equation}
+    \psi_n(\eta ) = \frac{1}{2i} \int_{\Gamma_n} \frac{e^{i \eta z}}{z}\; \mathrm{d}z
+\end{equation}
+we can write \(I_n(\omega ) = \psi _n(\alpha +\omega ) - \psi _n (-\alpha + \omega )\). To evaluate \(\psi _n(\eta )\),
+we have to close the contour. We are going to do it in two ways: first, considering a counter-clockwise, upper semicircle
+of radius \(n\), centered at \(z=0\), that we call \(\Gamma_n^U\), and second, a clockwise, lower semicircle of radius \(n\),
+also centered at \(z=0\), that we call \(\Gamma_n^L\).
+
+\begin{figure}[htbp]
+    \centering
+    \textcolor{red}{Second contour}    
+    \label{<label>}
+\end{figure}
+
+We start with the second case, as it is simpler. The integral of \(e^{i \eta z}/z\) over \(\Gamma_n + \Gamma_n^L\) vanishes
+by the Cauchy-Goursat theorem, since the integrand is holomorphic in the interior of the contour. Thus, we have
+\begin{equation}
+    \psi _n(\eta ) = \frac{1}{2i} \int_{\Gamma_n} \frac{e^{i \eta z}}{z}\; \mathrm{d}z = \frac{1}{2i} \int_{-\Gamma_n^L} \frac{e^{i \eta z}}{z}\; \mathrm{d}z
+\end{equation}
+where \(-\Gamma_n^L\) is the same contour as \(\Gamma_n^L\), but traversed in the opposite direction. We can parametrize
+\(\Gamma _n^L\) as \(z = n \mathrm{e}^{i \varphi },\; \varphi  \in \left[ -\pi , 0 \right]  \) and calculate the integral
+\begin{align}
+    \psi _n(\eta ) &= 
+\end{align}
