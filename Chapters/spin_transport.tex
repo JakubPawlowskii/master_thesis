@@ -5,7 +5,7 @@ After all the technicalities of the previous chapter, we are finally ready to st
 the long-range anisotropic Heisenberg model. The main motivation of this investigation is the fact that this model admits
 two limits exhibiting ballistic spin transport (cf. Fig.~\ref{fig:spin_transport}), namely the free particles
 with nearest-neighbor hopping for \(\alpha\to \infty,\; \Delta = 0\) and the Haldane-Shastry
-model with \(J_{\mathrm{HS}(r)} = J \sin^2\left(\pi/L\right)/\sin^2\left(\pi r/L\right)\)
+model with \(J_{\mathrm{HS}}(r) = J \sin^2\left(\pi/L\right)/\sin^2\left(\pi r/L\right)\)
 for \(\alpha = 2\)~\autocite{Haldane1988,Shastry1988}. In the latter case, this limit is only strictly valid
 in the thermodynamic limit, since \(\sin^{-2}\left(r/L\right)\propto r^{-2}\) for \(r \ll L\).
 In both of these limiting models the spin current
@@ -183,13 +183,13 @@ It is only the last step that requires some care, as the \(\delta\) function is 
 would require some binning of the discrete spectrum. We avoid this, by instead considering the
 \textbf{integrated conductivity}
 \begin{equation}
-  \mathcal{I}(\Omega) = \frac{1}{\mathcal{S}_{\mathrm{tot}}} \int_{-\Omega}^{\Omega} \dd{\omega} \sigma(\omega) =
+  \mathcal{I}(\Omega) = \frac{1}{\mathcal{S}_{\mathrm{tot}}} \int_{-\Omega}^{\Omega} \sigma(\omega) \dd{\omega} =
   \frac{\pi}{L \mathcal{Z} \mathcal{S}_{\mathrm{tot}}} \sum_{n,m} \abs{\mel{n}{j^{\sigma}}{m}}^2 \theta(\Omega- \abs{\epsilon_m - \epsilon_n})
   \label{eq:integrated_conductivity}
 \end{equation}
 where \(\theta(x)\) is the Heaviside step function and  \(\mathcal{S}_{\mathrm{tot}}\) is the sum rule
 \begin{equation}
-  \mathcal{S}_{\mathrm{tot}} = \int_{-\infty}^{\infty} \dd{\omega} \sigma(\omega) = \frac{\pi}{L \mathcal{Z}} \sum_{n,m} \abs{\mel{n}{j^{\sigma}}{m}}^2
+  \mathcal{S}_{\mathrm{tot}} = \int_{-\infty}^{\infty} \sigma(\omega) \dd{\omega} = \frac{\pi}{L \mathcal{Z}} \sum_{n,m} \abs{\mel{n}{j^{\sigma}}{m}}^2
 \end{equation}
 It is easy to see that the integrated conductivity \(\mathcal{I}(\Omega)\) is a regular function of \(\Omega\), and
 contains the information about the fraction of the spectral weight contained in the frequency window

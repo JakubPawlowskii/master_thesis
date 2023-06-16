@@ -27,14 +27,14 @@ maps to a model of spinless fermions, with a density-density interaction term.
 \end{equation}
 where \(n_{\ell} = c^{\dag}_{\ell}c_{\ell}\).
 In this picture, the kinetic part of the fermionic Hamiltonian couple to the electromagnetic field
-via the so-called \textbf{Peierls phase}, which is a manifestation of the \(U(1)\) gauge field. To understand
+via the so-called \textbf{Peierls phase}~\autocite{Peierls1933,Luttinger1951,Kohn1959,Blount1962,Wannier1962}, which is a manifestation of the \(U(1)\) gauge field. To understand
 how this happens in the formalism of second quantization, we need to return for a moment back to the
 first quantization picture for spinless fermions. This section is based on the book by~\textcite{Essler2005}.
 A one-particle Hamiltonian in a 3-dimensional space is given by
 \begin{equation}
     h_{1} = \frac{\mathbf{p}^{2}}{2m} + V(\mathbf{x} )
 \end{equation}
-where \(\mathbf{p}\) is the momentum operator and \(V(x)\) is some external potential. In the presence of an
+where \(\mathbf{p}\) is the momentum operator and \(V(x)\) is some periodic, external potential. In the presence of an
 electromagnetic 4-potential \(\left(\Phi(\mathbf{x},t ), A^{\alpha }(\mathbf{x} ,t)/c\right)\),
 the momentum operator is modified, via the minimal coupling, to the following form:
 \begin{equation}
@@ -52,23 +52,23 @@ Written using those operators, the one-particle part of the Hamiltonian \textit{
 where the hopping matrix elements are given by the matrix elements of the one-particle operator,
 between the Wannier states:
 \begin{equation}
-    t_{\ell\ell^{\prime}} = \int \dd{x^3} \phi^{*}(\mathbf{x} - \mathbf{R}_{\ell})
-    \left(\frac{\mathbf{p}^{2}}{2m} + V(\mathbf{x} )\right)\phi(\mathbf{x} - \mathbf{R}_{\ell^{\prime}})
+    t_{\ell\ell^{\prime}} = \int \phi^{*}(\mathbf{x} - \mathbf{R}_{\ell})
+    \left(\frac{\mathbf{p}^{2}}{2m} + V(\mathbf{x} )\right)\phi(\mathbf{x} - \mathbf{R}_{\ell^{\prime}}) \dd{x^3}
 \end{equation}
 From the above expression, we can see that the influence of the electromagnetic field enters the second-quantized
 Hamiltonian via the hopping integrals. Let us see now how this happens
 \begin{align}
-    t_{\ell\ell^{\prime}} & \to \int \dd{x^3} \phi^{*}(\mathbf{x} - \mathbf{R}_{\ell})
+    t_{\ell\ell^{\prime}} & \to \int  \phi^{*}(\mathbf{x} - \mathbf{R}_{\ell})
     \left[\frac{1}{2m}\left( \mathbf{p} - \frac{q}{c} \mathbf{A}  \right)^2  + V(\mathbf{x} )\right]
-    \phi(\mathbf{x} - \mathbf{R}_{\ell^{\prime}}) \nonumber                                                                 \\
-                          & \triangleq \int \dd{x^3} \phi^{*}(\mathbf{x} - \mathbf{R}_{\ell}) \mathrm{e}^{-i e \lambda / c}
+    \phi(\mathbf{x} - \mathbf{R}_{\ell^{\prime}})\dd{x^3} \nonumber                                                \\
+                          & \triangleq \int \phi^{*}(\mathbf{x} - \mathbf{R}_{\ell}) \mathrm{e}^{-i e \lambda / c}
     \left[\frac{1}{2m}\left( \mathbf{p} - \frac{q}{c} \left( \mathbf{A} - \grad{\lambda } \right)   \right)^2  + V(\mathbf{x} )\right]
-    \mathrm{e}^{i e \lambda / c} \phi(\mathbf{x} - \mathbf{R}_{\ell^{\prime}})
+    \mathrm{e}^{i e \lambda / c} \phi(\mathbf{x} - \mathbf{R}_{\ell^{\prime}}) \dd{x^3}
 \end{align}
 Note, that the equality denoted with \(\triangleq \) is valid for any differentiable, complex gauge field \(\lambda (\mathbf{x},t)\).
 We choose it to be
 \begin{equation}
-    \lambda (\mathbf{x},t) =  \int_{\mathbf{x}_0 }^{\mathbf{x}} \dd{\mathbf{x}^{\prime}} \cdot \mathbf{A}(\mathbf{x}^{\prime},t)
+    \lambda (\mathbf{x},t) =  \int_{\mathbf{x}_0 }^{\mathbf{x}} \mathbf{A}(\mathbf{x}^{\prime},t) \cdot \dd{\mathbf{x}^{\prime}}
 \end{equation}
 for an arbitrary reference point \(\mathbf{x}_0 \). Furthermore, we introduce modified Wannier functions
 \begin{equation}
@@ -76,9 +76,9 @@ for an arbitrary reference point \(\mathbf{x}_0 \). Furthermore, we introduce mo
 \end{equation}
 This way, we can write the modified hopping integrals as
 \begin{equation}
-    {t}_{\ell\ell^{\prime}}(t) = \int \dd{x^3} \Tilde{\phi}^{*}(\mathbf{x} - \mathbf{R}_{\ell})
+    {t}_{\ell\ell^{\prime}}(t) = \int  \Tilde{\phi}^{*}(\mathbf{x} - \mathbf{R}_{\ell})
     \left[\frac{\mathbf{p}^2}{2m}  + V(\mathbf{x} )\right]
-    \Tilde{\phi}(\mathbf{x} - \mathbf{R}_{\ell^{\prime}})
+    \Tilde{\phi}(\mathbf{x} - \mathbf{R}_{\ell^{\prime}})\dd{x^3}
 \end{equation}
 thus recovering (almost) the original form of the hopping integral, but with the modified Wannier functions.
 We need a few more steps to get to the final result. First, let us assume that the Wannier functions
@@ -98,9 +98,9 @@ any lattice geometry and in the tight-binding approximation. However, in this th
 one-dimensional, periodic lattice, so let us simplify a bit. We can slightly modify the gauge field
 and absorb the constant \(-\frac{q}{c}\)
 \begin{align}
-    \lambda_{\ell,\ell+1}(t) & = -\frac{q}{c} \int_{\mathbf{R}_{\ell}}^{\mathbf{R}_{\ell+1}} \dd{\mathbf{x}} \cdot \mathbf{A}(\mathbf{x},t)
-    = -\frac{q}{c} \int_{\mathbf{x}_0}^{\mathbf{R}_{\ell+1}} \dd{\mathbf{x}} \cdot \mathbf{A}(\mathbf{x},t) - \frac{q}{c} \int_{\mathbf{R}_{\ell}}^{\mathbf{x}_0} \dd{\mathbf{x}} \cdot \mathbf{A}(\mathbf{x},t) \nonumber              \\
-                             & = -\frac{q}{c} \int^{\mathbf{R}_{\ell+1}}_{\mathbf{x}_0} \dd{\mathbf{x}}\cdot \mathbf{A}(\mathbf{x},t)+\frac{q}{c} \int_{\mathbf{x}_0}^{\mathbf{R}_{\ell}} \dd{\mathbf{x}}\cdot \mathbf{A}(\mathbf{x},t)
+    \lambda_{\ell,\ell+1}(t) & = -\frac{q}{c} \int_{\mathbf{R}_{\ell}}^{\mathbf{R}_{\ell+1}} \mathbf{A}(\mathbf{x},t)\cdot \dd{\mathbf{x}}
+    = -\frac{q}{c} \int_{\mathbf{x}_0}^{\mathbf{R}_{\ell+1}}  \mathbf{A}(\mathbf{x},t) \cdot\dd{\mathbf{x}} - \frac{q}{c} \int_{\mathbf{R}_{\ell}}^{\mathbf{x}_0}  \mathbf{A}(\mathbf{x},t) \cdot\dd{\mathbf{x}} \nonumber              \\
+                             & = -\frac{q}{c} \int^{\mathbf{R}_{\ell+1}}_{\mathbf{x}_0} \mathbf{A}(\mathbf{x},t) \cdot\dd{\mathbf{x}}+\frac{q}{c} \int_{\mathbf{x}_0}^{\mathbf{R}_{\ell}}  \mathbf{A}(\mathbf{x},t)\cdot\dd{\mathbf{x}}
     = \frac{q}{c}\left[ \lambda(\mathbf{R}_{\ell},t) - \lambda(\mathbf{R}_{\ell+1},t) \right]
     \label{eq:peierls_phase}
 \end{align}
@@ -142,7 +142,7 @@ where the gauge field \(\lambda(t)\) is related to time-dependent electric field
 \end{equation}
 Thus, in Fourier space, we have the relation
 \begin{equation}
-    \lambda_{\mathrm{F}} (\omega) = \frac{i q a_0}{\omega} E_{\mathrm{F}} (\omega), \text{ where } \lambda_{\mathrm{F}} (\omega) = \int_{-\infty}^{\infty} \dd{t} \mathrm{e}^{i \omega t} \lambda(t)
+    \lambda_{\mathrm{F}} (\omega) = \frac{i q a_0}{\omega} E_{\mathrm{F}} (\omega), \text{ where } \lambda_{\mathrm{F}} (\omega) = \int_{-\infty}^{\infty} \mathrm{e}^{i \omega t} \lambda(t)\dd{t}
 \end{equation}
 provided that the Fourier transform exists. We assume that the electric field is switched on adiabatically, and
 is asymptotically constant. In terms of the gauge field, this can be expressed as
@@ -236,11 +236,11 @@ operator. The first order of this expansion also goes under the name of the \tex
 Omitting the details, we have
 \begin{align}
     \langle A \rangle_t & = \langle A_{H}(t) \rangle_0
-    - i \int_{-\infty }^{t} \mathrm{d}t^{\prime} \langle \comm*{A_{H}(t)}
-    {(V(t^{\prime} ))_{H}(t^{\prime} )} \rangle_0 \nonumber \\
+    - i \int_{-\infty }^{t}  \langle \comm*{A_{H}(t)}
+    {(V(t^{\prime} ))_{H}(t^{\prime} )} \rangle_0 \dd{t^{\prime}} \nonumber \\
                         & = \langle A_{H}(t) \rangle_0
-    + \int_{-\infty }^{\infty } \mathrm{d}t^{\prime} \left(-i \theta (t-t^{\prime} ) \langle \comm*{A_{H}(t) }
-        {(V(t^{\prime} ))_{H}(t^{\prime} )} \rangle_0 \right)
+    + \int_{-\infty }^{\infty } \left(-i \theta (t-t^{\prime} ) \langle \comm*{A_{H}(t) }
+        {(V(t^{\prime} ))_{H}(t^{\prime} )} \rangle_0 \right) \dd{t^{\prime} }
     \label{eq:linear_response}
 \end{align}
 This equation is known as the \textbf{Kubo formula}. We assume that the perturbation is turned on adiabatically,
@@ -254,8 +254,8 @@ the perturbation \(V(t) = \lambda(t) j^{\sigma } + O(\lambda^2)\).
 We have
 \begin{align}
     \langle \mathcal{J}^{\sigma }(t) \rangle_t & = \langle (\mathcal{J}^{\sigma }(t))_{H}(t) \rangle_0 +
-    \int_{-\infty}^{\infty } \mathrm{d} t^{\prime} \left(-i \theta (t-t^{\prime} ) \langle \comm*{(\mathcal{J}^{\sigma }(t))_{H}(t) }
-        {(V(t^{\prime} ))_{H}(t^{\prime} )} \rangle_0 \right)
+    \int_{-\infty}^{\infty } \left(-i \theta (t-t^{\prime} ) \langle \comm*{(\mathcal{J}^{\sigma }(t))_{H}(t) }
+        {(V(t^{\prime} ))_{H}(t^{\prime} )} \rangle_0 \right)\dd{t^{\prime} }
 \end{align}
 First, let us deal with the term that does not feel the perturbation at all
 \begin{align}
@@ -270,42 +270,42 @@ condition and the cyclic property of the trace. In the last line we got rid of \
 which vanishes due to different parities of \(j^{\sigma }\) and \(H\) under spin-flip transformation.
 Now, for the second, more complicated term
 \begin{align}
-     & \int_{-\infty}^{\infty } \mathrm{d} t^{\prime} \left(-i \theta (t-t^{\prime} ) \langle \comm*{(\mathcal{J}^{\sigma }(t))_{H}(t) }
-    {(V(t^{\prime} ))_{H}(t^{\prime} )} \rangle_0 \right) = \nonumber                                                                                                                                                              \\
-     & \int_{-\infty}^{\infty } \mathrm{d} t^{\prime} \left(-i \theta (t-t^{\prime} ) \langle \comm*{(\mathcal{J}^{\sigma }(t))_{H}(t-t^{\prime} ) }
-    {V(t^{\prime} )} \rangle_0 \right) = \nonumber                                                                                                                                                                                 \\
-     & \int_{-\infty}^{\infty } \mathrm{d} t^{\prime} \left( -i \theta (t-t^{\prime} ) \comm*{\mathrm{e}^{i H(t-t^{\prime} )} (j^{\sigma } -  \cancel{\lambda (t^{\prime} )H_0 + O(\lambda ^2)}) \mathrm{e}^{-i H(t-t^{\prime} )}}
-    {\lambda (t^{\prime} ) j^{\sigma }} \right) \nonumber                                                                                                                                                                          \\
-     & \int_{-\infty}^{\infty } \mathrm{d} t^{\prime} \left( -i \theta (t-t^{\prime} ) \comm*{(j^{\sigma }_{H}(t-t^{\prime} )} {j^{\sigma }} \right) \lambda (t^{\prime} )
+     & \int_{-\infty}^{\infty }   \left(-i \theta (t-t^{\prime} ) \langle \comm*{(\mathcal{J}^{\sigma }(t))_{H}(t) }
+    {(V(t^{\prime} ))_{H}(t^{\prime} )} \rangle_0 \right) \dd{t^{\prime} } = \nonumber                                                                                                                         \\
+     & \int_{-\infty}^{\infty }   \left(-i \theta (t-t^{\prime} ) \langle \comm*{(\mathcal{J}^{\sigma }(t))_{H}(t-t^{\prime} ) }
+    {V(t^{\prime} )} \rangle_0 \right) \dd{t^{\prime} } = \nonumber                                                                                                                                            \\
+     & \int_{-\infty}^{\infty }   \left( -i \theta (t-t^{\prime} ) \comm*{\mathrm{e}^{i H(t-t^{\prime} )} (j^{\sigma } -  \cancel{\lambda (t^{\prime} )H_0 + O(\lambda ^2)}) \mathrm{e}^{-i H(t-t^{\prime} )}}
+    {\lambda (t^{\prime} ) j^{\sigma }} \right) \dd{t^{\prime} }=\nonumber                                                                                                                                     \\
+     & \int_{-\infty}^{\infty }   \left( -i \theta (t-t^{\prime} ) \comm*{j^{\sigma }_{H}(t-t^{\prime} )} {j^{\sigma }} \right) \lambda (t^{\prime} )\dd{t^{\prime} }
 \end{align}
 We passed from first to second line by using once again the equilibrium condition and the cyclic property of the trace.
 In the third line, the crossed out terms would produce a contribution of order \(\lambda ^2\) and higher, so we can safely
 omit them. The quantity in the parenthesis is important enough to deserve a name, so we define
 the \textbf{retarded Green's function} as
 \begin{equation}
-    G^r_{j^{\sigma }j^{\sigma}}(t,t^{\prime} ) \coloneqq -i \theta (t-t^{\prime} ) \comm*{(j^{\sigma }_{H}(t )} {j^{\sigma(t^{\prime} ) }}
+    G^r_{j^{\sigma }j^{\sigma}}(t,t^{\prime} ) \coloneqq -i \theta (t-t^{\prime} ) \comm*{j^{\sigma }_{H}(t )} {j^{\sigma(t^{\prime} ) }}
 \end{equation}
 and the Kubo formula becomes
 \begin{equation}
-    \langle \mathcal{J}^{\sigma }(t) \rangle_t = -\lambda(t) \langle H_0 \rangle_0 + \int_{-\infty}^{\infty } \mathrm{d} t^{\prime} G^r_{j^{\sigma }j^{\sigma}}(t-t^{\prime},0 ) \lambda (t^{\prime} )
+    \langle \mathcal{J}^{\sigma }(t) \rangle_t = -\lambda(t) \langle H_0 \rangle_0 + \int_{-\infty}^{\infty }  G^r_{j^{\sigma }j^{\sigma}}(t-t^{\prime},0 ) \lambda (t^{\prime} ) \dd{t^{\prime} } 
 \end{equation}
 We stress once again, that \(G^r_{j^{\sigma }j^{\sigma }}(t,t^{\prime} ) = G^r_{j^{\sigma }j^{\sigma }}(t-t^{\prime},0 ) \)
 is valid \textit{only} in thermodynamic equilibrium.
 As most transport experiments measure quantities in the frequency domain,
 we need to consider the Fourier transform of the Kubo formula
 \begin{equation}
-    \mathcal{J}_{\text{F} }(\omega ) = q a_0 \int_{-\infty}^{\infty } \mathrm{d} t \; \mathrm{e}^{i \omega t} \frac{\langle \mathcal{J}^{\sigma }(t) \rangle_t}{a_0^3 L}
+    \mathcal{J}_{\text{F} }(\omega ) = q a_0 \int_{-\infty}^{\infty } \mathrm{e}^{i \omega t} \frac{\langle \mathcal{J}^{\sigma }(t) \rangle_t}{a_0^3 L}\dd{t} 
 \end{equation}
 where \(\mathcal{J}_{\text{F} }(\omega )\) is the Fourier-transformed current per volume, expressed in physical units.
 We calculate
 \begin{align}
-    \mathcal{J}_{\text{F} }(\omega ) & = \frac{q}{a_0^2 L} \int_{-\infty}^{\infty } \mathrm{d} t \; \mathrm{e}^{i \omega t} \langle \mathcal{J}^{\sigma }(t) \rangle_t \nonumber                                                                                                            \\
-                                     & = - \frac{q}{a_0^2 L}\langle H_0 \rangle  \int_{-\infty}^{\infty } \mathrm{d} t \; \mathrm{e}^{i \omega t} \lambda (t)
-    + \frac{q}{a_0^2 L} \int_{-\infty }^{\infty } \mathrm{d}t \; \int_{-\infty }^{\infty } \mathrm{d} t^{\prime} \; \mathrm{e}^{i \omega t} G^r_{j^{\sigma }j^{\sigma}}(t-t^{\prime},0 ) \lambda (t^{\prime} ) \nonumber                                                                    \\
+    \mathcal{J}_{\text{F} }(\omega ) & = \frac{q}{a_0^2 L} \int_{-\infty}^{\infty }  \mathrm{e}^{i \omega t} \langle \mathcal{J}^{\sigma }(t) \rangle_t \dd{t} \nonumber                                                                                                            \\
+                                     & = - \frac{q}{a_0^2 L}\langle H_0 \rangle  \int_{-\infty}^{\infty }  \mathrm{e}^{i \omega t} \lambda (t)\dd{t} 
+    + \frac{q}{a_0^2 L} \int_{-\infty }^{\infty } \mathrm{e}^{i \omega t}  \left(\int_{-\infty }^{\infty }G^r_{j^{\sigma }j^{\sigma}}(t-t^{\prime},0 ) \lambda (t^{\prime} )\dd{t^{\prime} }\right) \dd{t}  \nonumber                                                                    \\
                                      & = -i \frac{q^2}{a_0 L} \frac{\langle H_0 \rangle_0 E_{\text{F} }(\omega )}{\omega + i 0^{+}  }
-    + \frac{q}{a_0^2 L} \int_{-\infty }^{\infty } \mathrm{d}t^{\prime\prime} \int_{-\infty }^{\infty } \mathrm{d} t^{\prime} \; \mathrm{e}^{i \omega (t^{\prime} + t^{\prime\prime}) } G^r_{j^{\sigma }j^{\sigma}}(t^{\prime\prime},0 ) \lambda (t^{\prime} ) \nonumber                     \\
+    + \frac{q}{a_0^2 L} \int_{-\infty }^{\infty }  \int_{-\infty }^{\infty }  \mathrm{e}^{i \omega (t^{\prime} + t^{\prime\prime}) } G^r_{j^{\sigma }j^{\sigma}}(t^{\prime\prime},0 ) \lambda (t^{\prime} ) \dd{t^{\prime} } \dd{t^{\prime\prime} }   \nonumber                     \\
                                      & = -i \frac{q^2}{a_0 L} \frac{\langle H_0 \rangle_0 E_{\text{F} }(\omega )}{\omega + i 0^{+}  }
-    + \frac{q}{a_0^2 L} \int_{-\infty }^{\infty } \mathrm{d}t^{\prime\prime} \mathrm{e}^{i \omega  t^{\prime\prime} } G^r_{j^{\sigma }j^{\sigma}}(t^{\prime\prime},0 ) \int_{-\infty }^{\infty } \mathrm{d} t^{\prime} \; \mathrm{e}^{i \omega t^{\prime} } \lambda (t^{\prime} ) \nonumber \\
+    + \frac{q}{a_0^2 L} \int_{-\infty }^{\infty } \mathrm{e}^{i \omega  t^{\prime\prime} } G^r_{j^{\sigma }j^{\sigma}}(t^{\prime\prime},0 ) \left(\int_{-\infty }^{\infty } \mathrm{e}^{i \omega t^{\prime} } \lambda (t^{\prime} )\dd{t^{\prime} }\right)\dd{t^{\prime\prime} }   \nonumber \\
                                      & = -i \frac{q^2}{a_0 L} \frac{\langle H_0 \rangle_0 E_{\text{F} }(\omega )}{\omega + i 0^{+}  }
     + i\frac{q^2}{a_0 L} G^r_{j^{\sigma }j^{\sigma}}(\omega) E_{\text{F} }(\omega ) \nonumber                                                                                                                                                                                               \\
                                      & = \frac{q^2}{a_0} \left[\frac{i}{L(\omega +i 0^{+} )} \left(- \langle H_0 \rangle_0 + G^r_{j^{\sigma }j^{\sigma }}(\omega ) \right)  \right] E_{\text{F} }(\omega )
@@ -325,22 +325,22 @@ The stage is now set for us to use one of the most powerful tools in the arsenal
 quantum version of the \textbf{fluctuation-dissipation theorem}. It relates the autocorrelation function of a physical quantity
 to the imaginary part of the response function \(G^r_{j^{\sigma }j^{\sigma }}\), and is given by
 \begin{equation}
-    \langle j^{\sigma }_{H}(t) j^{\sigma } \rangle_0 = \frac{1}{\pi } \int_{-\infty }^{\infty } \mathrm{d} \omega \;
-    \mathrm{e}^{-i \omega  t} \frac{\Im G^r_{j^{\sigma }j^{\sigma }}(\omega )}{\mathrm{e}^{-\beta \omega } -1}
-    = -\frac{L}{\pi } \int_{-\infty }^{\infty } \mathrm{d} \omega \; \mathrm{e}^{-i \omega  t} \frac{\omega \tilde{\sigma }^{\prime} (\omega )}{\mathrm{e}^{-\beta  \omega } - 1 }
+    \langle j^{\sigma }_{H}(t) j^{\sigma } \rangle_0 = \frac{1}{\pi } \int_{-\infty }^{\infty } 
+    \mathrm{e}^{-i \omega  t} \frac{\Im G^r_{j^{\sigma }j^{\sigma }}(\omega )}{\mathrm{e}^{-\beta \omega } -1}\dd{\omega } 
+    = -\frac{L}{\pi } \int_{-\infty }^{\infty }  \mathrm{e}^{-i \omega  t} \frac{\omega \tilde{\sigma }^{\prime} (\omega )}{\mathrm{e}^{-\beta  \omega } - 1 }\dd{\omega } 
 \end{equation}
 Applying the Fourier transform to both sides, we get
 \begin{align}
-     & -\frac{\pi}{L} \int_{-\infty }^{\infty } \mathrm{d} t \; \mathrm{e}^{i \omega^{\prime}  t} \langle j^{\sigma }_{H}(t) j^{\sigma } \rangle_0 =
-    \int_{-\infty }^{\infty } \mathrm{d} t \, \int_{-\infty}^{\infty}  \mathrm{d} \omega \, \mathrm{e}^{i(\omega^{\prime} -\omega )t}
-    \omega \frac{\tilde{\sigma}^{\prime} (\omega )}{\mathrm{e}^{-\beta \omega } - 1 }\nonumber\\
-    & =\int_{-\infty}^{\infty} \mathrm{d}\omega 2\pi  \delta (\omega ^{\prime} -\omega  ) \omega \frac{\tilde{\sigma}^{\prime} (\omega )}{\mathrm{e}^{-\beta \omega } - 1 }
-    = 2\pi \omega^{\prime} \frac{\tilde{\sigma}^{\prime} (\omega^{\prime} )}{\mathrm{e}^{-\beta \omega^{\prime} } - 1 }
+     & -\frac{\pi}{L} \int_{-\infty }^{\infty }  \mathrm{e}^{i \omega^{\prime}  t} \langle j^{\sigma }_{H}(t) j^{\sigma } \rangle_0 \dd{t} =
+    \int_{-\infty }^{\infty }  \left(\int_{-\infty}^{\infty}  \mathrm{e}^{i(\omega^{\prime} -\omega )t} \dd{t} \right)
+    \frac{\omega \tilde{\sigma}^{\prime} (\omega )}{\mathrm{e}^{-\beta \omega } - 1 }\dd{\omega } \nonumber                                                                               \\
+     & =\int_{-\infty}^{\infty}  2\pi  \delta (\omega ^{\prime} -\omega  ) \frac{\omega \tilde{\sigma}^{\prime} (\omega )}{\mathrm{e}^{-\beta \omega } - 1 }\dd{\omega } 
+    = 2\pi  \frac{\omega^{\prime} \tilde{\sigma}^{\prime} (\omega^{\prime} )}{\mathrm{e}^{-\beta \omega^{\prime} } - 1 }
 \end{align}
-Rearranging and replacing \(\omega^{\prime} \to \omega \), we finally get the expression for the real part of the 
+Rearranging and replacing \(\omega^{\prime} \to \omega \), we finally get the expression for the real part of the
 optical conductivity
 \begin{equation}
-    \tilde{\sigma}^{\prime}(\omega ) = \frac{1}{2L} \frac{1-\mathrm{e}^{-\beta \omega }}{\omega } \int_{-\infty}^{\infty}  \mathrm{d}t \; \mathrm{e}^{i \omega t} \langle j^{\sigma }_{H}(t) j^{\sigma } \rangle_0 
+    \tilde{\sigma}^{\prime}(\omega ) = \frac{1}{2L} \frac{1-\mathrm{e}^{-\beta \omega }}{\omega } \int_{-\infty}^{\infty}   \mathrm{e}^{i \omega t} \langle j^{\sigma }_{H}(t) j^{\sigma } \rangle_0 \dd{t} 
 \end{equation}
 consistent with the result found in the literature~\autocite{Mahan2000,Gohmann2022,Sirker2020}. We have to more steps
 to do, before we obtain the exact form of the optical conductivity used in Chapter~\ref{chap:spin_transport}, given by
@@ -351,13 +351,13 @@ in Appendix~\ref{app:fourier}. Extending the result to finite temperature is str
     \tilde{\sigma}^{\prime}(\omega ) = \frac{1}{L} \frac{1-\mathrm{e}^{-\beta \omega }}{\omega } \frac{\pi }{\mathcal{Z} }
     \sum_{n,m} \mathrm{e}^{-\beta E_n} \left| \langle n | j^{\sigma } | m \rangle \right|^2 \delta (\omega  + E_n - E_m)
 \end{equation}
-To connect this to the infinite-temperature limit used in the main text, we define 
-\(\sigma (\omega )\equiv \tilde{\sigma }^{\prime} (\omega )/\beta \) and calculate 
+To connect this to the infinite-temperature limit used in the main text, we define
+\(\sigma (\omega )\equiv \tilde{\sigma }^{\prime} (\omega )/\beta \) and calculate
 \begin{align}
-\lim_{\beta  \to 0} \sigma(\omega ) &= \frac{\pi}{L \mathcal{D} } \frac{1}{\omega }\left( \lim_{\beta  \to 0} \frac{1-\mathrm{e}^{-\beta \omega } }{\beta } \right) 
-\sum _{n,m} \left| \langle n | j^{\sigma } | m \rangle \right|^2 \delta (\omega  + E_n - E_m) \nonumber\\
-&= \frac{\pi}{L \mathcal{D} } \sum _{n,m} \left| \langle n | j^{\sigma } | m \rangle \right|^2 \delta (\omega  + E_n - E_m)
+    \lim_{\beta  \to 0} \sigma(\omega ) & = \frac{\pi}{L \mathcal{D} } \frac{1}{\omega }\left( \lim_{\beta  \to 0} \frac{1-\mathrm{e}^{-\beta \omega } }{\beta } \right)
+    \sum _{n,m} \left| \langle n | j^{\sigma } | m \rangle \right|^2 \delta (\omega  + E_n - E_m) \nonumber                                                              \\
+                                        & = \frac{\pi}{L \mathcal{D} } \sum _{n,m} \left| \langle n | j^{\sigma } | m \rangle \right|^2 \delta (\omega  + E_n - E_m)
 \end{align}
 where we have used the fact that \(\lim_{\beta  \to 0} (1-\mathrm{e}^{-\beta \omega })/\beta = \omega \), and
-\(\mathcal{D} \equiv \lim_{\beta  \to 0} \mathcal{Z} \) is the number of states in the Hilbert space. 
+\(\mathcal{D} \equiv \lim_{\beta  \to 0} \mathcal{Z} \) is the number of states in the Hilbert space.
 The derivation of the final expression for the optical conductivity, given by equation~\eqref{eq:kubo}, is now complete.

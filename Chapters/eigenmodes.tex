@@ -130,9 +130,9 @@ We will describe an example of such a basis in the next section, but for now, it
 Next, we would like to determine the conserved part of all the basis operators \(O_{\gamma}\). We do this
 by considering the infinite time average
 \begin{align}
-  \bar{O}_{\gamma} = \lim_{\tau\to\infty}\frac{1}{\tau} \int_0^{\tau} \mathrm{d}t\, O_{\gamma}(t) & =
-  \lim_{\tau\to\infty}\frac{1}{\tau} \int_0^{\tau} \mathrm{d}t\, \mathrm{e}^{i H t}O_{\gamma} \mathrm{e}^{-i H t} \nonumber                                                                                                                                       \\
-                                                                                                  & = \sum_{m,n} (O_{\gamma})_{mn}\ketbra{m}{n} \lim_{\tau\to\infty} \frac{1}{\tau} \int_0^{\tau} \mathrm{d}t \, \mathrm{e}^{i(\epsilon_m-\epsilon_n)t} \nonumber \\
+  \bar{O}_{\gamma} = \lim_{\tau\to\infty}\frac{1}{\tau} \int_0^{\tau} O_{\gamma}(t) \dd{t} & =
+  \lim_{\tau\to\infty}\frac{1}{\tau} \int_0^{\tau} \mathrm{e}^{i H t}O_{\gamma} \mathrm{e}^{-i H t} \dd{t} \nonumber                                                                                                                                       \\
+                                                                                                  & = \sum_{m,n} (O_{\gamma})_{mn}\ketbra{m}{n} \lim_{\tau\to\infty} \frac{1}{\tau} \int_0^{\tau} \mathrm{e}^{i(\epsilon_m-\epsilon_n)t} \dd{t} \nonumber \\
                                                                                                   & = \sum_{\substack{n,m                                                                                                                                         \\ \epsilon_n = \epsilon_m}} (O_{\gamma})_{mn}\ketbra{m}{n}
   \label{eq:time_avg}
 \end{align}
@@ -146,7 +146,7 @@ in Eq.~\eqref{eq:time_avg} destroys the projective character of this operation. 
 we introduce a parameter \(\tau\) and define effective time averaging~\autocite{Mierzejewski2015}
 as
 \begin{equation}
-  \bar{O}_{\gamma}^{\tau} = \int_{-\infty}^{\infty} \mathrm{d}t\, O_{\gamma}(t) \frac{\sin(t/\tau)}{\pi t}
+  \bar{O}_{\gamma}^{\tau} = \int_{-\infty}^{\infty} O_{\gamma}(t) \frac{\sin(t/\tau)}{\pi t} \dd{t}
   \label{eq:finite_time_avg_integral}
 \end{equation}
 By considering the Fourier transform of the \(\sin(x)/x\) function, it can be shown that
@@ -314,9 +314,9 @@ details are relegated to Appendix~\ref{app:fourier}. The result, written in spec
 Let us now do one more step and consider the integral of \(\mathcal{F}\left[\hs{A(t)}{B}\right]\) over
 some finite frequency window \([-\Omega, \Omega]\), akin to the integrated conductivity~\eqref{eq:integrated_conductivity}.
 \begin{align}
-  \mathcal{I}_{AB}(\Omega) & = \int_{-\Omega}^{\Omega} \mathrm{d}\omega\; \mathcal{F}\left[\hs{A(t)}{B}\right](\omega) =
-  \frac{1}{\dimension}\sum_{n,m} A_{mn} B_{nm} \int_{-\Omega}^{\Omega} \mathrm{d}\omega \;
-  \delta(\epsilon_m-\epsilon_n+\omega) \nonumber                                                                         \\ &= \frac{1}{\dimension}\sum_{n,m} A_{mn} B_{nm}
+  \mathcal{I}_{AB}(\Omega) & = \int_{-\Omega}^{\Omega} \mathcal{F}\left[\hs{A(t)}{B}\right](\omega) \dd{\omega } =
+  \frac{1}{\dimension}\sum_{n,m} A_{mn} B_{nm} \int_{-\Omega}^{\Omega} 
+  \delta(\epsilon_m-\epsilon_n+\omega)\dd{\omega }  \nonumber                                                                         \\ &= \frac{1}{\dimension}\sum_{n,m} A_{mn} B_{nm}
   \theta(\Omega + (\epsilon_m-\epsilon_n))\theta(\Omega - (\epsilon_m-\epsilon_n)) \nonumber                             \\
                            & = \frac{1}{\dimension}\sum_{n,m} A_{mn} B_{nm}\theta(\Omega - \abs{\epsilon_m-\epsilon_n})
   \label{eq:integrated_spectral}
