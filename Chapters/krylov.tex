@@ -1,14 +1,12 @@
-% !TeX root = /home/jakubp/Storage/OneDrive/Documents/Studies/masters/master_thesis/thesis.tex
-
 \chapter{Krylov subspace methods for quantum many-body systems\label{chap:krylov}}
 \thispagestyle{chapterBeginStyle}
 
-One of the two purposes of this thesis is to develop and test a set of numerical tools based on the Krylov subspace methods,
+The purpose of the review part of this thesis is to develop and test a set of numerical tools based on the Krylov subspace methods,
 which is a family of \textbf{iterative} methods concerned with projecting high dimensional problems into smaller dimension subspaces
 and solving them therein. Given a finite-dimensional vector space \(\mathcal{H} \cong \CC^m \), a vector \(\vectorbold{v}\in \CC^m\) and
 a linear operator \(A\in\CC^{m\cross m}\), represented as a matrix, the \textbf{k-th Krylov subspace} \(\K{k}\) is defined as
 \begin{equation}
-	\K{k} := \mathrm{span}\{\,\vectorbold{v}, A\vectorbold{v}, A^2\vectorbold{v},\ldots,A^{k-1}\vectorbold{v} \,\} \subseteq \CC^m
+	\K{k} \equiv \mathrm{span}\{\,\vectorbold{v}, A\vectorbold{v}, A^2\vectorbold{v},\ldots,A^{k-1}\vectorbold{v} \,\} \subseteq \CC^m
 	\label{def:krylov}
 \end{equation}
 The maximal dimension of a Krylov subspace is bounded from above by \(\mathrm{rank}(A) + 1\)~\autocite{Simoncini2015}.
@@ -18,7 +16,7 @@ For the initial part of this exposition, we follow the excellent textbook of num
 whereas for further applications to quantum many-body physics, we rely on the excellent treatments of the topic
 found in~\textcite{Sandvik2010} and PhD thesis by~\textcite{Crivelli2016}.
 
-We start this chapter by quickly sketching the problems with \textbf{direct} algorithms such as Exact Diagonalization (ED), and quickly
+We begin by quickly sketching the problems with \textbf{direct} algorithms such as Exact Diagonalization (ED) and then
 follow with the fundamental iterative algorithm for sparse general matrices, the Arnoldi iteration. Its output admits several
 possible interpretations, however, we shall focus on the problem of locating extremal eigenvalues.
 Afterward, we restrict our attention to the class of Hermitian matrices, to which of course all typical tight-binding Hamiltonians
@@ -28,53 +26,52 @@ Yet in this work, we are mainly interested in infinite temperature calculations,
 spectrum is required. To this end, in subsequent sections, we develop a scheme for the time evolution of an arbitrary state,
 called the Krylov propagator~\autocite{Park1986}, and in the last section combine it with the idea of Dynamical Quantum Typicality (DQT),
 which states that a single pure state can have the same properties as an ensemble density matrix~\autocite{Gemmer2003, Goldstein2006, Popescu2006}.
-This will produce a numerical algorithm for the efficient calculation of time-dependent correlation functions without the need
+This produces a numerical algorithm for the efficient calculation of time-dependent correlation functions without the need
 for Exact Diagonalization.
 
 \section{Problems with Exact Diagonalization}
-
-
 The most straightforward numerical method for studying discrete quantum many-body systems is without a doubt
-Exact Diagonalization (ED)~\autocite{Weisse2008}. It belongs to the family of the so-called direct algorithms (cf. Fig~\ref{fig:direct_iter})
+Exact Diagonalization~\autocite{Weisse2008}. It belongs to the family of the so-called direct algorithms (cf. Fig~\ref{fig:direct_iter})
 and allows one to obtain a numerically exact set of eigenvalues and eigenvectors and subsequently compute any desired properties
 of the system, be it thermal expectation values, time evolution, Green's functions, etc. Unfortunately, the starting point of any
 ED calculation is the expression of the Hamiltonian as a dense matrix, in the Hilbert space basis of choice. Taking into account
-the fact that the dimension many-body Hilbert space grows exponentially with the size of the system, the memory cost quickly becomes
+the fact that the dimension of many-body Hilbert space grows exponentially with the size of the system, the memory cost quickly becomes
 prohibitive, even when exploiting conservation laws and related symmetries. For example, in the case of a spin chain of length L, with
-the on-site basis dimension being 2, the full dimension of the Hilbert space would be \(\dimension = 2^{L}\). Taking a modest length of 25 sites gives
+the on-site basis dimension being 2, the full dimension of the Hilbert space is \(\dimension = 2^{L}\). Taking a modest length of 25 sites gives
 \(2^{25} = 33554432\approx 3.36 \cdot 10^7\) basis states and a memory footprint of the Hamiltonian matrix of around 9PB (using double-precision
-floating point numbers), which is 9000 times more than the typical consumer hard drive capacity of 1TB. Even assuming some kind of distributed
+floating point numbers), which is 9000 times more than the typical consumer hard drive capacity of 1TB. Even assuming access to some kind of distributed
 memory platform allowing for handling such large matrices, the computational complexity of ED, requiring \(O(\dimension^3)\) operations,
 is the next major hurdle. Therefore, it is exceedingly
 difficult to probe the thermodynamic limit physics and ED calculations suffer from finite size effects.
-\vspace*{-0.5cm}
-\begin{figure}[H]
+% \vspace*{-0.5cm}
+\begin{figure}[htbp]
 	\centering
-	\includegraphics[width=0.8\linewidth]{Figures/direct_iterative.pdf}
+	\includegraphics[width=0.75\linewidth]{Figures/direct_iterative.pdf}
 	\caption{Schematic representation of the difference between direct (such as Exact Diagonalization) and
 		iterative (such as Lanczos iteration) algorithms. The advantage of iterative methods comes from the fact that they
-		can be stopped midway after desired precision is reached. On the other hand, direct algorithms require all \(O(m^3)\)
+		can be stopped midway after desired precision is reached. On the other hand, direct algorithms require all \(O(\dimension^3)\)
 		operations before any results can be extracted. Figure reproduced from~\textcite{Trefethen1997}.}
 	\label{fig:direct_iter}
 \end{figure}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\linewidth]{Figures/matrix_elements.pdf}
-	\caption{Ising basis representation of matrix of the XXZ Hamiltonian \(H = J\sum_{i} \left[\frac{1}{2}\left(\Sp_i \Sm_{i+1} +
-			\Sm_{i}\Sp_{i+1}\right) + \Delta \Sz_i \Sz_{i+1}\right]\) on \(10\) sites, with \(J = 1\) and \(\Delta=0.5\).
-		Basis states are sorted according to the magnetization which yields the block structure emphasized by dashed lines.
-		The filling factor \(\mu\) is approximately \(0.005\).}
-	\label{fig:sparse_structure}
-\end{figure}
-
 A closer investigation of the Hamiltonian matrix, expressed in the Ising basis,
 quickly reveals the inefficiency of dense storage. Looking at Figure~\ref{fig:sparse_structure}, we see that most of
-the matrix elements are zero. Only about \(\mu \propto \dimension \) out of \(\dimension^2\) matrix elements
+the matrix elements are zero and only about \(\mu \propto \dimension \) out of \(\dimension^2\) matrix elements
 are non-zero. Hence, a numerical scheme leveraging this sparsity is highly desirable. This is exactly what the Krylov subspace algorithms
 do, by the virtue of requiring only a "black box" computation of matrix-vector product, which can be fairly easily implemented in a way
 requiring only \(O(\mu \dimension)\) operations.
 
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.7\linewidth, trim={0 0 0 1.2cm}, clip ]{Figures/matrix_elements.pdf}
+	\caption{Ising basis representation of matrix of the XXZ Hamiltonian \(\hat{H}  = J\sum_{i} \left[\frac{1}{2}\left(\Sp_i \Sm_{i+1} +
+			\Sm_{i}\Sp_{i+1}\right) + \Delta \Sz_i \Sz_{i+1}\right]\) on \(10\) sites, with \(J = 1\) and \(\Delta=0.5\).
+		Basis states are sorted according to the magnetization, which yields the block structure emphasized by dashed lines.
+		The density of non-zero matrix elements \(\mu\) is approximately \(0.005\).}
+	\label{fig:sparse_structure}
+\end{figure}
+
+\vspace*{-0.5cm}
 \section{Calculation of ground state}
 Our goal in this section is to develop the Lanczos algorithm for ground-state search of Hermitian matrices, and along
 the way to understand how and why it works.
@@ -103,12 +100,12 @@ write down the following \(n\)-step approximation to the full decomposition
 	\label{eq:krylov_n_approx}
 \end{equation}
 From this equation we can deduce an \(n+1\) term recurrence relation for the column \(\vectorbold{q_{n+1}}\), however
-it is perhaps best illustrated with a simple example in the first place.
+it is perhaps best illustrated with a simple example.
 
 \begin{example}
 	Let \(A\in \CC^{3\cross 3}\), \(AQ=QH\) be the Hessenberg decomposition and corresponding matrix elements
 	be denoted by lowercase letters. We consider the approximation for \(n = 2\), i.e. \(AQ_2 = Q_3 \tilde{H}_2\).
-	On the right-hand side
+	On the left-hand side
 	\begin{align*}
 		AQ_2 =
 		\begin{bmatrix}
@@ -134,7 +131,7 @@ it is perhaps best illustrated with a simple example in the first place.
 			(A\vectorbold{q_1})_3 & (A\vectorbold{q_2})_3
 		\end{bmatrix}
 	\end{align*}
-	On the left-hand side
+	On the right-hand side
 	\begin{align*}
 		Q_3 H_2 =
 		\begin{bmatrix}
@@ -177,7 +174,7 @@ Generalizing the above example, we arrive at the desired \(n+1\) term recurrence
 	\label{eq:arnoldi_recurrence}
 \end{equation}
 
-We can now easily cast the above recurrence into a pseudocode algorithm:
+We can now easily cast the above recurrence into an algorithm:
 \begin{algorithm}[H]
 	\algrenewcommand\algorithmicrequire{\textbf{Input: }}
 	\algrenewcommand\algorithmicensure{\textbf{Output: }}
@@ -186,7 +183,7 @@ We can now easily cast the above recurrence into a pseudocode algorithm:
 	\begin{algorithmic}[1]
 		\Require \(\vectorbold{v} \in \CC^m\), \(A \in \CC^{m\cross m}\), number of steps \(n\)
 		\Ensure columns of \(Q_n\), matrix elements of \(H_n\)
-		\State \(\vectorbold{q_1} = \vectorbold{v}/\norm*{\vectorbold{v}}\) \Comment{components of \(\vectorbold{v}\) are usually drawn from uniform distribution }
+		\State \(\vectorbold{q_1} = \vectorbold{v}/\norm*{\vectorbold{v}}\) \Comment{Components of \(\vectorbold{v}\) are usually drawn from uniform distribution.}
 		\For{\(i = 1:n-1\)}
 		\State \(\vectorbold{q} = A\vectorbold{q_i}\)
 		\For{\(j = 1:i\)}
@@ -211,14 +208,15 @@ of the Krylov subspace \(\K{n}\). The orthonormality condition is concisely expr
 the fact that \(Q^{\dagger}_n Q_{n+1} \) is the \(n\cross (n+1)\) identity matrix. Multiplying the left-hand side of
 equation~\eqref{eq:krylov_n_approx} by \(Q^{\dagger}_n\) we get
 \begin{equation}
-	Q^{\dagger}_n A Q_n = \underbrace{Q^{\dagger}_n Q_{n+1}}_{\mathrm{Id}_{n\cross(n+1)}}\tilde{H}_n = H_n \in \CC^{n\cross n}
+	Q^{\dagger}_n A Q_n = \underbrace{Q^{\dagger}_n Q_{n+1}}_{\mathrm{Id}_{n\cross(n+1)}}\tilde{H}_n \equiv  H_n \in \CC^{n\cross n}
 	\label{eq:hessenberg}
 \end{equation}
 where \(H_n\) is the Hessenberg matrix \(\tilde{H}_n\) with its last row removed.
 
 To understand the meaning
 of matrix \(H_n\) from the point of view of linear algebra, consider the following reasoning. Imagine we are
-given an endomorphism of the space \(\CC^m\), represented in the standard basis by a matrix \(A\).
+given an endomorphism\footnote{A linear map from \(\CC^m\) to itself.}
+of the space \(\CC^m\), represented in the standard basis by a matrix \(A\).
 We would like to restrict it to an endomorphism of the Krylov subspace \(\K{n},\; n < m\). Of course,
 as \(\vectorbold{q} \in \K{n} \implies \vectorbold{q} \in \CC^m\), we can calculate the action of \(A\) on a vector
 from Krylov subspace in a straightforward way. However, the resulting vector \(A\vectorbold{q}\) is not guaranteed
@@ -230,10 +228,10 @@ is the orthogonal projection of \(A\) to the subspace \(\K{n}\), represented in 
 \(\{\,\vectorbold{q_1},\vectorbold{q_2},\ldots,\vectorbold{q_n}\,\}\).
 
 \(H_n\) is once again a square matrix, so we can talk about its eigenvalues \(\{\theta_i\}_{i = 1}^n\)
-in the usual fashion. These numbers are called the \textit{Arnoldi eigenvalues estimates at step \(n\)}, or
-the \textit{Ritz values with respect to \(\K{n}\)}.
+in the usual fashion. These numbers are called the \textbf{Arnoldi eigenvalues estimates at step \(n\)}, or
+the \textbf{Ritz values with respect to \(\K{n}\)}.
 Given the interpretation above, we may suspect that they would be related to the eigenvalues of the original matrix \(A\).
-Indeed, as we shall see in a moment, some of the Ritz values are extremally good approximations of some of the
+Indeed, as we shall see in a moment, some of the Ritz values are excellent approximations of some of the
 original eigenvalues.
 
 
@@ -246,13 +244,13 @@ However, in practice, the maximal accessible \(n\) is much smaller than \(m\), s
 all eigenvalues. As it turns out, Arnoldi iteration typically finds extremal eigenvalues, which fortunately
 are those that we are interested in.
 
-Before we will understand the details, let us introduce a different, seemingly unrelated problem of
+Before we try to understand the details, let us introduce a different, seemingly unrelated problem of
 \textit{polynomial approximation}. We can take any \(\vectorbold{q} \in \K{n}\) and using the
-defining basis of Krylov subspace \(\K{n}\)(Definition~\ref{def:krylov}), expand is as
-\begin{align*}
+defining basis of Krylov subspace \(\K{n}\) (cf.~\ref{def:krylov}), expand is as
+\begin{align}
 	\vectorbold{q} & = a_0 \vectorbold{v} + a_1 A \vectorbold{v} + a_2 A^2 \vectorbold{v} + \ldots + a_{n-1} A^{n-1} \vectorbold{v} \nonumber \\
 	               & = \left(a_0\Id + a_1 A + a_2 A^2 + \ldots + a_{n-1} A^{n-1}\right) \vectorbold{v}
-\end{align*}
+\end{align}
 Utilizing the special structure of vectors from \(\K{n}\), we can define a polynomial \(p(z) = a_0
 + a_1 z + a_2 z^2 + \ldots + a_{n-1}z^{n-1}\), and concisely write our vector as \(\vectorbold{q} = p(A)\vectorbold{v}\).
 As the vector \(\vectorbold{q}\) was arbitrary, we have established an isomorphism between the \(n\)-th Krylov
@@ -261,11 +259,10 @@ subspace and the space of complex polynomials of maximal degree \(n-1\). We are 
 \begin{titled-frame}{Arnoldi Approximation Problem}
 \centering
 Given a matrix \(A\in\CC^{m\cross m}\) and a vector \(\vectorbold{v}\in \CC^m\), find
-\( p \in P^n := \{\, a_0 + a_1 z + \ldots + a_{n-1} z^{n-1} + z^n \mid a_0,a_1,\ldots a_{n-1}\in \CC \,\} \)\\
-such that \(\norm{p(A)\vectorbold{v}}_2\) is minimized.
+\( p \in P^n \equiv \{\, a_0 + a_1 z + \ldots + a_{n-1} z^{n-1} + z^n \mid a_0,a_1,\ldots a_{n-1}\in \CC \,\} \)\\
+such that \(\norm{p(A)\vectorbold{v}}\) is minimized.
 \end{titled-frame}
-
-Remarkably, the Arnoldi approximation is the exact solution to this problem. This fact is interesting enough that
+Remarkably, the Arnoldi approximation is an exact solution to this problem. This fact is interesting enough that
 we state it here as a theorem and, following~\textcite{Trefethen1997}, provide a complete proof.
 
 \begin{theorem}
@@ -280,17 +277,17 @@ we state it here as a theorem and, following~\textcite{Trefethen1997}, provide a
 	can be written as \(p(A)\vectorbold{v} = A^n \vectorbold{v} - Q_n \vectorbold{r}\) for some \(\vectorbold{r}\in \CC^n\).
 	To see that, note that \(\left(A^n \vectorbold{v} - p(A)\vectorbold{v}\right) \in \K{n}\) and columns of \(Q_n\) form an
 	orthonormal basis of \(\K{n}\). Now, we can recast our problem into a slightly different language, namely finding a vector
-	in \(\K{n}\) that is the closest in the sense of \(L_2\) norm to \(A^n \vectorbold{v}\). In short:
+	in \(\K{n}\) that is the closest in the sense of Euclidean norm to \(A^n \vectorbold{v}\). In short:
 	\begin{equation*}
-		\vectorbold{r}^{\ast} = \min_{\vectorbold{r}\in\CC^n}\norm*{A^n \vectorbold{v} - Q_n \vectorbold{r}}
+		\vectorbold{r}^{\ast} = \operatorname*{arg\,min}_{\vectorbold{r}\in\CC^n}\norm*{A^n \vectorbold{v} - Q_n \vectorbold{r}}
 	\end{equation*}
 	To achieve that, we need to have \(p(A)\vectorbold{v}\perp \K{n}\), that is \(p(A)\vectorbold{v}\) must
 	be orthogonal to all basis vectors spanning \(\K{n}\). This is consisely expressed as
 	\(Q^{\dagger}_{n} p(A)\vectorbold{v} = \vectorbold{0}\in \CC^n\).
 
 	Now, we know that the Hessenberg factorization \(A = QHQ^{\dagger}\) exists, and is approximated by \(n\) steps
-	of the Arnoldi iteration. Thus, the matrices \(Q\) and \(H\) can have the following block structure:
-	\begin{equation}
+	of the Arnoldi iteration. Thus, the matrices \(Q\) and \(H\) have the following block structure:
+	\begin{equation*}
 		Q=\left[\begin{array}{ll}
 				Q_n & V
 			\end{array}\right],
@@ -299,7 +296,7 @@ we state it here as a theorem and, following~\textcite{Trefethen1997}, provide a
 				Y   & 0_{(m-n)\cross(m-n)}
 			\end{array}\right]
 		\label{eq:block_matrices}
-	\end{equation}
+	\end{equation*}
 	where \(V \in \CC^{m\cross(m-n)}\) is a matrix with orthonormal columns, which are also orthogonal to columns of
 	\(Q_n\), and matrix \(Y\in\CC^{(m-n)\cross n}\) has only the upper-right entry different from zero
 	(the one from the last row of \(\tilde{H}_n\)). Using the Hessenberg factorization we can write our condition
@@ -361,7 +358,7 @@ we state it here as a theorem and, following~\textcite{Trefethen1997}, provide a
 			      \end{array}\right]
 		\left[\begin{array}{cc}
 				      Q_n^{\dagger} \\
-				      U^{\dagger}
+				      V^{\dagger}
 			      \end{array}\right] \vectorbold{v}                                 \\
 		               & = \left[\begin{array}{cc}
 				                         \Id_{n\cross n} & 0_{n\cross(m-n)}
@@ -372,21 +369,21 @@ we state it here as a theorem and, following~\textcite{Trefethen1997}, provide a
 			      \end{array}\right]
 		\left[\begin{array}{cc}
 				      Q_n^{\dagger} \\
-				      U^{\dagger}
+				      V^{\dagger}
 			      \end{array}\right] \vectorbold{v}                                 \\
 		               & = \left[\begin{array}{cc}
 				                         p(H_n) & 0_{n\cross (m-n)}
 			                         \end{array}\right]
 		\left[\begin{array}{cc}
 				      Q_n^{\dagger} \\
-				      U^{\dagger}
+				      V`^{\dagger}
 			      \end{array}\right] \vectorbold{v}                                 \\
 		               & = p(H_n)Q_n^{\dagger} \vectorbold{v}
 	\end{align*}
-	As a final step, notice that by construction the first row of \(Q_n^{\dagger}\) is
+	As a final step, we notice that by construction the first row of \(Q_n^{\dagger}\) is
 	\(\vectorbold{v}/\norm{\vectorbold{v}}\), and all the remaining rows are orthogonal to \(\vectorbold{v}\),
-	therefore only the first column of \(H_n\), or the first \(n\) elements of the first column of \(H\) are required
-	to be \(0\). By Caylel-Hamilton theorem, this is guaranteed if we take \(p = p^n\), where \(p^n\) is the characteristic
+	therefore only the first column of \(p(H_n)\), or the first \(n\) elements of the first column of \(p(H)\) are required
+	to be \(0\). By Cayley-Hamilton theorem, this is guaranteed if we take \(p = p^n\), where \(p^n\) is the characteristic
 	polynomial of \(H_n\). For the uniqueness part, suppose that there exists another polynomial, say \(q^n\) such
 	that \(q^n \perp \K{n}\). But then \(p^n - q^n\) is a nonzero polynomial of degree \(n-1\) (because \(p^n,\;q^n\) are
 	monic) such that \((p^n-q^n)(A)\vectorbold{v}=\vectorbold{0}\), and hence vectors \(\vectorbold{v},A\vectorbold{v},\ldots, A^{n-1}
@@ -422,7 +419,7 @@ for Hermitian matrices.
 
 \subsection{Restriction to Hermitian matrices: Lanczos iteration}
 
-After the mathematical detour of the previous section, armed with a deeper understanding of Krylov subspace and
+After the mathematical detour of the previous section, armed with a deeper understanding of Krylov subspaces and
 Arnoldi iteration, we are ready to investigate the algorithms that are of direct relevance to condensed
 matter physics, starting with Lanczos iteration. From this point onwards, we shall return to the favored by physicists
 Dirac bra-ket notation, namely \(\ket{v} \equiv \vectorbold{v}\) and \(\bra{v} = \vectorbold{v}^{\dagger}\).
@@ -475,6 +472,7 @@ the Algorithm~\ref{alg:arnoldi}.
 		\EndFor
 	\end{algorithmic}
 \end{algorithm}
+
 Another important observation is that \(\alpha_n\)'s are diagonal elements of a Hermitian matrix, and \(\beta_n\)'s are
 norms of the vector \(\ket{q}\) in subsequent iterations, both of which are real. Therefore, even if our Hamiltonian is
 complex, the numbers \(\alpha_n\) and \(\beta_n\) can be stored as vectors of real floating point numbers, decreasing
@@ -534,16 +532,16 @@ and we in principle could continue it up to \(n = m\) obtaining the full Hessenb
 restricting ourselves to a three-step recurrence in Lanczos iteration we rely on mathematical identities to
 force the orthogonality of \(\ket{q_i}\) with all previous vectors. Those are valid in exact arithmetic, but can
 quickly break down when using floating point numbers, as it is done in practice. Therefore, the iteration is unstable and
-should be stopped as soon as the desired accuracy is reached. Taking \(E_n^1\) to be the lowest eigenvalues of
-\(H_n\), the convergence criterion can be defined as \(\abs{E_{n+1}^1 - E_{n}^1}/\abs{E_n^1} < \varepsilon\) for some
-small \(\varepsilon\), e.g. \(10^{-14}\). As long as it is nondegenerate, the convergence usually happens quite quickly for
+should be stopped as soon as the desired accuracy is reached. Taking \(E_n^0\) to be the lowest eigenvalues of
+\(H_n\), the convergence criterion can be defined as \(\abs{E_{n+1}^0 - E_{n}^0}/\abs{E_n^0} < \epsilon\) for some
+small \(\epsilon\), e.g. \(10^{-14}\). As long as it is nondegenerate, the convergence usually happens quite quickly for
 both the lowest eigenvalue and corresponding eigenvector. To reliably obtain higher eigenstates one needs to perform
 reorthogonalization, but it requires keeping the matrix \(Q_n\) in memory which can be very costly.
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=\linewidth]{Figures/lanczos_L_8.pdf}
-	\caption{Plot of Arnoldi eigenvalues as a function of Lanczos steps, for a XXZ chain on \(8\) sites in the
+	\includegraphics[width=\linewidth]{Figures/lanczos_L_82.pdf}
+	\caption{Plot of Arnoldi eigenvalues as a function of iteration number, for an XXZ chain on \(8\) sites in the
 		subspace with \(0\) total magnetization. The extremal eigenvalues converge very quickly to the values matching
 		Exact Diagonalization. The numerical instability of Lanczos iteration is especially visible for a few lowest
 		eigenvalues, where multiple ghosts start appearing. After \(\binom{8}{4} = 70\) Lanczos steps,
@@ -609,16 +607,16 @@ where the diagonal matrix \(f(D_n)\) is treated as a vector. Assuming that \(f(D
 down to a single dot product for each element of the column.
 
 We are now ready to apply this procedure to the problem of interest, namely the time-evolution of a pure
-state \(\ket{\psi(t)}\) in the interval \(\left(t, \Delta t\right)\). It is described by the Schr{\"o}dineger equation
+state \(\ket{\psi(t)}\) in the interval \(\left(t, t+\Delta t\right)\). It is described by the Schr{\"o}dineger equation
 \(i\partial_t \ket{\psi(t)} = \hat{H} \ket{\psi(t)}\), having a formal solution
 \begin{equation}
-	\ket{\psi(t+\Delta t)} = \exp\left(-i \hat{H} \Delta T\right) \ket{\psi(t)},
+	\ket{\psi(t+\Delta t)} = \exp\left(-i \hat{H} \Delta t\right) \ket{\psi(t)},
 \end{equation}
-under the assuption that \(\hat{H}\) does not depend explicitly on time. The exact exponentiation of the matrix amounts to exact
-diagonalization which, as mentioned at the beginning of this chapter, is a difficult task. However, by letting \(f(\hat{H}) =
+under the assuption that \(\hat{H}\) does not depend explicitly on time. The exact exponentiation of the matrix amounts to the Exact
+Diagonalization, which, as mentioned at the beginning of this chapter, is a difficult task. However, by letting \(f(\hat{H}) =
 \exp\left(-i \hat{H} \Delta t\right)\) and \(\ket{v} = \ket{\psi(t)}\) in equation~\eqref{eq:lanczos_function} we
 get an approximation of the action of the time
-evolution operator on a state, called the \textbf{Krylov based propagator}~\autocite{Moler2003}, which was
+evolution operator on a state, called the \textbf{Krylov propagator}~\autocite{Moler2003}, which was
 originally proposed in the 1980's by~\textcite{Park1986} and has been since used with great success to
 investigate many different systems ~\autocite{Schmitteckert2004,Stanek2013,Zaletel2015,Dargel2012}. The final equation
 reads
@@ -635,7 +633,7 @@ the approximation error is bounded from above by the last coefficient \(\left(f(
 assuming that \(\norm{\ket{\psi(t)}} = 1\). There also exists an estimate of the sufficient dimension of Krylov
 subspace~\autocite{Mohankumar2006}
 \begin{equation}
-	n \lessapprox 1.5 \rho_{\hat{H}} \Delta t > 10
+	n \gtrapprox  1.5 \rho_{\hat{H}} \Delta t > 10
 \end{equation}
 where \(\rho_{\hat{H}}\) is the spectral radius of Hamiltonian and can be calculated as the difference between the highest and lowest eigenvalue.
 It is now very simple to cast these expressions into a concrete algorithm
@@ -668,21 +666,21 @@ developed Krylov subspace machinery. This function is defined for a pair of oper
 	\tilde{C}_{AB}(t) \equiv \Re \langle A(t) B \rangle = \Re \Tr\left(\hat{\rho}A(t)B\right)
 	\label{eq:corr_fun}
 \end{equation}
-where \(\hat{\rho} = e^{-\beta H}/\mathcal{Z},\; \mathcal{Z} = \Tr\left(e^{-\beta H}\right)\) is the canonical ensemble at temperature \(T = 1/\beta\),
-and \(A(t) = e^{i \hat{H} t} A e^{-i \hat{H} t}\) is understood via the Heisenberg picture. In this thesis we are
+where \(\hat{\rho} = e^{-\beta \hat{H} }/\mathcal{Z},\; \mathcal{Z} = \Tr\left(e^{-\beta \hat{H} }\right)\) is the canonical ensemble at temperature \(T = 1/\beta\),
+and \(A(t) = e^{i \hat{H} t} A\, e^{-i \hat{H} t}\) is understood via the Heisenberg picture. In this thesis we are
 interested only in the infinite temperature properties, so \(\hat{\rho} \to \frac{1}{\dimension} \mathbb{1}\), where \(\dimension\) is
 the dimension of Hilbert space, however, lets us keep the temperature finite for a while, so we can see the results of subsequent
 developments in full. Correlation functions allow us to probe the complex dynamics of interacting many-body
 systems and within Linear Response Theory are directly related to the transport properties~\autocite{Mahan2000}, so
 they have been an object of intense study
 ~\autocite{Steinigeweg2014,Sirker2009,Steinigeweg2009,Karrasch2013a,Karrasch2012,Steinigeweg2015,Richter2019}.
-We can use a complete set of eigensetates \(\ket{n}\) of the Hamiltonian \(\hat{H}\) in order to transform
+We can use a complete set of eigenstates \(\hat{H} \ket{n} = E_n \ket{n}\) of the Hamiltonian \(\hat{H}\) in order to transform
 the correlation function into the so-called spectral representation
 \begin{align}
-	\langle A(t) B \rangle & =  \frac{1}{\mathcal{Z}}\Tr\left(A(t)B e^{-\beta H}\right) = \frac{1}{\mathcal{Z}}\Tr\left(e^{i \hat{H} t} A e^{-i \hat{H} t}B e^{-\beta H}\right)\nonumber              \\
-	                       & = \frac{1}{\mathcal{Z}} \sum_k \sum_{m,n} \bra{k} \ketbra{n}{n} e^{i \hat{H} t} A e^{-i \hat{H} t} \ketbra{m}{m} B e^{-\beta H} \ket{k}  \nonumber                       \\
-	                       & = \frac{1}{\mathcal{Z}} \sum_k \sum_{m,n} \delta_{k,n} e^{i (\varepsilon_n  - \varepsilon_m) t} e^{-\beta \varepsilon_k} \matrixel{n}{A}{m} \matrixel{m}{B}{k} \nonumber \\
-	                       & = \frac{1}{\mathcal{Z}} \sum_{m,n} e^{i (\varepsilon_n  - \varepsilon_m) t} e^{-\beta \varepsilon_n}\matrixel{m}{A}{n}^{\ast} \matrixel{m}{B}{n}
+	\langle A(t) B \rangle & =  \frac{1}{\mathcal{Z}}\Tr\left(A(t)B \mathrm{e}^{-\beta \hat{H} }\right) = \frac{1}{\mathcal{Z}}\Tr\left(\mathrm{e}^{i \hat{H} t} A\, \mathrm{e}^{-i \hat{H} t}B \,\mathrm{e}^{-\beta \hat{H} }\right)\nonumber              \\
+	                       & = \frac{1}{\mathcal{Z}} \sum_k \sum_{m,n} \bra{k} \ketbra{n}{n} \mathrm{e}^{i \hat{H} t} A \,\mathrm{e}^{-i \hat{H} t} \ketbra{m}{m} B \,\mathrm{e}^{-\beta \hat{H} } \ket{k}  \nonumber                       \\
+	                       & = \frac{1}{\mathcal{Z}} \sum_k \sum_{m,n} \delta_{k,n} \mathrm{e}^{i (E_n  - E_m) t} \,\mathrm{e}^{-\beta E_k} \matrixel{n}{A}{m} \matrixel{m}{B}{k} \nonumber \\
+	                       & = \frac{1}{\mathcal{Z}} \sum_{m,n} \mathrm{e}^{i (E_n  - E_m) t}\, \mathrm{e}^{-\beta E_n}\matrixel{m}{A}{n}^{\ast} \matrixel{m}{B}{n}
 \end{align}
 which is useful for calculations using Exact Diagonalization. Unfortunately, we have already established that ED calculations
 suffer greatly from the exponential growth of the Hilbert space.
@@ -701,12 +699,12 @@ a concrete numerical tool for evaluating correlation functions, complete with ri
 Roughly speaking, Quantum Typicality is an attempt to replace the fundamental postulate of statistical mechanics~\autocite{Huang1987},
 the equal \textit{a priori} probability postulate, by a fundamentally different principle, referring not to
 statistical ensembles or time averages, but to individual states. Another key characteristic of
-this new postulate, dubbed \textbf{general canonical principle}~\autocite{Popescu2006} or \textbf{canonical typicality}
-~\autocite{Goldstein2006} is the existence of a rigorous mathematical proof, unlike in the case of equal
+this new postulate, dubbed \textbf{general canonical principle}~\autocite{Popescu2006} or \textbf{canonical typicality}~\autocite{Goldstein2006}
+is the existence of a rigorous mathematical proof, unlike in the case of equal
 \textit{a prior} probability postulate. Let us now consider an isolated quantum system, called the universe \(U\), partitioned
 into two components, the system \(S\) and the much larger environment \(E\). In the language of Hilbert spaces, this decomposition is
-\(\mathcal{H}_U = \mathcal{H}_S \otimes \mathcal{H}_E\) such that \(\dimension_s = \mathrm{dim}\left(\mathcal{H}_S\right)
-\ll d_E = \mathrm{dim}\left(\mathcal{H}_E\right)\). We can also impose some global constraint \(R\) for the universe, represented
+\(\mathcal{H}_U = \mathcal{H}_S \otimes \mathcal{H}_E\) such that \(\dimension_S = \mathrm{dim}\left(\mathcal{H}_S\right)
+\ll \dimension_E = \mathrm{dim}\left(\mathcal{H}_E\right)\). We can also impose some global constraint \(R\) for the universe, represented
 as restriction of the allowed states to some subspace \(\mathcal{H}_R \subseteq  \mathcal{H}_S \otimes \mathcal{H}_E \).
 We take the restricted universe to be in a maximally entangled state
 \begin{equation}
@@ -751,20 +749,20 @@ the eigenvalues of \(\rho\) we have
 	                 & \leq  {\dimension}^2 \sum_{i=1}^{\dimension}\frac{1}{\dimension} \phi\left(\lambda_i\right)
 	= \dimension \sum_{i=1}^{\dimension} \abs{\lambda_i}^2 = \dimension \norm*{\rho}_2^2
 \end{align}
-Hence, \(\norm*{\rho}_1 \leq \sqrt{\dimension}\norm*{\rho}_2\). We shall meet the Hilbert-Schmidt norm again in the next section,
+Hence, \(\norm*{\rho}_1 \leq \sqrt{\dimension}\norm*{\rho}_2\). We shall meet the Hilbert-Schmidt norm again in Chapter~\ref{chap:currents},
 when discussing the algorithm searching for local integrals of motion.
-The precise theorem establishing the typicality is as follows
+The theorem establishing the typicality is as follows
 \begin{theorem}
 	Let \(V\) be a function assigning to each subset of \(\mathcal{H}_U\) its volume (in the sense of a suitable Haar measure~\autocite{VitaliD.Milman1986}).
 	Then, the following inequality holds
 	\begin{equation}
 		\frac{V\left[\{\ket{\psi}\in\mathcal{H}_R \mid \frac{1}{2}\norm*{\rho_S(\psi) - \rho_S^{\mathrm{C}}}_1\geq \eta\}\right]}
-		{V\left[\{\ket{\psi}\in \mathrm{H}_R\}\right]} \leq \eta^{\prime}
+		{V\left[\{\ket{\psi}\in \mathcal{H}_R\}\right]} \leq \eta^{\prime}
 	\end{equation}
 	where
 	\begin{align*}
 		\eta          & = \epsilon + \frac{1}{2}\sqrt{\frac{\dimension_S}{\dimension_E^{\mathrm{eff}}}} \\
-		\eta^{\prime} & = 4 e^{-\frac{2}{9\pi^3} \dimension_R \epsilon^2 }
+		\eta^{\prime} & = 4 \exp\left(-\frac{2}{9\pi^3} \dimension_R \epsilon^2\right)
 	\end{align*}
 	and the effective dimension of environment subspace is \(\dimension_E^{\mathrm{eff}} =
 	\frac{1}{\Tr\left(\rho_E^2\right)}\geq \frac{\dimension_R}{\dimension_S}\), where \(\rho_E = \Tr_S\left(\rho_R\right)\).
@@ -775,17 +773,17 @@ what this theorem means, namely that all but exponentially rare pure states of t
 indistinguishable from the canonical state \(\rho_S^{\mathrm{C}}\).
 For our purposes in this thesis, we are interested in the case where the constraint \(R\) is that the total energy
 in the universe is close to some fixed value \(E\). Assuming that the system is weakly coupled with the environment, it
-becomes a standard exercise in statistical mechanics to show that the canonical state is the Gibbs canonical ensemble
+can be shown that the canonical state is, as it should be, the Gibbs canonical ensemble
 \begin{equation}
-	\rho_S^{\mathrm{C}} \propto \exp\left(-\frac{H_S}{k_B T}\right)
+	\rho_S^{\mathrm{C}} \propto \exp\left(-\frac{\hat{H} _S}{k_B T}\right)
 \end{equation}
-where \(H_s\) is the Hamiltonian of the system and \(T\) is the temperature set by the energy \(E\).
+where \(\hat{H} _S\) is the Hamiltonian of the system and \(T\) is the temperature set by the energy \(E\).
 
 
 \subsection{\label{sec:DQT} Dynamical Quantum Typicality}
 
 Another approach to Quantum Typicality is not concerned directly with quantum states, but with
-expectation values of quantum observables instead.
+expectation values of quantum observables.
 It was shown that for states drawn from a particular distribution in Hilbert space, the expectation
 values of a generic observable \(Q\) are very similar~\autocite{Reimann2007}. This result was further extended
 in the case of a unitarly invariant probability distribution, that is normalized states of the form
@@ -818,7 +816,7 @@ Note that because density matrix \(\hat{\rho}\) is positive semi-definite and He
 square root \(\sqrt{\hat{\rho}}\) exists and is well defined. The next step is to plug \(\alpha\)
 into equations~\eqref{eq:HA} and~\eqref{eq:HV}
 \begin{align}
-	\mathrm{HA}\left[\alpha\right] & = \Tr\left(\sqrt{\hat{\rho}}A(t)B\sqrt{\hat{\rho}}\right) = \Tr\left(\hat{\rho}A(t)B\right) = \frac{\Tr\left(e^{-\beta H}A(t)B\right)}{\mathcal{Z}} \label{eq:HAalpha} \\
+	\mathrm{HA}\left[\alpha\right] & = \Tr\left(\sqrt{\hat{\rho}}A(t)B\sqrt{\hat{\rho}}\right) = \Tr\left(\hat{\rho}A(t)B\right) = \frac{\Tr\left(e^{-\beta \hat{H} }A(t)B\right)}{\mathcal{Z}} \label{eq:HAalpha} \\
 	\mathrm{HV}\left[\alpha\right] & = \frac{\dimension^2}{\dimension + 1}\left(
 	\frac{\Tr\left(\left(\sqrt{\hat{\rho}}A(t)B\sqrt{\hat{\rho}}\right)^2\right)}{\dimension} - \left(\frac{\Tr\left(\sqrt{\hat{\rho}}A(t)B\sqrt{\hat{\rho}}\right)}{\dimension}\right)^2
 	\right) \nonumber                                                                                                                                                                                       \\
@@ -827,17 +825,17 @@ into equations~\eqref{eq:HA} and~\eqref{eq:HV}
 \end{align}
 Looking at eq.~\eqref{eq:HAalpha} we immediately see the desired way of calculating the correlation function.
 \begin{equation}
-	\tilde{C}_{AB}(t) = \Re \frac{\Tr\left(e^{-\beta H}A(t)B\right)}{\mathcal{Z}} = \Re \frac{\dimension}{\mathcal{Z}}
-	\matrixel{\psi}{e^{-\frac{\beta H}{2}} e^{i H t}A e^{-i H t} Be^{\frac{-\beta H}{2}}}{\psi} + \Re \epsilon
+	\tilde{C}_{AB}(t) = \Re \frac{\Tr\left(\mathrm{e}^{-\beta \hat{H} }A(t)B\right)}{\mathcal{Z}} = \Re \frac{\dimension}{\mathcal{Z}}
+	\matrixel{\psi}{\mathrm{e}^{-\frac{\beta \hat{H} }{2}}\,\mathrm{e}^{i \hat{H}  t}A \,\mathrm{e}^{-i \hat{H}  t} B\,\mathrm{e}^{\frac{-\beta \hat{H} }{2}}}{\psi} + \Re \epsilon
 	\label{eq:corr_dqt}
 \end{equation}
 where \(\epsilon\) is the error we made by using just one random state \(\ket{\psi}\).
 Let us massage this expression a bit more by introducing two auxiliary states
-\(\ket{\psi_{\beta}(t)} = e^{-i H t} e^{-\frac{-\beta H}{2}} \ket{\psi} \) and
-\(\ket{\phi_{\beta}(t)} = e^{-i H t} B e^{-\frac{-\beta H}{2}} \ket{\psi} \). We can also
+\(\ket{\psi_{\beta}(t)} = \mathrm{e}^{-i \hat{H} t }\, \mathrm{e}^{-\frac{-\beta \hat{H} }{2}} \ket{\psi} \) and
+\(\ket{\phi_{\beta}(t)} = \mathrm{e}^{-i \hat{H} t } B \,\mathrm{e}^{-\frac{-\beta \hat{H} }{2}} \ket{\psi} \). We can also
 calculate the partition function using the random state \(\ket{\psi}\) as
 \begin{equation}
-	\mathcal{Z} = \Tr\left(e^{-\beta H}\right) = \dimension \matrixel{\psi}{e^{-\beta H}}{\psi} =
+	\mathcal{Z} = \Tr\left(\mathrm{e}^{-\beta \hat{H} }\right) = \dimension \matrixel{\psi}{\mathrm{e}^{-\beta \hat{H} }}{\psi} =
 	\dimension \braket{\psi_{\beta}(0)}{\psi_{\beta}(0)}
 	\label{eq:partition_dqt}
 \end{equation}
@@ -849,7 +847,7 @@ Combining~\eqref{eq:corr_dqt} and~\eqref{eq:partition_dqt}, we arrive at the fin
 We have successfully shifted time evolution and the action of the density matrix to state vectors instead of operators,
 hence we may apply the Krylov time propagator, studied in the previous section, to calculate both real and imaginary time
 evolution. Apart from that, the only other numerical calculations are sparse matrix-vector multiplication\footnote{Matrices representing local observables will also be sparse.}
-and inner products of vectors, which are much less demanding than full exact diagonalization.
+and inner products of vectors, which are much less demanding than full Exact Diagonalization.
 
 The final thing left is to estimate the error \(\epsilon\), in order to show that this approach makes sense.
 From eq.~\eqref{eq:HValpha} it is clear that the Hilbert Space Average of \(\epsilon\) is zero, as
@@ -859,13 +857,13 @@ From eq.~\eqref{eq:HValpha} it is clear that the Hilbert Space Average of \(\eps
 Equation~\eqref{eq:HValpha}, for Hilber Space Variance, allows us to estimate the standard deviation
 \begin{align}
 	\left(\sigma(\epsilon)\right)^2 & = \mathrm{HV}\left[\epsilon\right] = \mathrm{HV}\left[\alpha\right] < \Tr\left(\hat{\rho}A(t)B \hat{\rho}A(t)B\right) \nonumber                                                  \\
-	                                & = \sum_{m,n} \frac{e^{-\beta \varepsilon_m}}{\mathcal{Z}} \matrixel{m}{A(t)B}{n} \frac{e^{-\beta \varepsilon_n}}{\mathcal{Z}} \matrixel{n}{A(t)B}{m}\nonumber                    \\
-	                                & \textcolor{red}{<}  \sum_{m,n} \frac{e^{-\beta \varepsilon_m}}{\mathcal{Z}} \matrixel{m}{A(t)B}{n} \frac{e^{-\beta \varepsilon_0}}{\mathcal{Z}} \matrixel{n}{A(t)B}{m} \nonumber \\
-	                                & = \frac{1}{\Tr\left(e^{-\beta(H-\varepsilon_0)}\right)} \sum_{m} \frac{e^{-\beta \varepsilon_m}}{\mathcal{Z}} \matrixel{m}{A(t)B A(t) B}{m} \nonumber                            \\
-	                                & = \frac{1}{\Tr\left(e^{-\beta(H-\varepsilon_0)}\right)} \Tr\left(\hat{\rho} A(t)B A(t) B\right)
+	                                & = \sum_{m,n} \frac{e^{-\beta E_m}}{\mathcal{Z}} \matrixel{m}{A(t)B}{n} \frac{\mathrm{e}^{-\beta E_n}}{\mathcal{Z}} \matrixel{n}{A(t)B}{m}\nonumber                    \\
+	                                & \textcolor{red}{<}  \sum_{m,n} \frac{\mathrm{e}^{-\beta E_m}}{\mathcal{Z}} \matrixel{m}{A(t)B}{n} \frac{\mathrm{e}^{-\beta E_0}}{\mathcal{Z}} \matrixel{n}{A(t)B}{m} \nonumber \\
+	                                & = \frac{1}{\Tr\left(\mathrm{e}^{-\beta(\hat{H} -E_0)}\right)} \sum_{m} \frac{\mathrm{e}^{-\beta E_m}}{\mathcal{Z}} \matrixel{m}{A(t)B A(t) B}{m} \nonumber                            \\
+	                                & = \frac{1}{\Tr\left(\mathrm{e}^{-\beta(\hat{H} -E_0)}\right)} \Tr\left(\hat{\rho} A(t)B A(t) B\right)
 \end{align}
-Where the red inequality follows from the fact that the Boltzmann factor is a strictly decreasing function and assuming that the spectrum
-of \(H\) is ordered in increasing fashion. Defining the effective dimension \(\dimension_{\mathrm{eff}} \equiv \Tr\left(e^{-\beta(H-\varepsilon_0)}\right)\),
+where the red inequality follows from the fact that the Boltzmann factor is a strictly decreasing function and assuming that the spectrum
+of \(H\) is ordered in increasing fashion. Defining the effective dimension \(\dimension_{\mathrm{eff}} \equiv \Tr\left(e^{-\beta(\hat{H} - E_0)}\right)\),
 we finally obtain the upper bound on a standard deviation of error as
 \begin{equation}
 	\sigma\left(\Re \epsilon\right) < \sqrt{\frac{\Re \langle A(t)B A(t) B \rangle}{\dimension_{\mathrm{eff}}}}
@@ -873,18 +871,18 @@ we finally obtain the upper bound on a standard deviation of error as
 \end{equation}
 From this bound, we see that at infinite temperature, the error is exponentially suppressed in system size, and thus for suitably large systems even a single pure state \(\ket{\psi}\) is enough to obtain a very good approximation of the correlation function.
 It becomes progressively worse with lower temperature, however as the mean error is \(0\) we can always average over a few random
-states. Fortunately, in this thesis, we are only interested in case \(\beta \to 0\), so usually a single run will be enough.
+states to improve it. Fortunately, in this thesis, we are only interested in case \(\beta \to 0\), so usually a single run will be enough.
 
 As an example application, in figure~\ref{fig:spin_autocorr} we present the infinite-temperature spin current autocorrelation functions
 in the nearest-neighbor Heisenberg model, obtained by setting \(r_{\mathrm{max}}=1\) in equations~\eqref{eq:long_range} and~\eqref{eq:spin_current}.
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\textwidth]{Figures/autocorr_spin_current.pdf}
-	\caption{Infinite-temperature autocorrelation function of spin current \(j_{\sigma}\) in isotropic Heisenberg model
+	\caption{Infinite-temperature autocorrelation function of spin current \(j^{\sigma}\) in isotropic Heisenberg model
 		(\(J=1,\;\Delta=1\)), evaluated
 		using Exact Diagonalization for \(L=16,\;18\) and Dynamical Quantum Typicality with Krylov propagator
 		for \(L=16,\;18,\;20,\;22,\;24,\;26\). Already for a modest size of \(L=18\) lattice sites we observe
-		a very good agreement between ED and DQT calculation for a single pure state. Because of eq.~\eqref{eq:dqt_bound},
+		a very good agreement between ED and DQT calculation for a single pure state. Because of Eq.~\eqref{eq:dqt_bound},
 		we expect this agreement to be exponentially better for larger system sizes.}
 	\label{fig:spin_autocorr}
 \end{figure}

@@ -29,7 +29,7 @@ yaxis(shift(0,-10)*Label("Error (log scale)"),Left,a,EndArrow);
 labelx(Label("\textbf{direct}"), ((x-0.4)/2,y+0.13),align=S);
 labelx(Label("\textbf{iterative}"), ((x-0.65)/2,+0.4),align=N);
 
-labelx(Label("$O(m^3)$"), (x-0.4,0.0),align=S,red);
+labelx(Label("$O(\mathcal{D}^3)$"), (x-0.4,0.0),align=S,red);
 
 dot((x-0.25,0.0), linewidth(0.5pt) + red, Fill(red));
 dot((x-0.2,0.0), linewidth(0.5pt) + red, Fill(red));

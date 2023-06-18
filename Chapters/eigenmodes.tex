@@ -7,7 +7,7 @@ In the previous chapter, we have numerically shown the existence of optimal anis
 Here, we will demonstrate that this feature is not unique to the spin current, but
 exhibited also by a class of other, \textit{local} operators. To this end, we will
 employ an algorithm devised by \textcite{Mierzejewski2015a}, originally designed to
-identify local integrals of motion in integrable tight-binding models. As the model
+identify local integrals of motion in integrable tight-binding models.
 we are considering in this work is not integrable, we are not expecting to find
 strictly conserved quantities, but only so-called \textbf{local slowly relaxing
   operators (LSROs)}. We will interpret the discovered observables in terms of
@@ -15,13 +15,30 @@ fermionic currents, describing particle hopping with various ranges.
 Moreover, we will also show how to improve the numerical efficiency of
 the algorithm, by utilizing symmetry subspaces and the Dynamical Quantum Typicality
 approach to correlation functions\footnote{And why it, unfortunately, fails in this case.}
-(cf. section~\ref{sec:DQT}).
+(cf. section~\ref{sec:DQT}). We stress once again that the results presented in this
+chapter were originally obtained by the author of this thesis.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Figures/types_of_ops.jpg}
+  \caption{Comparison of spectral properties of different classes of operators:
+  \textbf{(a)} generic operator in ergodic system, \(\lim_{t \to \infty} \langle O(t)O \rangle = 0\),
+  \textbf{(b)} local integral of motion in integrable systems, \(\lim_{t \to \infty} \langle O(t)O \rangle = \langle OO \rangle \neq 0  \),
+  \textbf{(c)} operator with large stiffness in an integrable model, \(\lim_{t \to \infty} \langle O(t)O \rangle \neq \langle OO \rangle \) but
+  \(\neq 0\),
+  \textbf{(d)} local slowly relaxing operator in a nearly integrable system \(\lim_{t \to \infty} \langle O(t)O \rangle = 0 \) but
+  is large for \(t < 1/\omega^{\ast}  \), here \(\omega^{\ast} \sim 10^{-3} \). 
+  Large peaks visible in the insets on panels (b) and (c) for \(E_n = E_m\) are responsible for finite stiffness after infinite time. 
+  }
+  \label{fig:types_of_ops}
+\end{figure}
+
 
 
 \section{Detecting local slowly relaxing operators \label{sec:slowly_relaxing_operators}}
 \subsection{Theoretical description}
 Let us start by introducing in detail the original algorithm for detecting local integrals
-of motion (LIOMs), following the original article by~\autocite{Mierzejewski2015a}.
+of motion (LIOMs), following the original article by~\textcite{Mierzejewski2015a}.
 In principle, finding a \textbf{complete set of LIOMs} is a conceptually
 nontrivial task, however, this procedure reduces it to a simple application of linear algebra~\autocite{Mierzejewski2015a}.
 In this section, unless stated otherwise, by \(H\) we will denote an arbitrary
@@ -139,7 +156,7 @@ by considering the infinite time average
 This time-averaging amounts to a cut-off, removing all matrix elements between non-degenerate eigenstates
 of the Hamiltonian. A crucial property of this operation is that it is an orthogonal projection
 in the space of operators, i.e. \(\hs{\bar{O}_{\gamma}}{\bar{O}_{\gamma^{\prime}}} = \hs{\bar{O}_{\gamma}}{O_{\gamma^{\prime}}}\). This will
-in the end will allow us to distinguish between different types of conserved quantities.
+in the end allow us to distinguish between different types of conserved quantities.
 However, our ultimate goal concerns LSROs in a system that is not integrable, which dictates the
 need for performing also a finite-time averaging. Unfortunately, a simple omission of the limit
 in Eq.~\eqref{eq:time_avg} destroys the projective character of this operation. To remedy this,
@@ -156,7 +173,7 @@ this expression is equivalent to (see Appendix~\ref{app:fourier} for details)
   \label{eq:finite_time_avg}
 \end{equation}
 and because for Heaviside theta function we have \(\theta(x)^2 = \theta(x)\), the projective character is restored.
-Properties the \(\theta\)-function ensure that the \(\tau\to\infty\) limit of Eq.~\eqref{eq:finite_time_avg}
+Properties of the \(\theta\)-function ensure that the \(\tau\to\infty\) limit of Eq.~\eqref{eq:finite_time_avg}
 agrees with Eq.~\eqref{eq:time_avg}. Notice also the similarity of this expression to the integrated conductivity~\eqref{eq:integrated_conductivity}.
 Indeed, the parameter \(1/\tau\) can be interpreted as \(\Omega\), giving the frequency cut-off for the matrix elements.
 Thus, for finite \(\tau\), \(\hs{\bar{O}_{\gamma}^{\tau}}{\bar{O}_{\gamma^{\prime}}^{\tau}}\) can be related to the low-frequency spectrum of
@@ -300,7 +317,7 @@ we shall suppress the \(\tau\) superscript.
 Algorithm~\ref{alg:liom_alg} summarizes the procedure for finding LIOMs/LSROs, optimized using symmetry subspaces.
 
 There is one more possible improvement to the algorithm. We have spent the better part of chapter~\ref{chap:krylov}
-developing numerical methods that allow us to avoid using exact diagonalization. However, the algorithm presented
+developing numerical methods that allow us to avoid using Exact Diagonalization. However, the algorithm presented
 above requires knowledge of the full eigenspectrum of the Hamiltonian. It turns out, that it is possible
 to escape this requirement, and instead rely on the Dynamical Quantum Typicality approach to correlation functions.
 We have already hinted at that relationship after introducing finite time averaging~\eqref{eq:finite_time_avg}.
@@ -326,12 +343,12 @@ the integrated spectral function~\autocite{Vidmar2021}.
 It tells us that the matrix element of the overlap matrix \(K^{\tau}\),
 for a pair of operators \(A\) and \(B\), is equal to the integrated Fourier transform of the infinite-temperature
 correlation function between \(A\) and \(B\). This means that we can calculate the matrix elements of \(K^{\tau}\)
-by using the Dynamical Quantum Typicality and Lanczos-based approach, which should be more efficient than exact diagonalization.
+by using the Dynamical Quantum Typicality and Lanczos-based approach, which should be more efficient than Exact Diagonalization.
 Unfortunately, this is not the case for the  physical system considered in this thesis,
 i.e. the long-range Heisenberg model. The reason is that the efficiency of Lanczos-based
 correlation function calculation relies on the sparse structure of the Hamiltonian matrix.
 This is of course not the case for a power-law decaying interaction. Thus, we will not use this approach
-here, as its performance is worse than exact diagonalization. However, all the work is not in vain, as this method will surely prove useful
+here, as its performance is worse than Rxact Diagonalization. However, all the work is not in vain, as this method will surely prove useful
 for further research.
 
 \begin{algorithm}[htbp]
@@ -431,14 +448,29 @@ examined the contribution of each basis operator \(O_{\gamma}\) to their structu
 we have calculated the projections \(\hs{O_{\gamma}}{I_{\beta}}^2 = \abs{U_{\gamma\beta}}^2\)
 and discovered that the largest contributions come from three imaginary (current-like) operators
 \begin{align}
-  O_1 & = i \frac{2}{\sqrt{L}} \sum_{\ell=1}^L \left(\Sp_{\ell} \Sm_{\ell+1} - \textrm{H.c.}\right)\nonumber                  \\
-  O_2 & = i \frac{4}{\sqrt{L}} \sum_{\ell=1}^L \left(\Sp_{\ell} \Sz_{\ell+1} \Sp_{\ell+2} - \textrm{H.c.}\right)\nonumber     \\
+  O_1 & = i \frac{2}{\sqrt{L}} \sum_{\ell=1}^L \left(\Sp_{\ell} \Sm_{\ell+1} - \textrm{H.c.}\right)               \\
+  O_2 & = i \frac{4}{\sqrt{L}} \sum_{\ell=1}^L \left(\Sp_{\ell} \Sz_{\ell+1} \Sp_{\ell+2} - \textrm{H.c.}\right)    \\
   O_3 & = i \frac{8}{\sqrt{L}} \sum_{\ell=1}^L \left(\Sp_{\ell} \Sz_{\ell+1} \Sz_{\ell+2} \Sp_{\ell+3} - \textrm{H.c.}\right)
   \label{eq:fermionic_currents}
 \end{align}
 The adjective \textit{fermionic} describing these currents stems from their image under Jordan-Wigner transformation,
+\begin{align}
+  S_j^{+} & =\mathrm{e}^{\left(-i \pi \sum_{k=1}^{j-1} c_k^{\dagger} c_k\right)} \cdot c_j^{\dagger} \\
+  S_j^{-} & =\mathrm{e}^{\left(+i \pi \sum_{k=1}^{j-1} c_k^{\dagger} c_k\right)} \cdot c_j \\
+  S_j^z & = c_j^{\dagger} c_j- \frac{1}{2} \Id
+\end{align}
+
 which maps them into currents describing particle hopping between first-, second-, and third-nearest neighbors in a system
-of spinless fermions.
+of spinless fermions
+\begin{align}
+  O_1 & \to i \frac{2}{\sqrt{L}} \sum_{\ell=1}^L \left(c_{\ell}^{\dagger} c_{\ell+1} - \textrm{H.c.}\right)                  \\
+  O_2 & \to i \frac{4}{\sqrt{L}} \sum_{\ell=1}^L \left(c_{\ell}^{\dagger} c_{\ell+2} - \textrm{H.c.}\right)     \\
+  O_3 & \to i \frac{8}{\sqrt{L}} \sum_{\ell=1}^L \left(c_{\ell}^{\dagger} c_{\ell+3} - \textrm{H.c.}\right)
+  \label{eq:fermionic_currents}
+\end{align}
+Interestingly, the kind of terms that constitute operators \(O_2\) and \(O_3\) do not appear in the
+long-range spin current studied in the previous chapter.  
+
 The dependence of the projections on the parameters is shown in Figure~\ref{fig:projections}.
 
 \begin{figure}[htbp]

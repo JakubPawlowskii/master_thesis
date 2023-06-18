@@ -3,38 +3,38 @@
 
 \section{Nearly integrable quantum systems}
 One of the most widely disputed problems in modern physics is the reconciliation
-of irreversible thermodynamics~\autocite{Huang1987,Feynman2018}
+of irreversible thermodynamics~\autocite{Huang1987, Feynman2018}
 with unitary, time-reversible dynamics predicted by quantum mechanics~\autocite{Landau1976, Sakurai2017}.
-In other words, it is the question of whether a generic, isolated quantum system can and will `forget' about its
+In other words, it is whether a generic, isolated quantum system can and will `forget' about its
 initial, nonequilibrium state. In recent years, this problem has attracted the attention of many physicists,
 especially taking into account experimental evidence of the loss of information, or thermalization, in isolated
 systems~\autocite{Trotzky2012, Rigol2012, Rigol2008, Hung2010, Hofferberth2007}. Understanding this phenomenon is a crucial first step to
 controlling it, and perhaps to the creation of sought-after, robust systems which do not exhibit such
 behavior. After all, `forgetting' about the initial state is equivalent to scrambling of quantum information
 and decoherence, which has been known for a long time to be one of the most important hindrances
-to a functional and scalable quantum computer~\autocite{Shor1995,Lewis-Swan2019}. Given the multitude
+to a functional and scalable quantum computer~\autocite{Shor1995, Lewis-Swan2019}. Given the multitude
 of possible applications of such a device, both purely scientific and commercial, controlling thermalization
 in isolated systems could be the next groundbreaking achievement~\autocite{MacQuarrie2020}.
 
 \paragraph{Preventing thermalization} A possible theoretical explanation of the thermalization in isolated quantum systems
-has been proposed in seminal papers by~\textcite{Deutsch1991,Srednicki1994} in form of an ansatz for matrix elements of
-local quantum observables \(A_{mn} = \matrixel{m}{A}{n}\) (in eigenbasis \(H\ket{n}=\varepsilon_n \ket{n}\) of some Hamiltonian),
+was proposed in seminal papers by~\textcite{Deutsch1991,Srednicki1994} in form of an ansatz for matrix elements of
+local quantum observables \(A_{mn} = \matrixel{m}{A}{n}\) (in eigenbasis \(\hat{H} \ket{n}=E_n \ket{n}\) of some Hamiltonian),
 known as \textbf{Eigenstate Thermalization Hypothesis} (ETH)
 \begin{equation}
-    A_{mn} = A(\bar{\varepsilon}) \delta_{mn} + \mathrm{e}^{-S(\bar{\varepsilon})/2}f_{A}(\bar{\varepsilon},\omega)R_{mn}
+    A_{mn} = A(\bar{E} ) \delta_{mn} + \mathrm{e}^{-S(\bar{E})/2}f_{A}(\bar{E} ,\omega)R_{mn}
     \label{eq:ETH}
 \end{equation}
-where \(\bar{\varepsilon} = (\varepsilon_n+\varepsilon_m)/2\), \(\omega=\varepsilon_n-\varepsilon_m\) and \(S(\bar{\varepsilon})\) is
-the thermodynamic entropy at energy \(\bar{\varepsilon}\),  \(A(\bar{\varepsilon})\) and \(f_{A}(\bar{\varepsilon},\omega)\) are
+where \(\bar{E}  = (E_n+E_m)/2\), \(\omega=E_n-E_m\) and \(S(\bar{E} )\) is
+the thermodynamic entropy at energy \(\bar{E} \),  \(A(\bar{E} )\) and \(f_{A}(\bar{E} ,\omega)\) are
 some smooth functions of their parameters and
-\(R_{mn}\) is a random real or complex variable. The origin of ETH is the Random Matrix Theory~\autocite{Wigner1955,Mehta2004},
+\(R_{mn}\) is a random real or complex variable. The origin of ETH is the Random Matrix Theory~\autocite{Wigner1955, Mehta2004},
 but it was the key insight of Deutsch and Srednicki that connected it directly to statistical mechanics.
 Unraveling the physics behind equation~\eqref{eq:ETH}, we have that, for generic systems,
-long-time (thermalized) expected values of local observables are related to the predictions of Gibbsian ensembles
-known from equilibrium statistical physics~\autocite{DAlessio2016}. Diagonal matrix elements \(A_{nn} \simeq A(\varepsilon_n)\) are smooth functions of energy and
-coincide with the microcanonical average at energy \(\varepsilon_n\), whereas the off-diagonal matrix elements and fluctuations
+the long-time (thermalized) expected values of local observables are related to the predictions of Gibbsian ensembles
+known from equilibrium statistical physics~\autocite{DAlessio2016}. Diagonal matrix elements \(A_{nn} \simeq A(E_n)\) are smooth functions of energy and
+coincide with the microcanonical average at energy \(E_n\), whereas the off-diagonal matrix elements and fluctuations
 of the diagonal ones are postulated to decrease exponentially with system size~\autocite{Beugeling2014}.
-While ETH has been shown to hold analytically in only a few selected systems~\autocite{Magan2016}, numerical clues can be
+While ETH was shown to hold analytically in only a few selected systems~\autocite{Magan2016}, numerical clues can be
 found in various systems with many-body interactions such as hard-core bosons, interacting spin
 chains~\autocite{Santos2010a,Rigol2010,Khatami2013,Rigol2009a} and fermions~\autocite{Neuenhahn2012,Rigol2009}.
 
@@ -52,8 +52,8 @@ In this thesis, we shall concern ourselves only with the case of \textbf{quantum
 \paragraph{Robustness of integrability}
 In quantum mechanics, as opposed to classical mechanics, a unique definition of integrability
 is yet to emerge~\autocite{Caux2011, Yuzbashyan2013}. Nevertheless, a common practice is to take as a sufficient condition of
-integrability the presence of an extensive number (increasing linearly with the system size) of local observables
-that are integrals of motion, i.e. commute with the Hamiltonian, called LIOMs for short. The significance of such
+integrability the presence of an extensive number (increasing linearly with the system size) of \textbf{local observables
+that are integrals of motion}, i.e., commute with the Hamiltonian, called \textbf{LIOMs} for short. The significance of such
 systems is at least twofold.
 First, as already mentioned, they can provide a new method of storage of information, encoded in expectation values
 of LIOMs, which can pave the way for the creation of the sought-after quantum memory.
@@ -63,12 +63,12 @@ Ansatz~\autocite{Faddeev1995,Faddeev1996,Korepin1993} or Generalized Hydrodynami
     Bertini2021, Bastianello2021, Bulchandani2021} lead to considerable insight regarding the nature of integrable systems.
 
 Unfortunately, it is often the case for integrable systems such as Heisenberg, Hubbard or Lieb-Linger
-models whose integrability relies on a certain set of fine-tuned parameters. Any deviation from these parameters, eg.
+models whose integrability relies on a certain set of fine-tuned parameters. Any deviation from these parameters, e.g.,
 in the form of some perturbation, can very easily destroy the integrability. Exactly this situation takes place in most
 experimental setups (albeit some signatures of integrability were observed~\autocite{Khemani2019}, suggesting sufficient
 proximity to an integrable system),  even though the capabilities and precision of control have
-reached remarkable levels~\autocite{Browaeys2020}. Therefore, \textbf{more realistic systems
-    are expected to be described by nearly integrable systems}, containing some non-negligible perturbations that
+reached remarkable levels~\autocite{Browaeys2020}. Therefore, more realistic systems
+are expected to be described by \textbf{nearly integrable systems}, containing some non-negligible perturbations that
 impact integrability~\autocite{Zotos2004, Brandino2015}.
 This renders all the formalism for investigations of purely
 integrable systems inapplicable and forces one to rely mostly on numerical methods (for a recent review
@@ -79,10 +79,10 @@ arbitrarily small perturbation should restore generic chaotic dynamics, which le
 are some reports about surviving traces of integrability, for example in the form of residual quasiconserved
 quantities~\autocite{Brandino2015}. In most cases numerical methods can only access finite
 systems and indirect transitions to infinite system sizes, such as finite-size scaling, pose great difficulties
-when executed properly, eg. first thermodynamic limit and then infinite time limit~\autocite{Sirker2014, CamposVenuti2010}.
+when executed properly, e.g., first thermodynamic limit and then infinite time limit~\autocite{Sirker2014, CamposVenuti2010}.
 Therefore, it is important to first gain a deep understanding of \textbf{weakly-perturbed finite systems}. Such
-endeavor immediately raises a few questions: How strong should a perturbation in a finite
-systems be to destroy integrability and how to efficiently describe resulting slow dynamics?
+endeavor immediately raises a few questions: How strong should be a perturbation in a finite system
+to destroy integrability, and how to efficiently describe resulting slow dynamics?
 Recently, those and other similar questions have been asked concerning the phenomena of ergodicity breaking
 phase transitions~\autocite{Suntajs2020,Suntajs2022}.
 Insight from experiments with ultracold atomic gases suggest also another way for nearly integrable systems to emerge,
@@ -93,42 +93,44 @@ In classical mechanics, answers to those types of questions are given by the Ham
 theory~\autocite{Arnold1990}. There, the distinction between integrable and non-integrable systems is
 well understood. It is known, that for classical systems with \(n\) degrees of freedom
 to be integrable, it is sufficient to have \(n\) integrals of motion \(\{H,F_i\} = 0,\; i \in \{1,\ldots,n\} \) that
-are in involution, i.e. \(\{F_i,F_j\} = 0\) for any \(i,j\in\{1,\ldots,n\}\). Then, dynamics are restricted to an \(n\)-dimensional
+are in involution, i.e., \(\{F_i,F_j\} = 0\) for any \(i,j\in\{1,\ldots,n\}\). Then, dynamics are restricted to an \(n\)-dimensional
 torus in the phase space. The fate of such invariant tori under integrability-breaking perturbations is given by the
 famous Kolmogorov-Arnold-Moser theorem (KAM)~\autocite{Kolmogorov1954, Arnold1963, Moser1962}, stating that for systems
-with finite degrees of freedom, majority of the invariant tori occupying the phase space survive the influence of small
+with finite degrees of freedom, the majority of the invariant tori occupying the phase space survive the influence of small
 perturbations. However, as of now, there is no equivalent of this result in quantum mechanics.
 Nevertheless, such quantum systems are very intriguing as they can facilitate robust prethermalization plateaux,
-i.e. dynamics that at intermediate times resemble that of integrable models
+i.e., dynamics that at intermediate times resemble that of integrable models
 (at least for suitably weak perturbations), even though the system eventually thermalizes at longer times~\autocite{Mallayya2019, Bertini2015,Berges2004,Langen2016}.
 
 \section{Motivation and aim of this dissertation}
 As argued in the previous section, nearly integrable quantum systems constitute an important relaxation
 of constraints imposed on ordinary integrable systems, facilitating experimental realizations. They form the broader context this
-thesis is set in and the main motivation. However, to keep it finite in size, we restrict our attention
-to two concrete problems.
+thesis is set in and the main motivation. However, to keep it finite in size, we narrowed
+our scope to only one concrete physical problem — the dynamics of spin transport in the long-range
+anisotropic Heisenberg spin chain.
 
-First, we provide a pedagogical introduction to the so-called \textbf{Krylov subspace methods} which allow
-us to leverage the sparsity of local observables
+For completeness, the initial part of this thesis is a pedagogical review of the so-called
+\textbf{Krylov subspace methods} which allow us to leverage the sparsity of local observables
 in order to avoid the limitations originating from the exponential growth of many-body Hilbert space.
-Following the exposition by~\textcite{Trefethen1997}, in Chapter~\ref{chap:krylov} we start our journey seemingly far away from
-physics, investigating a general algorithm called Arnoldi iteration, which original aim was to reduce
-a matrix to `almost triangular' or Hessenberg form. Along the way we discover that, as a byproduct,
-Arnoldi iteration produces a remarkably good approximation of extremal eigenvalues and eigenvectors. Contrary
-to most physics texts and in the spirit of the pedagogical nature of this chapter, we try to derive all results when possible
-and motivate them thoroughly when not. Setting course back to physics, next, we assume that our matrices are
+Following the exposition by~\textcite{Trefethen1997}, in Chapter~\ref{chap:krylov} we will start our journey seemingly far away from
+physics, investigating a general algorithm called the Arnoldi iteration, which original aim was to reduce
+a matrix to an `almost triangular' or Hessenberg form. Along the way, we will discover that, as a byproduct,
+Arnoldi iteration produces an excellent approximation of extremal eigenvalues and eigenvectors. Contrary
+to most physics texts and in the spirit of the pedagogical nature of this chapter, we will try to derive all results
+when possible and motivate them thoroughly when not. Setting course back to physics, next, we will assume that our matrices are
 Hermitian and observe how the Arnoldi iteration simplifies tremendously, producing the well known
-Lanczos iteration~\autocite{Sandvik2010}. Then, going beyond just groundstate calculations, we show how to slightly
-modify Lanczos iteration to be able to compute an approximation of action of any analytic function of hermitian
-matrix on a vector. Applying this scheme to the function \(f(x) = \exp\left(-i x t\right)\), we obtain an efficient
+Lanczos iteration~\autocite{Sandvik2010}. Then, going beyond just groundstate calculations, we will show how to slightly
+modify Lanczos iteration to be able to compute an approximation of action of any analytic function of a Hermitian
+matrix on a vector. Applying this scheme to the function \(f(x) = \exp\left(-i x t\right)\), we will obtain an efficient
 way of calculating pure state time evolution, called the Krylov propagator~\autocite{Park1986}.
-At the end of Chapter~\ref{chap:krylov}, we outline the recent concept of Quantum Typicality~\autocite{Bartsch2009}
+At the end of Chapter~\ref{chap:krylov}, we will outline the recent concept of Quantum Typicality~\autocite{Bartsch2009}
 and derive a numerical procedure for efficient calculation of correlation functions, without the need for Exact
-Diagonalization. All algorithms described in chapter~\ref{chap:krylov} were implemented using
+Diagonalization. All algorithms described in chapter~\ref{chap:krylov} were, for the purpose of calculations
+in this thesis, implemented using
 the Armadillo linear algebra library~\autocite{Sanderson2016} and Intel MKL.
 
-
-Our second topic of interest is the \textbf{spin transport in the long-range anisotropic Heisenberg model.}
+The main part of this manuscript is devoted to demonstrating, that for specific parameters, the
+ \textbf{long-range anisotropic Heisenberg model} is a nearly integrable system.
 Existence of many interesting features of quantum many-body systems, such as ballistic dynamics in Heisenberg spin
 chains~\autocite{Zotos1997,Bertini2021},
 exotic frustrated magnetism~\autocite{Nisoli2017}, peculiar phase transitions~\autocite{Sandvik2010a,Yang2021}
@@ -140,7 +142,7 @@ Platforms such as individually controlled Rydberg atoms, or optical lattices pro
 properties of quantum many-body systems. Whereas optical lattice facilitates mostly fermionic
 systems~\autocite{Bakr2009, Greif2016, Parsons2015, Boll2016}, Rydberg atoms can be used to simulate pure spin systems.
 Models such as Ising or XY emerge naturally from their properties~\autocite{Browaeys2020}, and the ability to control
-range of interactions make them suitable for the simulation of long-range models~\autocite{Borish2020}. Using time-periodic
+the range of interactions make them suitable for the simulation of long-range models~\autocite{Borish2020}. Using time-periodic
 driving one can turn naturally existing Hamiltonian into some other, effective one - the so-called Floquet Hamiltonian.
 So far, this method has been applied with great success to create tunable XXZ model~\autocite{Scholl2022}, strongly distance
 selective interactions~\autocite{Hollerith2022}, and tunable XYZ models~\autocite{Steinert2022, Geier2021}.
@@ -149,22 +151,25 @@ models~\autocite{Richerme2014,Jurcevic2014,Hauke2013,Foss-Feig2015,Maghrebi2016,
 yet their dynamical properties are still largely unknown, which explains our interest in long-range anisotropic
 Heisenberg model in this thesis.
 In Chapter~\ref{chap:spin_transport}, motivated by experiments with density expansion in cold atoms~\autocite{Ronzheimer2013,Vidmar2013,Neyenhuis2017},
-we study the dynamics of spin domains using the Krylov propagator, followed by Exact Diagonalization studies of the optical conductivity.
-Chapter~\ref{chap:currents} is devoted to investigating a class of local observables exhibiting similar properties
+we will study the dynamics of spin domains using the Krylov propagator, followed by Exact Diagonalization studies of the optical conductivity.
+Chapter~\ref{chap:currents} is concerned with investigating a class of local observables exhibiting similar properties
 to the spin current, using a numerical procedure searching for most conserved operators~\autocite{Mierzejewski2015a}.
-It is worth noting that the results presented in Chapters~\ref{chap:spin_transport} and~\ref{chap:currents} have
-been recently published in~\textcite{Mierzejewski2023}.
+It is important to stress, that the results presented in Chapter~\ref{chap:spin_transport} were not obtained
+by the author of this thesis, but by other co-authors. Nevertheless, they are included here in order to ensure
+the coherence of the narrative. On the other hand, the results presented in Chapter~\ref{chap:currents} were
+obtained solely by the author of this thesis. Both chapters~\ref{chap:spin_transport} and~\ref{chap:currents}
+contain \textbf{original results, first published in~\textcite{Mierzejewski2023}.} 
 
-In the remainder of this chapter, we provide a short introduction to the long-range anisotropic Heisenberg model
+In the remainder of this chapter, we will provide a short introduction to the long-range anisotropic Heisenberg model
 and other quantities of interest in this thesis.
 
 \section{Long range anisotropic Heisenberg model and spin current}
 
-In this thesis, we study the paradigmatic quantum model of magnetism, the anisotropic Heisenberg
+We study the paradigmatic quantum model of magnetism, the anisotropic Heisenberg
 model, but enriched with a long-range exchange \(J(r) = J/r^{\alpha}\). The full Hamiltonian,
 defined on a one-dimensional lattice with periodic boundary conditions, reads
 \begin{equation}
-    H = \sum_{\ell=1}^{L}\sum_{r=1}^{r_{\mathrm{max}}} J(r) \left[\frac{1}{2} \left(
+    \hat{H}  = \sum_{\ell=1}^{L}\sum_{r=1}^{r_{\mathrm{max}}} J(r) \left[\frac{1}{2} \left(
         \Sp_{\ell}\Sm_{\ell+r} + \Sm_{\ell}\Sp_{\ell+r}\right) + \Delta \Sz_{\ell}\Sz_{\ell+r}
         \right]
     \label{eq:long_range}
@@ -173,12 +178,12 @@ where \(r_{\mathrm{max}}\) is taken to be \(\left\lceil L/2\right\rceil - 1 \), 
 Unless stated otherwise, we will work in units where \(J = 1\).
 The spin\(-\frac{1}{2}\) operators are defined in the usual way
 \begin{equation}
-    S_{\ell}^{a} = \underbrace{\Id \otimes \Id \otimes \ldots \Id}_{\ell-1} \otimes S^{a} \otimes \underbrace{\Id \otimes \ldots \otimes \Id}_{L-\ell}
+    S_{\ell}^{a} \equiv  \underbrace{\Id \otimes \Id \otimes \ldots \Id}_{\ell-1} \otimes S^{a} \otimes \underbrace{\Id \otimes \ldots \otimes \Id}_{L-\ell}
     \label{eq:spin_op}
 \end{equation}
 where \(a\in\{+,-,z\}\), \(\Sp = S^x + i S^y\), \(\Sm = \left(\Sp\right)^{\dagger}\),
 \(\Id\) is a \(2\cross 2\) identity matrix and operators \(S^x,S^y,S^z\) are defined in terms
-of corresponding Pauli matrices and obey the \(\mathfrak{su}(2)\) algebra commutations relations
+of corresponding Pauli matrices and obey the \(\mathfrak{su}(2)\) algebra commutation relations
 \begin{equation}
     \comm{S^a}{S^b} = i \varepsilon_{abc} S^c
 \end{equation}
@@ -195,7 +200,7 @@ have spin up or down, an efficient representation of such states is achieved usi
 Our main interest is in the spin transport in this system. To this end, we first notice that
 the total magnetization, or \(z\) component of the total spin \(\Sz_{\mathrm{tot}}\)
 is a conserved quantity.
-It can be shown by directly evaluating the commutator \(\comm{H}{\Sz_{\mathrm{tot}}}=0\), or by just observing
+It can be shown by directly evaluating the commutator \(\comm{\hat{H} }{\Sz_{\mathrm{tot}}}=0\), or by just observing
 that both spin-flip and interaction terms do not change the number of up/down spins when acting on a state
 from the Ising basis. Thus, we can write down a well-defined continuity equation for the evolution
 of local spin density
@@ -204,15 +209,15 @@ of local spin density
     \label{eq:spin_cont_eq}
 \end{equation}
 where \(\div{j^{\sigma}_{\ell}(t)} = j^{\sigma}_{\ell+1}(t) - j^{\sigma}_{\ell}\) is the
-discrete divergence of the spin current and \(\Sz_{\ell}(t) = e^{i H t} \Sz_{\ell} e^{-i H t}\).
+discrete divergence of the spin current and \(\Sz_{\ell}(t) = e^{i \hat{H}  t} \Sz_{\ell} e^{-i \hat{H}  t}\).
 The time derivative in the above equation is given by the Heisenberg equation
 \begin{equation}
-    \dv{t} \Sz_{\ell}(t) = i \comm{H}{\Sz_{\ell}(t)}
+    \dv{t} \Sz_{\ell}(t) = i \comm{\hat{H} }{\Sz_{\ell}(t)}
     \label{eq:Heisenberg}
 \end{equation}
 Combining equations~\eqref{eq:spin_cont_eq} and~\eqref{eq:Heisenberg}, we get
 \begin{equation}
-    j^{\sigma}_{\ell+1} - j^{\sigma}_{\ell} = i\comm{\Sz_{\ell}}{H}
+    j^{\sigma}_{\ell+1} - j^{\sigma}_{\ell} = i\comm{\Sz_{\ell}}{\hat{H} }
 \end{equation}
 This equation is simple in principle, however, its solution can get tedious in case of more complicated
 operator densities.
@@ -222,7 +227,7 @@ associated with an arbitrary conserved, extensive operator. Let \(X = \sum^{L}_{
 with \(x_{\ell}\) being its local density and \(j^x = \sum^{L}_{\ell=1} j^x_{\ell}\) being the current.
 Then define the polarization operator
 \begin{equation}
-    P = \sum^{L}_{\ell=1}\ell x_{\ell}
+    P \equiv  \sum^{L}_{\ell=1}\ell x_{\ell} 
 \end{equation}
 We will now calculate its derivative in two ways, first using the continuity equation and second using
 the Heisenberg picture. For brevity, we suppress the explicit time dependence of operators.
@@ -231,19 +236,19 @@ the Heisenberg picture. For brevity, we suppress the explicit time dependence of
     \sum^{L}_{\ell=1} \ell j^x_{\ell} - \underbrace{\sum_{\ell=1}^{L} \ell j^x_{\ell+1}}_{\ell \to \ell - 1}
     = \sum_{\ell=1}^{L} \left[\ell j^x_{\ell} - \left(\ell-1\right)j^{x}_{\ell}\right]
     = \sum_{\ell=1}^L j^x_{\ell} = j^x                                                    \\
-    \dv{P}{t} & = \dv{t} \sum_{\ell=1}^L \ell \left(e^{i H t}x_{\ell} e^{-i H t}\right) =
-    \sum_{\ell}^{L} \left(\ell e^{i H t} i \comm{H}{x_{\ell}}e^{-i H t}\right) =
-    e^{i H t} \left(i \sum_{\ell} \ell \comm{H}{x_{\ell}}\right)e^{-i H t}
+    \dv{P}{t} & = \dv{t} \sum_{\ell=1}^L \ell \left(e^{i \hat{H}  t}x_{\ell} e^{-i \hat{H}  t}\right) =
+    \sum_{\ell}^{L} \left(\ell e^{i \hat{H}  t} i \comm{\hat{H} }{x_{\ell}}e^{-i \hat{H}  t}\right) =
+    e^{i \hat{H}  t} \left(i \sum_{\ell} \ell \comm{H}{x_{\ell}}\right)e^{-i \hat{H}  t}
 \end{align}
-From the two equations above we can read off a compact expression for the current operator in Schr{\"o}dinger
+From the two equations above we can read off a compact expression for the current operator in the Schr{\"o}dinger
 picture
 \begin{equation}
-    j^x = i \sum_{\ell=1}^L \ell\comm{H}{x_{\ell}}
+    j^x = i \sum_{\ell=1}^L \ell\comm{\hat{H} }{x_{\ell}}
     \label{eq:polarization}
 \end{equation}
 Substituting \(x_{\ell} = \Sz_{\ell}\) we now quickly derive
 \begin{align}
-    j^{\sigma} & = i \sum_{\ell=1}^L \comm{H}{\Sz_{\ell}} = i \sum_{\ell,\ell^{\prime}=1}^L \sum_{r=1}^{r_{\mathrm{max}}}
+    j^{\sigma} & = i \sum_{\ell=1}^L \comm{\hat{H} }{\Sz_{\ell}} = i \sum_{\ell,\ell^{\prime}=1}^L \sum_{r=1}^{r_{\mathrm{max}}}
     \ell J(r) \left(\frac{1}{2}\comm{\Sp_{\ell^{\prime}}\Sm_{\ell^{\prime}+r}}{\Sz_{\ell}}
     + \frac{1}{2}\comm{\Sm_{\ell^{\prime}}\Sp_{\ell^{\prime}+r}}{\Sz_{\ell}}
     + \Delta \cancel{\comm{\Sz_{\ell^{\prime}}\Sz_{\ell^{\prime}+1}}{\Sz_{\ell}}} \right) \nonumber                       \\
@@ -264,15 +269,15 @@ Substituting \(x_{\ell} = \Sz_{\ell}\) we now quickly derive
 which is our desired spin current. It will be the quantity of central interest in Chapter~\ref{chap:spin_transport}.
 
 Before we finish the introductory chapter, let us notice two symmetries shared by the
-Hamiltonian~\eqref{eq:long_range} and spin current~\eqref{eq:spin_current}, which are particularly useful for numerical calculations.
-First of them we have just met -- it manifests itself as the conservation of magnetization,
-i.e. \(\comm{H}{\Sz_{\mathrm{tot}}}=0\).
+Hamiltonian~\eqref{eq:long_range} and spin current~\eqref{eq:spin_current}, which are particularly useful for
+numerical calculations. First of them, we have just met -- it manifests itself as the conservation of magnetization,
+i.e. \(\comm{\hat{H} }{\Sz_{\mathrm{tot}}}=0\).
 This \(U(1)\) symmetry allows us to decompose the full Hilbert space into parts consisting of states with the same total \(z\)-component
 of spin. In more mathematical terms, we have the following
 \begin{equation*}
     \mathcal{H} = \bigoplus_{j = 0}^{L} \mathcal{H}_j \text{, where } \big(\forall \ket{\psi} \in \mathcal{H}_j \big) \big(\Sz_{tot} \ket{\psi} = \frac{1}{2}(2j-L) \ket{\psi} \big)
 \end{equation*}
-i.e., the full Hilbert space with \(\dim{\mathcal{H}} = 2^L\) can be decomposed into the direct sum of its proper subspaces
+i.e., the full Hilbert space with \(\dim{\mathcal{H}} = 2^L\) can be decomposed into the direct sum of its subspaces
 \(\mathcal{H}_j\) such that \(\dim{\mathcal{H}_j} = \binom{L}{j}\) and all states in a given subspace correspond to the same
 eigenvalue of \(\Sz_{\mathrm{tot}}\) operator. The index \(j\) denotes the number of sites with spin up.
 It turns out that the Ising basis we use as a default for numerical calculations in spin systems
@@ -289,11 +294,11 @@ using the eigenbasis of \(T\), the one-site translation operator defined on the 
 \end{equation}
 where \(\sigma_{\ell} \in \{\downarrow, \uparrow\}\). It is easy to see that \(T\) is unitary,
 thus its eigenvalues must lie on the unit circle in the complex plane~\autocite{Horn2012}.
-In a finite chain of length \(L\) we have \(T^L = \Id\) and the eigenvalues of \(T\) are
+In a finite chain of length \(L\) we have \(T^L = \Id_{L\cross L}\) and the eigenvalues of \(T\) are
 quantized, i.e. of the form \(\mathrm{e}^{i k}\), where \(k \in \left\{0,\frac{2\pi}{L},\ldots,\frac{2\pi}{L}(L-1)\right\}\).
 As a consequence, the Hilbert space can be decomposed into the direct sum of eigenspaces of \(T\)
 \begin{equation}
-    \mathcal{H} = \bigoplus_{m=0}^{L-1} \mathcal{H}_m \text{, where } \big(\forall \ket{\psi} \in \mathcal{H}_m \big) \big(T \ket{\psi} = \exp\left({i \frac{2\pi}{L}m}\right) \ket{\psi}\big)
+    \mathcal{H} = \bigoplus_{m=0}^{L-1} \mathcal{H}^{\prime}_m \text{, where } \big(\forall \ket{\psi} \in \mathcal{H}^{\prime}_m \big) \big(T \ket{\psi} = \exp\left({i \frac{2\pi}{L}m}\right) \ket{\psi}\big)
 \end{equation}
 and once again the Hamiltonian and the spin current are block diagonal in this basis, which each block being
 about \(L\) times smaller than the full Hilbert space.
@@ -305,4 +310,4 @@ still exponentially large in \(L\), but much smaller than the full Hilbert space
 
 To end this chapter we note that these two symmetries are not the only ones present in this model.
 For a comprehensive treatment of this topic, together with details of numerical implementation, we 
-once again refer the reader to the standard text on this topic, namely ~\textcite{Sandvik2010}.
+once again refer the reader to the standard text on this topic~\autocite{Sandvik2010}.

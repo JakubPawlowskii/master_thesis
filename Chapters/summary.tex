@@ -11,13 +11,13 @@ for integrable systems cease to work for the case of nearly integrable systems, 
 to resort to numerical methods. It is impossible to touch upon all the aspects of this
 topic in a short thesis, thus we had two concrete goals in mind.
 
-The first one was to provide a comprehensive introduction to the numerical methods, beyond the simplest exact
-diagonalization, that are used in the study of quantum many-body systems. To this end, we presented
+We started with a comprehensive introduction to the numerical methods, beyond the simplest Exact
+Diagonalization, that are used in the study of quantum many-body systems. To this end, we presented
 the Krylov subspace methods, which are designed to leverage the sparsity of matrix representations of
 physical observables, in order to speed up the computations. Starting from the very beginning, we
 introduced in detail the Arnoldi iteration, which is most often used to find the extremal eigenvalues
-of general, non-hermitian matrices, even though it does so rather accidentally. We then moved on to
-the case of hermitian matrices, where this procedure reduces to the well-known and versatile
+of general, non-Hermitian matrices, even though it does so rather accidentally. We then moved on to
+the case of Hermitian matrices, where this procedure reduces to the well-known and versatile
 Lanczos iteration. As an immediate application of the Lanczos iteration, beyond just the ground state
 computations, the so-called Krylov propagator was presented, which allows one to compute the time evolution of
 a state vector, without the need for diagonalization of the Hamiltonian. Finally, we described,
@@ -25,7 +25,7 @@ and partially derived, an approach to the correlation functions, based on the Kr
 propagator and the concept of Quantum Typicality, which allows one to compute the correlation functions
 without explicitly carrying out the trace over all many-body states.
 
-The second goal was to apply those methods to the study of the dynamics of the spin transport in the anisotropic
+The main goal was to apply those methods to the study of the dynamics of the spin transport in the anisotropic
 Heisenberg model with power-law interaction \(J(\alpha) = J/r^{\alpha}\), which is an important example of a
 long-range interacting system. Motivated by experimental setups, we started by considering the
 expansion of a domain-wall initial state and found a non-monotonic dependence of the
@@ -39,7 +39,9 @@ It revealed a regime of quasi-ballistic transport, where the spectral sum
 of the optical conductivity accumulated at frequencies below \(\Omega^{\ast}/J \sim
 10^{-3}-10^{-2}\). As a result, along the line of optimal anisotropy, the spin
 transport is ballistic for surprisingly long times, up to \(t \sim 1/\Omega^{\ast}\),
-which is in agreement with the results of the domain-wall expansion.
+which is in agreement with the results of the domain-wall expansion. The entirety of
+the results presented in chapter~\ref{chap:spin_transport} were the result of the
+work done by the coauthors of~\textcite{Mierzejewski2023}.
 We also investigated the properties of local, slowly relaxing observables
 (LSROs), obtained using a numerical algorithm designed to find local integrals of
 motion in integrable systems. For completeness, we provided a rather detailed
@@ -54,9 +56,10 @@ current-like operators, corresponding via the Jordan-Wigner transformation to lo
 even though the Hamiltonian does not admit a representation in terms of two-body fermionic operators.
 Finally, using finite-time averaging version of the algorithm, we investigated the frequency dependence
 of the LSROs, akin to the optical conductivity, and found that the concentration of the spectral weight
-resembles the one of the optical conductivity.
+resembles the one of the optical conductivity. Chapter~\ref{chap:currents} contains the original work
+of the author of this thesis.
 
-The main result of this thesis, and the broader research published in \autocite{Mierzejewski2023}, is the
+The main result of this work, and the broader research published in \autocite{Mierzejewski2023}, is the
 discovery of the line of optimal anisotropy, \(\Delta_{O}(\alpha) = \exp(-\alpha +2)\),
 along which the spin transport is ballistic for surprisingly long times \(tJ \sim 10^{-2} -10^{-3}\).
 This line smoothly interpolates between integrable two models with purely ballistic
