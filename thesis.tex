@@ -599,7 +599,7 @@
 			\put(200,100){\makebox(0,0)[l]{\large Master thesis}}
 			\put(200,80){\makebox(0,0)[l]{\large under supervision of}}
 			% dane promotora
-			\put(200,60){\makebox(0,0)[l]{\large prof.\ dr hab.\ Marcin Mierzejewski}}
+			\put(200,60){\makebox(0,0)[l]{\large Professor Marcin Mierzejewski}}
 			
 			\put(115,-70){\includegraphics[width=0.15\textwidth]{Figures/pwr_logo_english.pdf}}
 			\put(106,-85){\makebox(0,0)[bl]{\large \textsc{Wrocław 2023}}}
@@ -613,19 +613,21 @@
 % \cleardoublepage{}
 \newpage{}
 \pagestyle{tableOfContentStyle}
-\vspace*{14cm}
+\vspace*{12cm}
 \begin{center}
 	\epigraph{\normalsize
-		I 
-		% would like to express my sincere gratitude to prof. dr hab.\ Marcin Mierzejewski for being my
-		% guide into the world of quantum many-body physics. Without his immense knowledge and willingness
-		% to help, this work would not have been possible.\\
-		% \vspace*{0.5cm}
-		% I also own my heartfelt appreciation to prof.\ dr hab.\ Katarzyna Sznajd-Weron who
-		% sparked my love for theoretical physics and introduced me to academia.\\
-		% \vspace*{0.5cm}
-		% Last but not least, I would like to thank my parents, for without them I would not be here
-		% where I am today.
+		First and foremost, I would like to express my deepest gratitude to my supervisor,
+		Professor Marcin Mierzejewski, for his guidance, expertise, and unwavering support throughout
+		this research endeavor. His profound knowledge and insightful suggestions have played a crucial
+		role in shaping the direction and content of this thesis.\\
+		\vspace*{0.5cm}
+		I am also indebted to my parents for their constant encouragement, understanding, and support throughout
+		my academic journey. Their love and belief in me have been one of the primary driving forces
+		behind my accomplishments.\\
+		\vspace*{0.5cm}
+		Lastly, I would like to express my heartfelt appreciation to all my friends for their companionship,
+		encouragement, and the moments of respite they provided during this demanding undertaking.
+		Their support and laughter have made this academic pursuit more enjoyable and manageable.
 	}{}
 \end{center}
 % \cleardoublepage{}
@@ -636,25 +638,26 @@
 \pagestyle{tableOfContentStyle}
 \vspace*{6cm}
 \abstract{\noindent
-	A
-	% pparent incompatibility of classical irreversible thermodynamics with
-	% unitary quantum dynamics has for a long time been a topic of intensive research.
-	% One possible approach to reconciliation between these two fields in generic nonintegrable
-	% systems is given by \textit{Eigenstate Thermalization Hypothesis}. On the other hand,
-	% in integrable systems thermalization is hindered by the existence of extensive
-	% number of (quasi)local integrals of motions, (Q)LIOMs. In this work we investigate a class
-	% of \textit{noncommuting} (Q)LIOMs originating from symmetries
-	% of spin-\(1/2\) XXZ model present for certain values of anisotropy parameter.
-	% However, it is the boundary between chaotic and integrable systems
-	% that is the most interesting, as it is still largely unknown. To this end, a weak
-	% integrability-breaking perturbation is introduced and the relaxation of aforementioned
-	% noncommuting (Q)LIOMs is studied. We report a novel Gaussian-like decay of autocorrelation functions,
-	% together with a linear, instead of the expected quadratic, scaling of relaxation times with
-	% perturbation strength. This result is a consequence of the origin of these noncommuting
-	% quantities being the macroscopical degeneracy of many-body spectra for high-symmetry anisotropy values.
+	Slowing down thermalization in isolated quantum systems is one of the most promising
+	problems in modern condensed matter physics, with a wide range of immediate applications.
+	A possible path to achieve this goal is to consider integrable systems, in which thermalization
+	is hindered by the existence of an extensive number of local integrals of motion.
+	Unfortunately, the integrability of quantum systems is often a fragile phenomenon and relies on a fine-tuned
+	set of parameters. More realistic systems are therefore expected to be
+	\textit{nearly integrable}, i.e. contain some small integrability-breaking perturbation.
+	In this work, we investigate spin transport in the long-range anisotropic Heisenberg model,
+	with power-law decaying interactions \(J(\alpha) = J/r^{\alpha }\), and show that it can be
+	considered a nearly integrable system.
+	We arrive at this conclusion based on the analysis of spin domain expansion (short times)
+	and the linear response theory of optical conductivity (long times), which both indicate 
+	the presence of quasiballistic spin transport along an optimal line \(\Delta \approx \exp(-\alpha + 2)  \)
+	in the parameter space. Moreover, using an algorithm detecting most conserved operators,
+	we demonstrate that this behavior is not unique to the nonlocal spin current,
+	but also exhibited by a family of slowly relaxing, local fermionic currents. All novel results
+	presented in this thesis were first published in a paper by~\textcite{Mierzejewski2023}.
 }
 \begin{quotation}
-	\noindent \textbf{Keywords:} \textit{integrals of motion, ETH, nearly integrable systems, spin chains}
+	\noindent \textbf{Keywords:} \textit{Eigenstate Thermalization Hypothesis, spin transport, local slowly relaxing operators, nearly integrable systems, spin chains}
 \end{quotation}
 \newpage{}
 \blankpage{}
@@ -710,8 +713,6 @@
 \appendix
 \pagestyle{appendixStyle}
 
-% \input{Chapters/momentum_space.tex}
-% \cleardoublepage{}
 
 \input{Chapters/optical_cond.tex}
 \cleardoublepage{}
