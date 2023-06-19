@@ -43,7 +43,6 @@ floating point numbers), which is 9000 times more than the typical consumer hard
 memory platform allowing for handling such large matrices, the computational complexity of ED, requiring \(O(\dimension^3)\) operations,
 is the next major hurdle. Therefore, it is exceedingly
 difficult to probe the thermodynamic limit physics and ED calculations suffer from finite size effects.
-% \vspace*{-0.5cm}
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=0.75\linewidth]{Figures/direct_iterative.pdf}
@@ -53,7 +52,6 @@ difficult to probe the thermodynamic limit physics and ED calculations suffer fr
 		operations before any results can be extracted. Figure reproduced from~\textcite{Trefethen1997}.}
 	\label{fig:direct_iter}
 \end{figure}
-
 A closer investigation of the Hamiltonian matrix, expressed in the Ising basis,
 quickly reveals the inefficiency of dense storage. Looking at Figure~\ref{fig:sparse_structure}, we see that most of
 the matrix elements are zero and only about \(\mu \propto \dimension \) out of \(\dimension^2\) matrix elements
@@ -99,9 +97,8 @@ write down the following \(n\)-step approximation to the full decomposition
 	AQ_{n}=Q_{n+1}\tilde{H}_{n}
 	\label{eq:krylov_n_approx}
 \end{equation}
-From this equation we can deduce an \(n+1\) term recurrence relation for the column \(\vectorbold{q_{n+1}}\), however
+From this equation we can deduce an \(n+1\) term recurrence relation for the column \(\vectorbold{q_{n+1}}\), however,
 it is perhaps best illustrated with a simple example.
-
 \begin{example}
 	Let \(A\in \CC^{3\cross 3}\), \(AQ=QH\) be the Hessenberg decomposition and corresponding matrix elements
 	be denoted by lowercase letters. We consider the approximation for \(n = 2\), i.e. \(AQ_2 = Q_3 \tilde{H}_2\).
@@ -173,7 +170,6 @@ Generalizing the above example, we arrive at the desired \(n+1\) term recurrence
 	\vectorbold{q_{n+1}} = \frac{A \vectorbold{q_n} - \sum_{m=1}^{n} h_{mn}\vectorbold{q_m}}{h_{n+1,n}}
 	\label{eq:arnoldi_recurrence}
 \end{equation}
-
 We can now easily cast the above recurrence into an algorithm:
 \begin{algorithm}[H]
 	\algrenewcommand\algorithmicrequire{\textbf{Input: }}
@@ -195,12 +191,9 @@ We can now easily cast the above recurrence into an algorithm:
 		\EndFor
 	\end{algorithmic}
 \end{algorithm}
-
-Step 9 of the Algorithm~\ref{alg:arnoldi} may be questionable, as we are dividing by a norm of a vector, which
-after all can be equal to zero. However, in practical applications of Arnoldi iteration, it usually means
+\noindent Step 9 of the Algorithm~\ref{alg:arnoldi} may be questionable, as we are dividing by a norm of a vector, which
+after all, can be equal to zero. However, in practical applications of Arnoldi iteration, it usually means
 that our calculations have converged and the iterations may be stopped.
-
-
 Examining closely the Arnoldi iteration algorithm, we notice that it is essentially the Gram-Schmidt
 procedure applied to the vectors \(\{\,\vectorbold{v}, A\vectorbold{v},\ldots, A^{n-1}\vectorbold{v}\,\}\) and hence the
 vectors \(\{\,\vectorbold{q_1}, \vectorbold{q_2},\ldots,\vectorbold{q_n}\,\}\) form an orthonormal basis
@@ -226,7 +219,6 @@ the desired restriction can be written as \(Q_n Q^{\dagger}_n A\). Transforming 
 \(Q_n\) we get \( Q_n^{-1}\left(Q_n Q^{\dagger}_n A\right)Q_n = Q^{\dagger}_n A Q_n\). Thus, matrix \(H_n\)
 is the orthogonal projection of \(A\) to the subspace \(\K{n}\), represented in the basis
 \(\{\,\vectorbold{q_1},\vectorbold{q_2},\ldots,\vectorbold{q_n}\,\}\).
-
 \(H_n\) is once again a square matrix, so we can talk about its eigenvalues \(\{\theta_i\}_{i = 1}^n\)
 in the usual fashion. These numbers are called the \textbf{Arnoldi eigenvalues estimates at step \(n\)}, or
 the \textbf{Ritz values with respect to \(\K{n}\)}.
@@ -262,8 +254,8 @@ Given a matrix \(A\in\CC^{m\cross m}\) and a vector \(\vectorbold{v}\in \CC^m\),
 \( p \in P^n \equiv \{\, a_0 + a_1 z + \ldots + a_{n-1} z^{n-1} + z^n \mid a_0,a_1,\ldots a_{n-1}\in \CC \,\} \)\\
 such that \(\norm{p(A)\vectorbold{v}}\) is minimized.
 \end{titled-frame}
-Remarkably, the Arnoldi approximation is an exact solution to this problem. This fact is interesting enough that
-we state it here as a theorem and, following~\textcite{Trefethen1997}, provide a complete proof.
+\noindent Remarkably, the Arnoldi approximation is an exact solution to this problem. This fact is interesting enough that
+we state it here as a theorem and, following~\textcite{Trefethen1997}, provide complete proof.
 
 \begin{theorem}
 	If \(\textrm{dim}\left(\K{n}\right) = n\), i.e. matrix having columns \(\vectorbold{v},A\vectorbold{v},\ldots, A^{n-1}
@@ -282,7 +274,7 @@ we state it here as a theorem and, following~\textcite{Trefethen1997}, provide a
 		\vectorbold{r}^{\ast} = \operatorname*{arg\,min}_{\vectorbold{r}\in\CC^n}\norm*{A^n \vectorbold{v} - Q_n \vectorbold{r}}
 	\end{equation*}
 	To achieve that, we need to have \(p(A)\vectorbold{v}\perp \K{n}\), that is \(p(A)\vectorbold{v}\) must
-	be orthogonal to all basis vectors spanning \(\K{n}\). This is consisely expressed as
+	be orthogonal to all basis vectors spanning \(\K{n}\). This is concisely expressed as
 	\(Q^{\dagger}_{n} p(A)\vectorbold{v} = \vectorbold{0}\in \CC^n\).
 
 	Now, we know that the Hessenberg factorization \(A = QHQ^{\dagger}\) exists, and is approximated by \(n\) steps
@@ -301,9 +293,8 @@ we state it here as a theorem and, following~\textcite{Trefethen1997}, provide a
 	\(Q_n\), and matrix \(Y\in\CC^{(m-n)\cross n}\) has only the upper-right entry different from zero
 	(the one from the last row of \(\tilde{H}_n\)). Using the Hessenberg factorization we can write our condition
 	as \(Q_n^{\dagger} Q p(H) Q^{\dagger}\vectorbold{v} = \vectorbold{0}\), and because equation~\eqref{eq:block_matrices}
-	introduces partitions into \textit{conformable} blocks, we can use the rules of block-matrix algebra to simiplify
+	introduces partitions into \textit{conformable} blocks, we can use the rules of block-matrix algebra to simplify
 	it further~\autocite{Eves1980}.
-
 	First, let us investigate closely the structure of \(p(H)\). We observe that
 	\begin{align*}
 		H^2 & = \left[\begin{array}{cc}
@@ -496,9 +487,8 @@ The simplest form of Lanczos iteration presented in Algorithm~\ref{alg:lanczos} 
 only the ground state eigenvector with machine precision because eigenvectors of excited states are plagued
 by the loss of orthogonality stemming from the nature of floating point numbers. We shall have a brief look at this problem
 at the end of this section.
-
 The ground state vector \(\ket{\psi_0}\) can be then read of as the first column \(Q_n V_n\). However, there is a problem.
-To conserve memory, we have not constructred the whole matrix \(Q_n\) explicitly, but only three of its columns
+To conserve memory, we have not constructed the whole matrix \(Q_n\) explicitly, but only three of its columns
 at a given time and hence do not have access to the matrix product \(Q_n V_n\). We need a second pass of the Lanczos
 iteration, with a single line added for iterative calculation of the first column. It can be summarized by the
 the following piece of pseudocode:
@@ -537,7 +527,6 @@ should be stopped as soon as the desired accuracy is reached. Taking \(E_n^0\) t
 small \(\epsilon\), e.g. \(10^{-14}\). As long as it is nondegenerate, the convergence usually happens quite quickly for
 both the lowest eigenvalue and corresponding eigenvector. To reliably obtain higher eigenstates one needs to perform
 reorthogonalization, but it requires keeping the matrix \(Q_n\) in memory which can be very costly.
-
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=\linewidth]{Figures/lanczos_L_82.pdf}
@@ -549,9 +538,8 @@ reorthogonalization, but it requires keeping the matrix \(Q_n\) in memory which 
 		we see that the ground state is triple degenerated, instead of unique as it should be.}
 	\label{fig:ghosts}
 \end{figure}
-
 This instability can manifest itself in an interesting way, namely in the form of additional eigenvalues, called Lanczos `ghosts'.
-They are spurious copies of already found eigenvalues, which start apperating after too many iteration steps (cf. Fig.~\ref{fig:ghosts})
+They are spurious copies of already found eigenvalues, which start appearing after too many iteration steps (cf. Fig.~\ref{fig:ghosts})
 They are difficult to understand rigorously, however~\textcite{Trefethen1997} offers a nice heuristic explanation.
 Reaching convergence of some Arnoldi approximated eigenvalue to the true eigenvalue of A causes annihilation
 of the corresponding eigenvector component in the vector \(\ket{q}\). However, rounding errors originating from
@@ -653,8 +641,8 @@ It is now very simple to cast these expressions into a concrete algorithm
 \end{algorithm}
 
 We finish this section with a remark, that the real-time propagator is not the only function of the Hamiltonian which can
-be calculated using Lanczos techniques. Fairly often encounterd are also the imaginary-time propagator \(\exp\left(-\beta H\right)\)
-and pure state Green's function of some obervable \(Q\): \(\bra{\psi_{\epsilon_0}} Q \left(\omega + i\eta +\epsilon_0
+be calculated using Lanczos techniques. Fairly often encountered are also the imaginary-time propagator \(\exp\left(-\beta H\right)\)
+and pure state Green's function of some observable \(Q\): \(\bra{\psi_{\epsilon_0}} Q \left(\omega + i\eta +\epsilon_0
 + H \right)^{-1} Q \ket{\psi_{\epsilon_0}}\)~\autocite{Dagotto1994}. However, we will not need them for this thesis.
 
 
@@ -701,7 +689,9 @@ the equal \textit{a priori} probability postulate, by a fundamentally different 
 statistical ensembles or time averages, but to individual states. Another key characteristic of
 this new postulate, dubbed \textbf{general canonical principle}~\autocite{Popescu2006} or \textbf{canonical typicality}~\autocite{Goldstein2006}
 is the existence of a rigorous mathematical proof, unlike in the case of equal
-\textit{a prior} probability postulate. Let us now consider an isolated quantum system, called the universe \(U\), partitioned
+\textit{a prior} probability postulate. 
+
+Let us now consider an isolated quantum system, called the universe \(U\), partitioned
 into two components, the system \(S\) and the much larger environment \(E\). In the language of Hilbert spaces, this decomposition is
 \(\mathcal{H}_U = \mathcal{H}_S \otimes \mathcal{H}_E\) such that \(\dimension_S = \mathrm{dim}\left(\mathcal{H}_S\right)
 \ll \dimension_E = \mathrm{dim}\left(\mathcal{H}_E\right)\). We can also impose some global constraint \(R\) for the universe, represented
@@ -712,7 +702,7 @@ We take the restricted universe to be in a maximally entangled state
 \end{equation}
 capturing our lack of knowledge about the system and being consistent with our intuition from statistical mechanics, about assigning
 \textit{a priori} equal probability to each pure state. Now, we define a canonical state of our system \(S\), as the density
-matrix obtaiend from \(\rho_R\) by tracing out the degrees of freedom of the environment \(E\)
+matrix obtained from \(\rho_R\) by tracing out the degrees of freedom of the environment \(E\)
 \begin{equation}
 	\rho_S^{\mathrm{C}} = \Tr_E\left(\rho_R\right)
 \end{equation}
@@ -722,7 +712,7 @@ and the state of the system
 	\rho_S(\psi) = \Tr_R \left(\ketbra{\psi}{\psi}\right)
 \end{equation}
 will be very close to the canonical state
-\(\rho_S^{\mathrm{C}}\). Moreover, this `closeness' can be quanitfied very precisely, using a mathematical result from the
+\(\rho_S^{\mathrm{C}}\). Moreover, this `closeness' can be quantified very precisely, using a mathematical result from the
 asymptotic theory of finite dimensional normed spaces called Levy's lemma~\autocite{VitaliD.Milman1986}, which
 tells us about the properties of typical points on high-dimensional hyperspheres. Because of normalization, pure quantum states
 can be represented as the point of a hypersphere, hence the lemma is applicable.
@@ -737,7 +727,7 @@ and the \textbf{Hilbert-Schmidt norm}
 \begin{equation}
 	\norm*{\rho}_2 = \sqrt{\Tr\left(\rho^{\dagger}\rho\right)}\;.
 \end{equation}
-The trace norm is used directly in the preciste statements of the general canonical principle, because
+The trace norm is used directly in the precise statements of the general canonical principle, because
 \(\norm*{\rho_1 - \rho_2}_1\) quantifies how hard is to tell apart \(\rho_1\) and \(\rho_2\) using measurements.
 Indeed, it can be shown that \(\norm*{\rho}_1 = \mathrm{sup}_{\norm{A}\leq 1} \Tr(\rho A)\), where \(\norm{\cdot}\) is the operator norm.
 The Hilbert-Schmidt norm is used during the proof, as it is a bit easier to manipulate and can be easily related to the
@@ -786,12 +776,12 @@ Another approach to Quantum Typicality is not concerned directly with quantum st
 expectation values of quantum observables.
 It was shown that for states drawn from a particular distribution in Hilbert space, the expectation
 values of a generic observable \(Q\) are very similar~\autocite{Reimann2007}. This result was further extended
-in the case of a unitarly invariant probability distribution, that is normalized states of the form
+in the case of a unitarily invariant probability distribution, that is normalized states of the form
 \begin{equation}
 	\ket{\psi} = \sum_{i = 1}^{\dimension} c_i \ket{i}
 \end{equation}
-where \(\Re c_i\) and \(\Im c_i\) are drawn from multidimensional Gaussian distribuion with zero mean,
-and \(\{\ket{i}\}_{i=1}^{\dimension}\) is an arbitrary basis. Technicaly, because \(\sum_{i=1}^{\dimension}\abs{c_i}^2 = 1\),
+where \(\Re c_i\) and \(\Im c_i\) are drawn from multidimensional Gaussian distribution with zero mean,
+and \(\{\ket{i}\}_{i=1}^{\dimension}\) is an arbitrary basis. Technically, because \(\sum_{i=1}^{\dimension}\abs{c_i}^2 = 1\),
 the coefficients are not independent, thus the full distribution is not necessarily Gaussian. However,
 Central Limit Theorem ensures that for \(\dimension\) suitably large the distribution is indeed close to Gaussian,
 with the standard deviation equal \(1/\sqrt{2\dimension}\)~\autocite{Gemmer2009}.
@@ -807,6 +797,7 @@ were derived~\autocite{Bartsch2009}. They are as follows
 Proof of the above equations is not difficult conceptually, however, requires evaluation of rather
 cumbersome integrals over high-dimensional hyperspheres so we shall refrain from spelling it out in full.
 Interested readers can find all the details in a book by~\textcite{Gemmer2009}.
+
 Let us now take \(Q(t) = \hat{\rho}A(t)B\)
 and define a quantity
 \begin{equation}

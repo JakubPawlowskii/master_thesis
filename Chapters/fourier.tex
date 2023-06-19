@@ -3,47 +3,47 @@
 The goal of this appending is the calculation of two Fourier transforms, which appear in the main text.
 They originate from the definition of finite-time averaging~\eqref{eq:finite_time_avg} and
 the integrated spectral function~\eqref{eq:integrated_spectral}.
-
 \section{Fourier transform of the correlation function}
 Let us begin with the latter one,
 as it is simpler. We have, starting from the left-hand side of~\eqref{eq:fourier_corr}
+{\allowdisplaybreaks
 \begin{align}
     \mathcal{F}\left[\hs{A(t)}{B}\right] & = \lim _{\varepsilon \to 0^+} \frac{1}{2 \pi} \int_{-\infty}^{\infty}
     \mathrm{e}^{i \omega t- \vert t \vert  \varepsilon}\hs{A(t)}{B} \dd{t} = \lim _{\varepsilon \to 0^+} \frac{1}{2 \pi}
     \int_{-\infty}^{\infty} \mathrm{e}^{i \omega t-\vert t \vert  \varepsilon} \frac{1}{\dimension}
-    \Tr\left[\left(e^{iHt}Ae^{-iHt}\right)^{\dagger}B\right] \dd{t} \nonumber                                                             \\
+    \Tr\left[\left(\mathrm{e}^{i \hat{H}  t}A\,\mathrm{e}^{-i \hat{H}  t}\right)^{\dagger}B\right] \dd{t} \nonumber                                                             \\
                                          & =\lim _{\varepsilon \to 0^+} \frac{1}{2 \pi}
     \int_{-\infty}^{\infty} \mathrm{e}^{i \omega t-|t| \varepsilon} \frac{1}{\dimension}
-    \Tr\left[e^{iHt}\left(\sum_{m} \ketbra{m}{m}\right)
-    A\left(\sum_{n} \ketbra{n}{n}\right)e^{-iHt}B\right]\dd{t}  \nonumber                                                                 \\
+    \Tr\left[\mathrm{e}^{i \hat{H}  t}\left(\sum_{m} \ketbra{m}{m}\right)
+    A\left(\sum_{n} \ketbra{n}{n}\right)\,\mathrm{e}^{-i \hat{H}  t}B\right]\dd{t}  \nonumber                                                                 \\
                                          & = \frac{1}{\dimension} \frac{1}{2 \pi}\sum_{n,m} \lim _{\varepsilon \to 0^+}
     \int_{-\infty}^{\infty} \mathrm{e}^{i \omega t-\vert t \vert  \varepsilon}
-    \Tr\left[e^{i \epsilon_m t}\ketbra{m}{m} A\ketbra{n}{n}e^{-i \epsilon_n t}B\right] \dd{t} \nonumber                                   \\
+    \Tr\left[\mathrm{e}^{i E_m t}\ketbra{m}{m} A\ketbra{n}{n}\,\mathrm{e}^{-i E_n t}B\right] \dd{t} \nonumber                                   \\
                                          & = \frac{1}{\dimension} \frac{1}{2 \pi}\sum_{n,m} A_{mn}  \lim _{\varepsilon \to 0^+}
-    \int_{-\infty}^{\infty} \mathrm{e}^{i \omega t-|t| \varepsilon}e^{i (\epsilon_m-\epsilon_n) t}
+    \int_{-\infty}^{\infty} \mathrm{e}^{i \omega t-|t| \varepsilon}\,\mathrm{e}^{i (E_m-E_n) t}
     \sum_{k} \underbrace{\braket{k}{m}}_{=\delta_{km}} \matrixel{n}{B}{k} \dd{t} \nonumber                                                \\
                                          & = \frac{1}{\dimension} \frac{1}{2 \pi}\sum_{n,m} A_{mn} B_{nm}  \underbrace{\lim _{\varepsilon
         \to 0^+} \int_{-\infty}^{\infty} \mathrm{e}^{i \omega t-\vert t \vert
-        \varepsilon}e^{i (\epsilon_m-\epsilon_n) t}\dd{t} }_{\mathcal{I}}\label{eq:spectral function simplified}
+        \varepsilon}e^{i (E_m-E_n) t}\dd{t} }_{\mathcal{I}}\label{eq:spectral function simplified}
 \end{align}
 The \(\varepsilon \) part in the exponent is a trick to make the integral converge, without assuming anything
 about the behavior of the correlation function at infinity.
 Let us massage it a bit further, by calculating the integral \(\mathcal{I}\) explicitly.
 \begin{align}
     \mathcal{I} & = \lim _{\varepsilon \to 0^+} \int_{-\infty}^{\infty}
-    e^{ i (\epsilon_m-\epsilon_n+\omega)t -|t| \varepsilon}\dd{t}  = \lim _{\varepsilon \to 0^+}
-    \Bigg[\lim_{T_1\to -\infty}\int_{T_1}^{0}  e^{ i (\epsilon_m-\epsilon_n+\omega -i \varepsilon)t}\dd{t} \nonumber                 \\
-                & +\lim_{T_2\to \infty}\int_{0}^{T_2}  e^{ i (\epsilon_m-\epsilon_n+\omega + i\varepsilon)t}\dd{t} \Bigg]
+    \mathrm{e}^{ i (E_m-E_n+\omega)t -|t| \varepsilon}\dd{t}  = \lim _{\varepsilon \to 0^+}
+    \Bigg[\lim_{T_1\to -\infty}\int_{T_1}^{0}  \mathrm{e}^{ i (E_m-E_n+\omega -i \varepsilon)t}\dd{t} \nonumber                 \\
+                & +\lim_{T_2\to \infty}\int_{0}^{T_2}  \mathrm{e}^{ i (E_m-E_n+\omega + i\varepsilon)t}\dd{t} \Bigg]
     = \lim _{\varepsilon \to 0^+} \Bigg[\lim_{T_1\to -\infty}
-    \frac{1-e^{ i (\epsilon_m-\epsilon_n+\omega )T_1} e^{\varepsilon T_1}}{i (\epsilon_m-\epsilon_n+\omega -i \varepsilon)}\nonumber \\
-                & + \lim_{T_2\to \infty} \frac{e^{ i (\epsilon_m-\epsilon_n+\omega )T_2} e^{-\varepsilon T_2}-1}
-    {i (\epsilon_m-\epsilon_n+\omega +i \varepsilon)}\Bigg]
-    = \lim _{\varepsilon \to 0^+} \left[\frac{i}{\epsilon_n-\epsilon_m-\omega +i \varepsilon} +
-    \frac{i}{\epsilon_m-\epsilon_n+\omega +i \varepsilon} \right]\nonumber                                                           \\
+    \frac{1-\mathrm{e}^{ i (E_m-E_n+\omega )T_1} \mathrm{e}^{\varepsilon T_1}}{i (E_m-E_n+\omega -i \varepsilon)}\nonumber \\
+                & + \lim_{T_2\to \infty} \frac{\mathrm{e}^{ i (E_m-E_n+\omega )T_2} \mathrm{e}^{-\varepsilon T_2}-1}
+    {i (E_m-E_n+\omega +i \varepsilon)}\Bigg]
+    = \lim _{\varepsilon \to 0^+} \left[\frac{i}{E_n-E_m-\omega +i \varepsilon} +
+    \frac{i}{E_m-E_n+\omega +i \varepsilon} \right]\nonumber                                                           \\
                 & = \lim _{\varepsilon \to 0^+}
-    \frac{2\varepsilon}{(\epsilon_m-\epsilon_n+\omega -i \varepsilon)(\epsilon_m-\epsilon_n+\omega +i \varepsilon)}
-    =\lim _{\varepsilon \to 0^+} \frac{2\varepsilon}{(\epsilon_m-\epsilon_n+\omega)^2 +\varepsilon^2}
-\end{align}
+    \frac{2\varepsilon}{(E_m-E_n+\omega -i \varepsilon)(E_m-E_n+\omega +i \varepsilon)}
+    =\lim _{\varepsilon \to 0^+} \frac{2\varepsilon}{(E_m-E_n+\omega)^2 +\varepsilon^2}
+\end{align}}
 The obtained result is a limit of the so-called Poisson kernel. This happens to be
 a representation of Dirac \(\delta\) in the form of a limit of a sequence of functions~\autocite{Byron1992}
 \begin{equation}
@@ -51,17 +51,17 @@ a representation of Dirac \(\delta\) in the form of a limit of a sequence of fun
 \end{equation}
 Thus we get
 \begin{equation}
-    \mathcal{I} = \lim _{\varepsilon \to 0^+} \frac{2\varepsilon}{(\epsilon_m-\epsilon_n+\omega)^2 +\varepsilon^2}
-    = 2\pi \delta(\epsilon_m-\epsilon_n+\omega)
+    \mathcal{I} = \lim _{\varepsilon \to 0^+} \frac{2\varepsilon}{(E_m-E_n+\omega)^2 +\varepsilon^2}
+    = 2\pi \delta(E_m-E_n+\omega)
 \end{equation}
 Inserting this result into equation~\eqref{eq:spectral function simplified} we arrive at
 \begin{align}
     \mathcal{F}\left[\hs{A(t)}{B}\right] & = \frac{1}{\dimension} \frac{1}{2 \pi}\sum_{n,m} A_{mn} B_{nm}
-    \lim _{\varepsilon \to 0^+} \int_{-\infty}^{\infty} e^{i \omega t-|t|
-    \varepsilon}e^{i (\epsilon_m-\epsilon_n) t} \dd{t} \nonumber                                                             \\
-    =                                    & \frac{1}{\dimension}\sum_{n,m} A_{mn} B_{nm} \delta(\epsilon_m-\epsilon_n+\Omega)
+    \lim _{\varepsilon \to 0^+} \int_{-\infty}^{\infty} \mathrm{e}^{i \omega t-|t|
+    \varepsilon}\,\mathrm{e}^{i (E_m-E_n) t} \dd{t} \nonumber                                                             \\
+    =                                    & \frac{1}{\dimension}\sum_{n,m} A_{mn} B_{nm}\, \delta(E_m-E_n+\omega)
 \end{align}
-which is our desired results.
+which is our desired result.
 
 \section{Extension of Fourier transform to \(L^2(\RR)\) and the Fourier transform of \(\frac{\sin(x)}{x}\)}
 Now, let us tackle the more difficult integral, necessary to show, that Eq.~\eqref{eq:finite_time_avg_integral}
@@ -101,11 +101,10 @@ and consider the following
     =\frac 2{\pi}\sum_{k=1}^N\frac 1{k+1},
 \end{align*}
 Thus, the integral is bounded from below by the harmonic series, which diverges.
-Now, the question is whether we can somehow make sesne of the integral \(I\).
+Now, the question is whether we can somehow make sense of the integral \(I\).
 It turns out, that
-even though the function is not integrable, it is \textbf{square integrable} --- that is, it belongs to the
-space \(L^2\)
-which can be seen by noting that
+even though the function is not integrable, it is \textbf{square-integrable} --- that is, it belongs to the
+space \(L^2\), which can be seen by noting that
 \begin{equation}
     \int_{-\infty }^{\infty}\left|\frac{\sin t}t\right|^2 \dd{t}  =
     2\left[ \int_{0}^{1}  \frac{\sin^2(t)}{t^2}\dd{t}  + \int_{1}^{\infty }  \frac{\sin^2(t)}{t^2}  \dd{t}  \right]
@@ -125,7 +124,7 @@ to the space \(L^2\), using a classic \textbf{density argument}. To this end, we
         \langle f,g \rangle = \frac{1}{2\pi }\langle \hat{f} ,\hat{g}  \rangle  \; .
     \end{equation*}
 \end{theorem}
-The proof on this theorem is not difficult, but it would require us to introduce some new notions and deviate
+The proof of this theorem is not difficult, but it would require us to introduce some new notions and deviate
 too much from the scope of this thesis. Thus, we shall take it for granted and the reader is encouraged to
 look it up in any textbook on Fourier analysis~\autocite{Rudin1987,Stein2011}. Now, we are ready for
 \begin{theorem}
@@ -145,7 +144,7 @@ look it up in any textbook on Fourier analysis~\autocite{Rudin1987,Stein2011}. N
         \lVert f_n \rVert_1 = \lVert \mathbb{1}_{[-n,n]}f \rVert_1 \leq \lVert \mathbb{1}_{[-n,n]} \rVert_2 \lVert f \rVert_2
         = \sqrt{2n} \lVert f \rVert_2 < \infty
     \end{equation*}
-    where the first inequality above is an application of the Hölder's inequality. As \(\hat{f} \in L^1\cap L^2\)
+    where the first inequality above is due to Hölder's inequality.
     Thus, \(f_n \in L^1 \cap L^2\) as required. Now, we need to show that \(\lim_{n \to \infty} \lVert f_n - f \rVert_2 = 0\).
     Notice, that for every \(t\in\RR\), the pointwise convergence in \(\RR\)  holds
     \begin{equation*}
@@ -177,17 +176,17 @@ i.e.
     \hat{f} \equiv  \lim_{n \to \infty} \hat{f} _n = \lim_{n \to \infty} \int_{-\infty}^{\infty} f_n(t) e^{i \omega t} \mathrm{d}t
 \end{equation}
 It is no longer an ordinary Lebesgue integral, but an \(L^2\)-limit of improper Riemann integrals. Of course, in case
-of Lebesgue integrable functions, the two definitions coincide.
+of Lebesgue-integrable functions, the two definitions coincide.
 
 All this work was to convince ourselves that it actually \textit{makes sense} to talk about the Fourier transform of
-\(\sin (x)/x\), which is not Lebesgue integrable. Now, with clear conscience, we can calculate it.
+\(\sin (x)/x\), which is not Lebesgue-integrable. Now, with a clear conscience, we can calculate it.
 Our task at hand is to calculate the integral
 
 \begin{equation}
     \lim_{n \to \infty} \underbrace{\int_{-n}^{n} \frac{\sin (\alpha t)}{t} \mathrm{e}^{i \omega  t} \,\mathrm{d}t}_{I_n(\omega )}
 \end{equation}
 
-Consider the above integrand, but as a function of the complex variable \(z\). Since \(\mathrm{e}^{i \omega  z}  \sin (\alpha z)/z\)
+Consider the above integrand as a function of the complex variable \(z\). Since \(\mathrm{e}^{i \omega  z}  \sin (\alpha z)/z\)
 is an entire function, we can apply the Cauchy-Goursat theorem~\autocite{Byron1992} and deform the integration path.
 Instead of integrating over a real interval \([-n,n]\), we can integrate over the contour \(\Gamma_n\) consisting of
 an interval \([-n,-1]\), a lower semicircle of radius \(1\) centered at \(0\) and an interval \([1,n]\).
